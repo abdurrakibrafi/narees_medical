@@ -95,8 +95,6 @@ class SignInView extends StatelessWidget {
                         btnText: "Sign In",
                         onTap: () {},
                         iconWant: false,
-
-
                       ),
                     ),
                   ],
