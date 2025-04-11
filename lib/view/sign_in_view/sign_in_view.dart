@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart' show Get;
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
+import 'package:restaurent_discount_app/view/sign_in_view/profile_complete_view.dart';
 
 import '../../uitilies/app_colors.dart';
 
@@ -110,7 +113,9 @@ class SignInView extends StatelessWidget {
                       width: double.infinity,
                       child: CustomButtonWidget(
                         btnText: "Sign In",
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(() => ProfileCompleteView());
+                        },
                         iconWant: false,
                       ),
                     ),
