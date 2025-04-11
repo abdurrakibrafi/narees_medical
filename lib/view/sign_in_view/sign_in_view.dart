@@ -5,6 +5,8 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 
+import '../../uitilies/app_colors.dart';
+
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
 
@@ -13,52 +15,40 @@ class SignInView extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/Tunnel.png', // ✅ replace with your background image
-              fit: BoxFit.cover,
-            ),
-          ),
-
-          // Top to center gradient overlay
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: MediaQuery.of(context).size.height * 0.5,
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF0070D2),
-                    Colors.transparent,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.center,
-                ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.mainColor, Colors.white],
+                begin: Alignment.topCenter,
+                end: Alignment.center,
               ),
             ),
           ),
 
-          // Foreground white content
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/bg.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          // White content overlay with slight transparency
           Positioned.fill(
             child: Container(
-              color: Colors.white.withOpacity(0.95),
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: SafeArea(
                 child: Column(
                   children: [
                     SizedBox(height: 40),
                     Image.asset(
-                      'assets/images/main_logo_bg.png', // ✅ replace with your logo
+                      'assets/images/main_logo_bg.png',
                       height: 180,
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 20),
                     CustomText(
                       text: 'Welcome! Sign in to\nYour Nurse Portal',
                       textAlign: TextAlign.center,
-                      fontSize: 22,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -66,6 +56,8 @@ class SignInView extends StatelessWidget {
 
                     // Email
                     CustomTextField(
+                      fillColor: Color(0xFFE4E4E4),
+                      borderColor: Colors.transparent,
                       hintText: "Enter your email",
                       showObscure: false,
                     ),
@@ -73,16 +65,41 @@ class SignInView extends StatelessWidget {
 
                     // Password
                     CustomTextField(
+                      fillColor: Color(0xFFE4E4E4),
+                      borderColor: Colors.transparent,
                       hintText: "Enter your password",
                       showObscure: true,
                     ),
-                    SizedBox(height: 10),
 
                     // Remember Me
                     Row(
                       children: [
-                        Checkbox(value: false, onChanged: (_) {}),
-                        Text("Remember Me"),
+                        Theme(
+                          data: Theme.of(context).copyWith(
+                            checkboxTheme: CheckboxThemeData(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                side: BorderSide(color: AppColors.mainColor),
+                              ),
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              visualDensity: VisualDensity.compact,
+                            ),
+                          ),
+                          child: Checkbox(
+                            value: false,
+                            onChanged: (_) {},
+                            side: BorderSide(
+                                color:
+                                    AppColors.mainColor), // Also directly here
+                            activeColor: AppColors.mainColor,
+                          ),
+                        ),
+                        SizedBox(width: 4), // optional spacing
+                        CustomText(
+                          text: "Remember Me",
+                          color: AppColors.mainColor.withOpacity(0.8),
+                        ),
                       ],
                     ),
                     SizedBox(height: 20),
