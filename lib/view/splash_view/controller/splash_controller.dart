@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
+import 'package:restaurent_discount_app/view/sign_in_view/sign_in_view.dart';
 
 class SplashController extends GetxController {
   Timer? timer;
@@ -20,10 +21,7 @@ class SplashController extends GetxController {
     });
 
     Future.delayed(const Duration(seconds: 3), () async {
-
-
-
-
+      Get.to(() => SignInView());
     });
   }
 

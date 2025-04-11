@@ -55,7 +55,6 @@ class CustomAlertDialog {
                           width: Get.width / 3.2,
                           child: CustomButtonWidget(
                             borderColor: Colors.grey,
-                            bgColor: Colors.transparent,
                             btnTextColor: Colors.black,
                             btnText: cancelName,
                             onTap: onCancel ?? Get.back,

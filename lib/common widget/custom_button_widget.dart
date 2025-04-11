@@ -12,24 +12,27 @@ class CustomButtonWidget extends StatelessWidget {
   final dynamic btnTextSize;
   final dynamic iconSize;
   final bool iconWant;
-  final Color? bgColor;
   final Color? btnTextColor;
   final Color? borderColor;
   final IconData? iconData;
   final Color? suffixIconColor;
-
   final VoidCallback onTap;
-  const CustomButtonWidget(
-      {super.key,
-      required this.btnText,
-      required this.onTap,
-      this.bgColor,
-      this.borderColor,
-      this.btnTextColor,
-      this.btnTextSize,
-      required this.iconWant,
-      this.iconData,
-      this.suffixIconColor, this.iconSize});
+
+  final Gradient? gradient; 
+
+  const CustomButtonWidget({
+    super.key,
+    required this.btnText,
+    required this.onTap,
+    this.gradient,
+    this.borderColor,
+    this.btnTextColor,
+    this.btnTextSize,
+    required this.iconWant,
+    this.iconData,
+    this.suffixIconColor,
+    this.iconSize,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +42,13 @@ class CustomButtonWidget extends StatelessWidget {
         height: 50.h,
         width: Get.width,
         decoration: BoxDecoration(
+          gradient: gradient ?? LinearGradient(
+            colors: [Color(0xFF0071BC), Color(0xFF003456)],
+            begin: Alignment.topLeft,
+            end: Alignment.topRight
+          ),
           border: Border.all(color: borderColor ?? Colors.transparent),
           borderRadius: BorderRadius.circular(8),
-          color: bgColor ?? AppColors.mainColor,
         ),
         child: Center(
           child: Padding(
@@ -72,3 +79,4 @@ class CustomButtonWidget extends StatelessWidget {
     );
   }
 }
+
