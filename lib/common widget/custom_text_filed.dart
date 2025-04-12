@@ -86,7 +86,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : null,
           hintText: widget.hintText,
-          hintStyle: GoogleFonts.poppins(
+          hintStyle: GoogleFonts.abhayaLibre(
             fontSize: 14.h,
           ),
         ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'dart:io';
 
@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_dropdown_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 
@@ -18,6 +19,7 @@ class ProfileFillUpView extends StatefulWidget {
 class _ProfileFillUpViewState extends State<ProfileFillUpView> {
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
+  String selectedValue = "Specialization";
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -150,8 +152,59 @@ class _ProfileFillUpViewState extends State<ProfileFillUpView> {
                   ),
                 ),
               ],
-            )
+            ),
+            SizedBox(height: 20),
+            CustomTextField(
+              fillColor: Color(0xFFE4E4E4),
+              borderColor: Colors.transparent,
+              hintText: "Email Address",
+              showObscure: false,
+            ),
+            SizedBox(height: 20),
+            CustomTextField(
+              fillColor: Color(0xFFE4E4E4),
+              borderColor: Colors.transparent,
+              hintText: "Phone number",
+              showObscure: false,
+            ),
+            SizedBox(height: 20),
+            CustomTextField(
+              fillColor: Color(0xFFE4E4E4),
+              borderColor: Colors.transparent,
+              hintText: "Registration Id",
+              showObscure: false,
+            ),
+            SizedBox(height: 20),
+            CustomTextField(
+              fillColor: Color(0xFFE4E4E4),
+              borderColor: Colors.transparent,
+              hintText: "Joined Date",
+              showObscure: false,
+            ),
+            SizedBox(height: 20),
+            SizedBox(
 
+              width: double.infinity,
+              child: CustomDropdown(
+                label: 'Specialization',
+                hint: 'Select Specialization',
+                value: 'IV Therapy Specialist',
+                items: [
+                  'IV Therapy Specialist',
+                  'General Practitioner',
+                  'Nurse',
+                  'Surgeon'
+                ],
+                onChanged: (value) {
+                  print(value);
+                },
+              ),
+            ),
+            SizedBox(height: 20),
+            CustomText(
+              text: "Upload Documents",
+              fontSize: 15.h,
+            ),
           ],
         ),
       ),
