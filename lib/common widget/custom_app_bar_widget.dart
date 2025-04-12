@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: GoogleFonts.poppins(
-          fontSize: fontSize ?? 17.h,
+          fontSize: fontSize ?? 15.h,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -49,7 +49,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: actions,
       leading: leading ??
           IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_circle_left_rounded,size: 30,),
             onPressed: onTap ??
                     () {
                   if (Get.isSnackbarOpen) {

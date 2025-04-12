@@ -1,8 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 
 import '../../common widget/custom text/custom_text_widget.dart';
+import '../profile_complete_view/profile_complete_view.dart';
 
 class ProfileCompleteView extends StatefulWidget {
   const ProfileCompleteView({super.key});
@@ -15,7 +20,6 @@ class _ProfileCompleteViewState extends State<ProfileCompleteView> {
   @override
   void initState() {
     super.initState();
-    // Automatically show dialog when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showSuccessDialog();
     });
@@ -52,7 +56,9 @@ class _ProfileCompleteViewState extends State<ProfileCompleteView> {
                   height: 50,
                   child: CustomButtonWidget(
                       btnText: "Profile Complete",
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => ProfileFillUpView());
+                      },
                       iconWant: false),
                 )
               ],
