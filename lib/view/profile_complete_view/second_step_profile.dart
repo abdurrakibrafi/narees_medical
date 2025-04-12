@@ -178,6 +178,7 @@ class SecondStepProfile extends StatelessWidget {
                                     },
                                     child: CustomText(
                                       fontSize: 19,
+
                                       text: 'Draw',
                                       color: Colors.black,
                                     ),
