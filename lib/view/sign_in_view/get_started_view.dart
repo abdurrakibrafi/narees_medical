@@ -23,19 +23,26 @@ class GetStartedView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: SafeArea(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 40),
 
-                    SizedBox(height: 20),
                     CustomText(
-                      text: 'Welcome! Sign in to\nYour Nurse Portal',
+                      text: 'Streamline Your Workflow, Focus on Care',
                       textAlign: TextAlign.center,
-                      fontSize: 25,
+                      fontSize: 35,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Colors.white,
                     ),
-                    SizedBox(height: 30),
 
+
+
+                    CustomText(
+                      text: ' Manage patients, track appointments, and handle supplies effortlessly',
+                      textAlign: TextAlign.center,
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                     SizedBox(height: 20),
 
                     // Sign In Button
@@ -43,7 +50,8 @@ class GetStartedView extends StatelessWidget {
                       height: 55,
                       width: double.infinity,
                       child: CustomButtonWidget(
-                        btnText: "Sign In",
+
+                        btnText: "Get Started",
                         onTap: () {
                           // Get.to(() => ProfileCompleteView());
                         },
