@@ -176,11 +176,21 @@ class SecondStepProfile extends StatelessWidget {
                                       isSignatureDrawn = true;
                                       isSignatureUploaded = false;
                                     },
-                                    child: CustomText(
-                                      fontSize: 19,
-
-                                      text: 'Draw',
-                                      color: Colors.black,
+                                    child: Column(
+                                      children: [
+                                        CustomText(
+                                          fontSize: 19,
+                                          text: 'Draw',
+                                          color: Colors.black,
+                                        ),
+                                        if (controller.isDrawSelected.value)
+                                          Container(
+                                            height: 2,
+                                            width: 50,
+                                            color: Colors
+                                                .blue, // Add an underline when selected
+                                          )
+                                      ],
                                     ),
                                   ),
                                   SizedBox(width: 16),
@@ -190,10 +200,21 @@ class SecondStepProfile extends StatelessWidget {
                                       isSignatureUploaded = true;
                                       isSignatureDrawn = false;
                                     },
-                                    child: CustomText(
-                                      text: 'Upload',
-                                      fontSize: 19,
-                                      color: Colors.black,
+                                    child: Column(
+                                      children: [
+                                        CustomText(
+                                          fontSize: 19,
+                                          text: 'Upload',
+                                          color: Colors.black,
+                                        ),
+                                        if (!controller.isDrawSelected.value)
+                                          Container(
+                                            height: 2,
+                                            width: 50,
+                                            color: Colors
+                                                .blue, // Add an underline when selected
+                                          )
+                                      ],
                                     ),
                                   ),
                                 ],
