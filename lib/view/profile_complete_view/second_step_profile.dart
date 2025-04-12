@@ -1,5 +1,10 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+
+import '../../common widget/custom text/custom_text_widget.dart';
 
 class SecondStepProfile extends StatefulWidget {
   const SecondStepProfile({super.key});
@@ -20,39 +25,37 @@ class _SecondStepProfileState extends State<SecondStepProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile'),
-        leading: Icon(Icons.arrow_back),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar(title: "Edit Profile"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Profile Image
             Center(
               child: CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage('https://www.w3schools.com/w3images/avatar2.png'),
+                backgroundImage: NetworkImage(
+                    'https://www.w3schools.com/w3images/avatar2.png'),
               ),
             ),
             SizedBox(height: 20),
 
             // Agreements Section
-            Text(
-              'Agreements',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+            CustomText(
+              text: 'Agreements',
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
             CheckboxListTile(
-              title: Text(
-                'Business Associate Agreement (BAA)',
-                style: TextStyle(color: Colors.blue),
+              title: CustomText(
+                underline: true,
+                fontSize: 14.h,
+                text: 'Business Associate Agreement (BAA)',
+                color: Color(0xFF0071BC),
               ),
               value: baaChecked,
               onChanged: (value) {
@@ -63,9 +66,11 @@ class _SecondStepProfileState extends State<SecondStepProfile> {
               controlAffinity: ListTileControlAffinity.leading,
             ),
             CheckboxListTile(
-              title: Text(
-                'Social Media Agreement',
-                style: TextStyle(color: Colors.blue),
+              title: CustomText(
+                underline: true,
+                fontSize: 14.h,
+                text: 'Business Associate Agreement (BAA)',
+                color: Color(0xFF0071BC),
               ),
               value: socialMediaChecked,
               onChanged: (value) {
@@ -76,9 +81,10 @@ class _SecondStepProfileState extends State<SecondStepProfile> {
               controlAffinity: ListTileControlAffinity.leading,
             ),
             CheckboxListTile(
-              title: Text(
-                'Harassment Policy',
-                style: TextStyle(color: Colors.blue),
+              title: CustomText(
+                fontSize: 14.h,
+                text: 'Business Associate Agreement (BAA)',
+                color: Color(0xFF0071BC),
               ),
               value: harassmentPolicyChecked,
               onChanged: (value) {
@@ -89,9 +95,10 @@ class _SecondStepProfileState extends State<SecondStepProfile> {
               controlAffinity: ListTileControlAffinity.leading,
             ),
             CheckboxListTile(
-              title: Text(
-                'Recurring Payment Agreement',
-                style: TextStyle(color: Colors.blue),
+              title: CustomText(
+                fontSize: 14.h,
+                text: 'Business Associate Agreement (BAA)',
+                color: Color(0xFF0071BC),
               ),
               value: recurringPaymentChecked,
               onChanged: (value) {
