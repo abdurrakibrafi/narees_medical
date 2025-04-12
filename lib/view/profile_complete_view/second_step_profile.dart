@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import url_launcher
+import 'package:webview_flutter/webview_flutter.dart'; // Import webview_flutter
 
 import '../../common widget/custom text/custom_text_widget.dart';
 
@@ -22,11 +24,19 @@ class _SecondStepProfileState extends State<SecondStepProfile> {
   bool isSignatureDrawn = false;
   bool isSignatureUploaded = false;
 
+  // URLs for the checkboxes
+  final List<String> urls = [
+    'https://www.example.com/baa',
+    'https://www.example.com/social-media',
+    'https://www.example.com/harassment-policy',
+    'https://www.example.com/recurring-payment',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Edit Profile"),
+      appBar: CustomAppBar(title: "Profile Complete"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -50,63 +60,97 @@ class _SecondStepProfileState extends State<SecondStepProfile> {
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
-            CheckboxListTile(
-              title: CustomText(
-                underline: true,
-                fontSize: 14.h,
-                text: 'Business Associate Agreement (BAA)',
-                color: Color(0xFF0071BC),
-              ),
-              value: baaChecked,
-              onChanged: (value) {
-                setState(() {
-                  baaChecked = value!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
+
+            // Agreements checkboxes in a Row
+            Row(
+              children: [
+                Checkbox(
+                  value: baaChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      baaChecked = value!;
+                    });
+                  },
+                  activeColor: Color(0xFF0071BC), // Active color for checkbox
+                ),
+                GestureDetector(
+                  onTap: () => _launchURL(urls[0]),
+                  child: CustomText(
+                    underline: true,
+                    fontSize: 14.h,
+                    text: 'Business Associate Agreement (BAA)',
+                    color: Color(0xFF0071BC),
+                  ),
+                ),
+              ],
             ),
-            CheckboxListTile(
-              title: CustomText(
-                underline: true,
-                fontSize: 14.h,
-                text: 'Business Associate Agreement (BAA)',
-                color: Color(0xFF0071BC),
-              ),
-              value: socialMediaChecked,
-              onChanged: (value) {
-                setState(() {
-                  socialMediaChecked = value!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
+            Row(
+              children: [
+                Checkbox(
+                  value: socialMediaChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      socialMediaChecked = value!;
+                    });
+                  },
+                  activeColor: Color(0xFF0071BC),
+                ),
+                GestureDetector(
+                  onTap: () => _launchURL(urls[1]),
+                  child: CustomText(
+                    underline: true,
+                    fontSize: 14.h,
+                    text: 'Social Media Agreement',
+                    color: Color(0xFF0071BC),
+                  ),
+                ),
+              ],
             ),
-            CheckboxListTile(
-              title: CustomText(
-                fontSize: 14.h,
-                text: 'Business Associate Agreement (BAA)',
-                color: Color(0xFF0071BC),
-              ),
-              value: harassmentPolicyChecked,
-              onChanged: (value) {
-                setState(() {
-                  harassmentPolicyChecked = value!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
+            Row(
+              children: [
+                Checkbox(
+                  value: harassmentPolicyChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      harassmentPolicyChecked = value!;
+                    });
+                  },
+                  activeColor: Color(0xFF0071BC),
+                ),
+                GestureDetector(
+                  onTap: () => _launchURL(urls[2]),
+                  child: CustomText(
+                    underline: true,
+                    fontSize: 14.h,
+                    text: 'Harassment Policy',
+                    color: Color(0xFF0071BC),
+                  ),
+                ),
+              ],
             ),
-            CheckboxListTile(
-              title: CustomText(
-                fontSize: 14.h,
-                text: 'Business Associate Agreement (BAA)',
-                color: Color(0xFF0071BC),
-              ),
-              value: recurringPaymentChecked,
-              onChanged: (value) {
-                setState(() {
-                  recurringPaymentChecked = value!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
+            Row(
+              children: [
+                Checkbox(
+
+                  value: recurringPaymentChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      recurringPaymentChecked = value!;
+                    });
+                  },
+                  activeColor: Color(0xFF0071BC),
+                ),
+                GestureDetector(
+                  onTap: () => _launchURL(urls[3]),
+                  child: CustomText(
+                    underline: true,
+
+                    fontSize: 14.h,
+                    text: 'Recurring Payment Agreement',
+                    color: Color(0xFF0071BC),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 20),
 
@@ -227,5 +271,14 @@ class _SecondStepProfileState extends State<SecondStepProfile> {
         ),
       ),
     );
+  }
+
+  // Method to launch the URL using the default browser
+  Future<void> _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

@@ -47,6 +47,7 @@ class CustomText extends StatelessWidget {
           fontSize: fontSize,
           fontWeight: fontWeight,
           color: color,
+          decorationColor: Colors.grey,
           decoration: underline ? TextDecoration.underline : TextDecoration.none, // Conditionally apply underline
         ),
       ),
