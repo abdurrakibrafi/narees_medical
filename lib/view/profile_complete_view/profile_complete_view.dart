@@ -4,12 +4,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_dropdown_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
+import 'package:restaurent_discount_app/view/profile_complete_view/second_step_profile.dart';
 
 import '../../common widget/custom_button_widget.dart';
 
@@ -239,13 +242,12 @@ class _ProfileFillUpViewState extends State<ProfileFillUpView> {
                   child: CustomButtonWidget(
                     btnText: "Next",
                     onTap: () {
-
+                      Get.to(() => SecondStepProfile());
                     },
                     iconWant: false,
                   ),
                 ),
                 SizedBox(height: 30),
-
               ],
             ),
           )),

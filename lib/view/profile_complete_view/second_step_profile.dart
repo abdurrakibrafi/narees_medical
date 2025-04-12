@@ -1,0 +1,224 @@
+import 'package:flutter/material.dart';
+
+
+class SecondStepProfile extends StatefulWidget {
+  const SecondStepProfile({super.key});
+
+  @override
+  _SecondStepProfileState createState() => _SecondStepProfileState();
+}
+
+class _SecondStepProfileState extends State<SecondStepProfile> {
+  bool baaChecked = false;
+  bool socialMediaChecked = false;
+  bool harassmentPolicyChecked = false;
+  bool recurringPaymentChecked = false;
+
+  bool isSignatureDrawn = false;
+  bool isSignatureUploaded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Edit Profile'),
+        leading: Icon(Icons.arrow_back),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Profile Image
+            Center(
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage('https://www.w3schools.com/w3images/avatar2.png'),
+              ),
+            ),
+            SizedBox(height: 20),
+
+            // Agreements Section
+            Text(
+              'Agreements',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            CheckboxListTile(
+              title: Text(
+                'Business Associate Agreement (BAA)',
+                style: TextStyle(color: Colors.blue),
+              ),
+              value: baaChecked,
+              onChanged: (value) {
+                setState(() {
+                  baaChecked = value!;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+            ),
+            CheckboxListTile(
+              title: Text(
+                'Social Media Agreement',
+                style: TextStyle(color: Colors.blue),
+              ),
+              value: socialMediaChecked,
+              onChanged: (value) {
+                setState(() {
+                  socialMediaChecked = value!;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+            ),
+            CheckboxListTile(
+              title: Text(
+                'Harassment Policy',
+                style: TextStyle(color: Colors.blue),
+              ),
+              value: harassmentPolicyChecked,
+              onChanged: (value) {
+                setState(() {
+                  harassmentPolicyChecked = value!;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+            ),
+            CheckboxListTile(
+              title: Text(
+                'Recurring Payment Agreement',
+                style: TextStyle(color: Colors.blue),
+              ),
+              value: recurringPaymentChecked,
+              onChanged: (value) {
+                setState(() {
+                  recurringPaymentChecked = value!;
+                });
+              },
+              controlAffinity: ListTileControlAffinity.leading,
+            ),
+            SizedBox(height: 20),
+
+            // Signature Section
+            Text(
+              'Signature',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      isSignatureDrawn = true;
+                      isSignatureUploaded = false;
+                    });
+                  },
+                  child: Text('Draw'),
+                ),
+                SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      isSignatureUploaded = true;
+                      isSignatureDrawn = false;
+                    });
+                  },
+                  child: Text('Upload'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            if (isSignatureUploaded)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        Text('Drag & Drop a signature image or'),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Implement image selection functionality
+                          },
+                          child: Text('SELECT IMAGE'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'By signing this document with an electronic signature, you agree that such signature will be valid as the document signature as the law allows.',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            if (isSignatureDrawn)
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    Text('Signature Drawing Area'),
+                    // Implement drawing area (can use a custom package like flutter_signature_pad)
+                  ],
+                ),
+              ),
+            SizedBox(height: 20),
+
+            // Clear Signature
+            Row(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isSignatureDrawn = false;
+                      isSignatureUploaded = false;
+                    });
+                  },
+                  child: Text(
+                    'Clear',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Submit Button
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  // Handle form submission
+                },
+                child: Text('Submit'),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 100),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
