@@ -101,6 +101,7 @@ class SignInView extends StatelessWidget {
                         SizedBox(width: 4), // optional spacing
                         CustomText(
                           text: "Remember Me",
+                          fontSize: 16,
                           color: AppColors.mainColor.withOpacity(0.8),
                         ),
                       ],

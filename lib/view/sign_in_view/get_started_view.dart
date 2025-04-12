@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:restaurent_discount_app/view/sign_in_view/sign_in_view.dart';
 import '../../common widget/custom text/custom_text_widget.dart';
 import '../../common widget/custom_button_widget.dart';
 
@@ -26,7 +29,6 @@ class GetStartedView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     CustomText(
                       text: 'Streamline Your Workflow, Focus on Care',
                       textAlign: TextAlign.center,
@@ -35,10 +37,9 @@ class GetStartedView extends StatelessWidget {
                       color: Colors.white,
                     ),
 
-
-
                     CustomText(
-                      text: ' Manage patients, track appointments, and handle supplies effortlessly',
+                      text:
+                          ' Manage patients, track appointments, and handle supplies effortlessly',
                       textAlign: TextAlign.center,
                       fontSize: 20,
                       color: Colors.white,
@@ -50,10 +51,9 @@ class GetStartedView extends StatelessWidget {
                       height: 55,
                       width: double.infinity,
                       child: CustomButtonWidget(
-
                         btnText: "Get Started",
                         onTap: () {
-                          // Get.to(() => ProfileCompleteView());
+                          Get.to(() => SignInView());
                         },
                         iconWant: false,
                       ),
