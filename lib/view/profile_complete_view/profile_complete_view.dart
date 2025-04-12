@@ -11,6 +11,8 @@ import 'package:restaurent_discount_app/common%20widget/custom_dropdown_controll
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 
+import '../../common widget/custom_button_widget.dart';
+
 class ProfileFillUpView extends StatefulWidget {
   @override
   State<ProfileFillUpView> createState() => _ProfileFillUpViewState();
@@ -230,6 +232,18 @@ class _ProfileFillUpViewState extends State<ProfileFillUpView> {
                         )
                       ],
                     )),
+                SizedBox(height: 30),
+                SizedBox(
+                  height: 55,
+                  width: double.infinity,
+                  child: CustomButtonWidget(
+                    btnText: "Next",
+                    onTap: () {
+
+                    },
+                    iconWant: false,
+                  ),
+                ),
                 SizedBox(height: 30),
 
               ],
