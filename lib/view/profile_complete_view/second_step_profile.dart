@@ -3,6 +3,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:restaurent_discount_app/common%20controller/custom%20alert%20dialog/custom_alert_dialog.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
@@ -336,7 +337,17 @@ class SecondStepProfile extends StatelessWidget {
                 SizedBox(
                   height: 50,
                   child: CustomButtonWidget(
-                      btnText: "Submit", onTap: () {}, iconWant: false),
+                      btnText: "Submit",
+                      onTap: () {
+                        CustomAlertDialog.showCustomDialog(
+                            title: "Congrats",
+                            content: "Your profile is complete! Now, complete your training to unlock full access.",
+                            cancelName: "No",
+                            actionName: "Ok",
+                            confirmText: "Ok",
+                            onConfirm: () {});
+                      },
+                      iconWant: false),
                 ),
 
                 SizedBox(height: 20),
