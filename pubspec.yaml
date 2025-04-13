@@ -71,6 +71,7 @@ dependencies:
   socket_io_client:
   open_settings_plus: ^0.4.0
   flutter_google_maps_webservices: ^1.1.1
+  signature: ^5.5.0
 
 
 

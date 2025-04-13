@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
 
-class SignatureController extends GetxController {
+class SignatureSelectController extends GetxController {
   var isDrawSelected = true.obs;
 }

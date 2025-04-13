@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
+import 'package:signature/signature.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import '../../common widget/custom text/custom_text_widget.dart';
@@ -16,7 +17,14 @@ class SecondStepProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SignatureController controller = Get.put(SignatureController());
+    final SignatureSelectController controller =
+        Get.put(SignatureSelectController());
+
+    final SignatureController _signatureController = SignatureController(
+      penColor: Colors.black,
+      penStrokeWidth: 2,
+      exportBackgroundColor: Colors.white,
+    );
 
     bool baaChecked = false;
     bool socialMediaChecked = false;
@@ -229,7 +237,19 @@ class SecondStepProfile extends StatelessWidget {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text('Signature Drawing Area'),
+                                      Container(
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Signature(
+                                          controller: _signatureController,
+                                          backgroundColor: Colors.white,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -297,8 +317,7 @@ class SecondStepProfile extends StatelessWidget {
                           children: [
                             TextButton(
                               onPressed: () {
-                                isSignatureDrawn = false;
-                                isSignatureUploaded = false;
+                                _signatureController.clear();
                               },
                               child: Text(
                                 'Clear',
