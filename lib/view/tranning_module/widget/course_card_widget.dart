@@ -40,7 +40,6 @@ class CourseCard extends StatelessWidget {
                   text: title,
                   fontSize: 13),
               CustomText(
-
                   text: value, fontSize: 25, fontWeight: FontWeight.bold),
             ],
           ),

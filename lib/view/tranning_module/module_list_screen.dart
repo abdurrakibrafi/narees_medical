@@ -1,10 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/view/tranning_module/module_details_view.dart'
+    show TrainingModuleDetailScreen;
 
 class ModuleListScreen extends StatelessWidget {
   const ModuleListScreen({super.key});
@@ -120,39 +124,43 @@ class _ModuleListTab extends StatelessWidget {
             ? Icons.check_circle
             : Icons.pause_circle_filled;
 
-        return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                text: (index + 1).toString().padLeft(2, '0'),
-                fontSize: 23,
-                fontWeight: FontWeight.bold,
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      text: module["title"],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+        return GestureDetector(
+            onTap: () {
+              Get.to(() => TrainingModuleDetailScreen());
+            },
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: (index + 1).toString().padLeft(2, '0'),
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: module["title"],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        const SizedBox(height: 4),
+                        CustomText(
+                          text: module["duration"],
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    CustomText(
-                      text: module["duration"],
-                      color: Colors.grey,
-                      fontSize: 16,
-                    ),
-                  ],
-                ),
+                  ),
+                  Icon(statusIcon, color: Colors.blue, size: 28),
+                ],
               ),
-              Icon(statusIcon, color: Colors.blue, size: 28),
-            ],
-          ),
-        );
+            ));
       },
     );
   }
