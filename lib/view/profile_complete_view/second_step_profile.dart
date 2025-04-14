@@ -11,6 +11,7 @@ import 'package:signature/signature.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import '../../common widget/custom text/custom_text_widget.dart';
+import '../tranning_module/tranning_module_view.dart';
 import 'controller/signature_controller.dart';
 
 class SecondStepProfile extends StatelessWidget {
@@ -341,11 +342,14 @@ class SecondStepProfile extends StatelessWidget {
                       onTap: () {
                         CustomAlertDialog.showCustomDialog(
                             title: "Congrats",
-                            content: "Your profile is complete! Now, complete your training to unlock full access.",
+                            content:
+                                "Your profile is complete! Now, complete your training to unlock full access.",
                             cancelName: "No",
                             actionName: "Ok",
                             confirmText: "Ok",
-                            onConfirm: () {});
+                            onConfirm: () {
+                              Get.to(() => TrainingPortalScreen());
+                            });
                       },
                       iconWant: false),
                 ),
