@@ -28,8 +28,8 @@ class ModuleListScreen extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-             TabBar(
-              labelStyle:  GoogleFonts.abhayaLibre(
+            TabBar(
+              labelStyle: GoogleFonts.abhayaLibre(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -40,12 +40,11 @@ class ModuleListScreen extends StatelessWidget {
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
               indicatorColor: Colors.black,
-              tabs:  [
+              tabs: [
                 Tab(text: 'Modules'),
                 Tab(text: 'Certificate'),
               ],
             ),
-
             const Expanded(
               child: TabBarView(
                 children: [
@@ -118,21 +117,21 @@ class _ModuleListTab extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                (index + 1).toString().padLeft(2, '0'),
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              CustomText(
+                text: (index + 1).toString().padLeft(2, '0'),
+                fontSize: 23,
+                fontWeight: FontWeight.bold,
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(module["title"],
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    CustomText(text: module["title"],
+                     fontWeight: FontWeight.bold,fontSize: 15,),
                     const SizedBox(height: 4),
-                    Text(module["duration"],
-                        style: const TextStyle(color: Colors.grey)),
+                    CustomText(text: module["duration"],
+                        color: Colors.grey,fontSize: 16,),
                   ],
                 ),
               ),
