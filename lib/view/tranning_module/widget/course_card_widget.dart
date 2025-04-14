@@ -8,7 +8,7 @@ import '../../../common widget/custom text/custom_text_widget.dart';
 class CourseCard extends StatelessWidget {
   final String title;
   final String value;
-  final IconData icon;
+  final String icon;
 
   const CourseCard({
     required this.title,
@@ -29,7 +29,7 @@ class CourseCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 36, color: Colors.blue),
+          Image(image: AssetImage(icon)),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

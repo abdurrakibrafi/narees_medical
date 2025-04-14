@@ -28,13 +28,13 @@ class TrainingPortalScreen extends StatelessWidget {
                     child: CourseCard(
                         title: "Total\nCourse Available",
                         value: "20",
-                        icon: Icons.menu_book)),
+                        icon: "assets/images/availabele.png")),
                 SizedBox(width: 16),
                 Expanded(
                     child: CourseCard(
                         title: "Completed\nCourses",
                         value: "10",
-                        icon: Icons.school)),
+                        icon: "assets/images/complete.png")),
               ],
             ),
             const SizedBox(height: 24),
