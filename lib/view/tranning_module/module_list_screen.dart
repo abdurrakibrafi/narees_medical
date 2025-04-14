@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
@@ -20,12 +21,19 @@ class ModuleListScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
-              color: Colors.blue.shade800,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
               child: CustomText(
                 textAlign: TextAlign.start,
                 text: 'IV Insertion Techniques',
                 color: Colors.white,
-                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                fontSize: 18.h,
               ),
             ),
             TabBar(
@@ -127,11 +135,17 @@ class _ModuleListTab extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: module["title"],
-                     fontWeight: FontWeight.bold,fontSize: 15,),
+                    CustomText(
+                      text: module["title"],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                     const SizedBox(height: 4),
-                    CustomText(text: module["duration"],
-                        color: Colors.grey,fontSize: 16,),
+                    CustomText(
+                      text: module["duration"],
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
                   ],
                 ),
               ),
