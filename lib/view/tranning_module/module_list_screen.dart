@@ -2,13 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
-import 'package:restaurent_discount_app/view/tranning_module/module_details_view.dart'
-    show TrainingModuleDetailScreen;
+
+import 'package:restaurent_discount_app/view/tranning_module/widget/module_list_tab_widget.dart';
 
 class ModuleListScreen extends StatelessWidget {
   const ModuleListScreen({super.key});
@@ -57,111 +55,80 @@ class ModuleListScreen extends StatelessWidget {
                 Tab(text: 'Certificate'),
               ],
             ),
-            const Expanded(
+            Expanded(
               child: TabBarView(
                 children: [
-                  _ModuleListTab(),
-                  Center(child: Text('Certificate Tab')),
+                  ModuleListTab(),
+                  Container(
+                    height: 120, // Fixed height for the container
+                    margin: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(
+                        12), // Reduced padding to fit the content inside
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      image: const DecorationImage(
+                        image: AssetImage(
+                            'assets/images/certificate.jpeg'), // Replace with your background image
+                        fit: BoxFit.cover, // Ensure image covers the area
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Title Text
+                        CustomText(
+                          text: 'Completion Certificate 🎉',
+                          textAlign: TextAlign.center,
+
+                          fontSize: 20.h, // Adjusted size to fit
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                            height:
+                                6), // Smaller spacing between text and button
+                        // Description Text
+                        CustomText(
+                          text:
+                              'You have successfully completed your\ncourse. Download and your certificate.',
+                          textAlign: TextAlign.center,
+
+                          fontSize:
+                              18, // Smaller font size to fit within the container
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                            height: 10),
+                        // Button
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            // TODO: Implement download logic
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          icon: const Icon(Icons.download),
+                          label: const Text(
+                            'Download Certificate',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ModuleListTab extends StatelessWidget {
-  const _ModuleListTab();
-
-  final List<Map<String, dynamic>> modules = const [
-    {
-      "title": "Importance of Hand Hygiene",
-      "duration": "01:30 mins",
-      "status": "done"
-    },
-    {
-      "title": "Importance of Hand Hygiene",
-      "duration": "01:30 mins",
-      "status": "done"
-    },
-    {
-      "title": "Risk of Infection in IV Therapy",
-      "duration": "01:30 mins",
-      "status": "pause"
-    },
-    {
-      "title": "Risk of Infection in IV Therapy",
-      "duration": "01:30 mins",
-      "status": "pause"
-    },
-    {
-      "title": "Risk of Infection in IV Therapy",
-      "duration": "01:30 mins",
-      "status": "pause"
-    },
-    {
-      "title": "Risk of Infection in IV Therapy",
-      "duration": "01:30 mins",
-      "status": "pause"
-    },
-    {
-      "title": "Risk of Infection in IV Therapy",
-      "duration": "01:30 mins",
-      "status": "pause"
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: modules.length,
-      itemBuilder: (context, index) {
-        final module = modules[index];
-        final statusIcon = module["status"] == "done"
-            ? Icons.check_circle
-            : Icons.pause_circle_filled;
-
-        return GestureDetector(
-            onTap: () {
-              Get.to(() => TrainingModuleDetailScreen());
-            },
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: (index + 1).toString().padLeft(2, '0'),
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: module["title"],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                        const SizedBox(height: 4),
-                        CustomText(
-                          text: module["duration"],
-                          color: Colors.grey,
-                          fontSize: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(statusIcon, color: Colors.blue, size: 28),
-                ],
-              ),
-            ));
-      },
     );
   }
 }
