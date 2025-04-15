@@ -73,6 +73,8 @@ dependencies:
   flutter_google_maps_webservices: ^1.1.1
   signature: ^5.5.0
   video_player:
+  dot_navigation_bar: ^1.0.2
+  sweet_nav_bar: ^1.0.7
 
 
 

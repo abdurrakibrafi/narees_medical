@@ -193,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  dot_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: dot_navigation_bar
+      sha256: "753e1d91644e39beddd0a4ed7e366f37a95e38cafb601c3b7496120ae0532f63"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   dotted_border:
     dependency: "direct main"
     description:
@@ -1117,6 +1125,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  sweet_nav_bar:
+    dependency: "direct main"
+    description:
+      name: sweet_nav_bar
+      sha256: "37b630bb3cefcfeba2eacedaa1e012a7031ac22766727f2dd11fd7a251e41bfa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.7"
   synchronized:
     dependency: transitive
     description:

@@ -11,6 +11,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/controller/language_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/controller/localization_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/message.dart';
+import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
 import 'package:restaurent_discount_app/view/splash_view/splash_view.dart';
 import 'common widget/language widget/dep.dart' as dep;
 
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
               locale: localizationController.locale,
               fallbackLocale: Locale('en', 'US'),
               debugShowCheckedModeBanner: false,
-              home: SplashView(),
+              home: BottomNavBarExample(),
             );
           },
         );
