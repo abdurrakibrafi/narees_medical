@@ -7,6 +7,8 @@ import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dar
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
 
+import '../../../common widget/row_wise_widget.dart';
+
 class HomeViewForNurse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -73,18 +75,9 @@ class HomeViewForNurse extends StatelessWidget {
 
               SizedBox(height: 15),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Appointment Today",
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.h,
-                  ),
-                  CustomText(
-                    text: "See All",
-                  )
-                ],
+              RowWiseWidget(
+                title: 'Appointment Today',
+                subTitle: 'See All',
               ),
 
               SizedBox(height: 10),
@@ -112,19 +105,17 @@ class HomeViewForNurse extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Container(
-
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xFF519ed1),
-
-                      ),
-
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFF519ed1),
+                        ),
                         child: Padding(
                           padding: EdgeInsets.all(5),
                           child: Row(
                             children: [
-                              Icon(Icons.access_time,),
+                              Icon(
+                                Icons.access_time,
+                              ),
                               SizedBox(width: 8),
                               CustomText(
                                 text:
@@ -141,9 +132,10 @@ class HomeViewForNurse extends StatelessWidget {
 
               // Marketing Material Section
               SizedBox(height: 24),
-              Text(
-                'Marketing Material',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
+              RowWiseWidget(
+                title: 'Marketing Material',
+                subTitle: 'See All',
               ),
               SizedBox(height: 12),
               Card(
