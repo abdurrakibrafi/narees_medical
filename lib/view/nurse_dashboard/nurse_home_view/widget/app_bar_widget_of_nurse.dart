@@ -10,7 +10,7 @@ class CustomAppBarForHome extends StatelessWidget
   final Size preferredSize;
 
   CustomAppBarForHome({Key? key})
-      : preferredSize = Size.fromHeight(90), // Set the height for AppBar
+      : preferredSize = Size.fromHeight(90),
         super(key: key);
 
   @override

@@ -7,7 +7,7 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 class MarketingMaterialCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(padding: EdgeInsets.only(top: 10),child: Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -21,7 +21,7 @@ class MarketingMaterialCard extends StatelessWidget {
             child: CustomText(
               textAlign: TextAlign.start,
               text:
-                  'Revitalize your body with a premium IV hydration session! 💧\nFeeling tired or dehydrated? Our mobile IV therapy comes to you! Book with me today for a quick energy boost.\n#MobileIV #VitaMedics"',
+              'Revitalize your body with a premium IV hydration session! 💧\nFeeling tired or dehydrated? Our mobile IV therapy comes to you! Book with me today for a quick energy boost.\n#MobileIV #VitaMedics"',
               fontSize: 14,
               fontWeight: FontWeight.normal,
               color: Colors.black87,
@@ -37,7 +37,7 @@ class MarketingMaterialCard extends StatelessWidget {
                 height: 180,
                 decoration: BoxDecoration(
                   borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(12)),
+                  BorderRadius.vertical(bottom: Radius.circular(12)),
                   image: DecorationImage(
                     image: NetworkImage(
                       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRleWSzsHCA4WdEGSP6rjoBbdBo8wcJ9jkwWutmrFFCj2DgI0RFUnQ9QbQ558uy_wyjavc&usqp=CAU',
@@ -94,6 +94,6 @@ class MarketingMaterialCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }

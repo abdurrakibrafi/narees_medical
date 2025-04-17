@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
@@ -132,9 +134,8 @@ class HomeViewForNurse extends StatelessWidget {
             // Wrapping ListView.builder inside an unrestricted container
             Container(
               child: ListView.builder(
-                shrinkWrap: true, // Ensures the ListView doesn't take extra space
-                physics: NeverScrollableScrollPhysics(), // Disable scroll for ListView
-                itemCount: 4,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, index) {
                   return MarketingMaterialCard();
                 },
