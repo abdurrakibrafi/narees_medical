@@ -16,6 +16,7 @@ class CustomAppBarForHome extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      forceMaterialTransparency: true,
       backgroundColor: Colors.white,
       toolbarHeight: preferredSize.height,
       title: Row(
