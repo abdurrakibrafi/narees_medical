@@ -6,6 +6,7 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/marketing_material_widget.dart';
 
 import '../../../common widget/row_wise_widget.dart';
 
@@ -137,36 +138,8 @@ class HomeViewForNurse extends StatelessWidget {
                 title: 'Marketing Material',
                 subTitle: 'See All',
               ),
-              SizedBox(height: 12),
-              Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset('assets/marketing_image.jpg',
-                        height: 180, width: double.infinity, fit: BoxFit.cover),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        'Revitalize your body with a premium IV hydration session! 💧\n\nFeeling tired or dehydrated? Our mobile IV therapy comes to you! Book with me today for a quick energy boost. #MobileIV #VitaMedics',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
-                      child: Text(
-                        '2 days ago',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              SizedBox(height: 8),
+              MarketingMaterialCard()
             ],
           ),
         ),
