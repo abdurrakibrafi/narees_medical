@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
@@ -67,13 +69,22 @@ class CustomAppBarForHome extends StatelessWidget
               padding: EdgeInsets.all(6),
               child: Image(
                 image: AssetImage("assets/images/notification.png"),
-                width: 30,
+                width: 25,
               ),
             )),
-        IconButton(
-          icon: Icon(Icons.settings, color: Colors.white),
-          onPressed: () {},
-        ),
+        SizedBox(width: 15),
+        Container(
+            decoration: BoxDecoration(
+                color: Color(0xFF3E3E3E),
+                borderRadius: BorderRadius.circular(100)),
+            child: Padding(
+              padding: EdgeInsets.all(6),
+              child: Image(
+                image: AssetImage("assets/images/Cart.png"),
+                width: 25,
+              ),
+            )),
+        SizedBox(width: 15),
       ],
     );
   }
