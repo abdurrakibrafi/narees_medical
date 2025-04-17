@@ -1,65 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
 
 class HomeViewForNurse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 90,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 2),
-                shape: BoxShape.circle,
-                color: Colors.white, // Border color
-              ),
-              child: ClipOval(
-                child: Image.network(
-                  "https://media.istockphoto.com/id/1329569957/photo/happy-young-female-doctor-looking-at-camera.jpg?s=612x612&w=0&k=20&c=7Wq_Y2cl0T4op6Wg_3DFc-xtZfCqTTDvfaXkPGyrHDM=",
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(width: 8),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  text: 'Hello Samantha 👋',
-                  fontSize: 16.h,
-                  fontWeight: FontWeight.bold,
-                ),
-                CustomText(
-                  text: 'How are you today?',
-                  fontSize: 13.h,
-                  color: Colors.black.withOpacity(0.9),
-                ),
-              ],
-            )
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      backgroundColor: Colors.white,
+      appBar: CustomAppBarForHome(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
