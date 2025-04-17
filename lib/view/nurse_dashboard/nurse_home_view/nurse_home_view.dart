@@ -31,7 +31,22 @@ class HomeViewForNurse extends StatelessWidget {
               ),
             ),
             SizedBox(width: 8),
-            CustomText(text: 'Hello Samantha 👋', fontSize: 15.h,fontWeight: FontWeight.bold,),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: 'Hello Samantha 👋',
+                  fontSize: 16.h,
+                  fontWeight: FontWeight.bold,
+                ),
+                CustomText(
+                  text: 'How are you today?',
+                  fontSize: 13.h,
+                  color: Colors.black.withOpacity(0.9),
+                ),
+              ],
+            )
           ],
         ),
         actions: [
