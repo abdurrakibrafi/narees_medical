@@ -1,16 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-class BottomNavBarExample extends StatefulWidget {
-  const BottomNavBarExample({super.key});
 
+class MyHomePage extends StatefulWidget {
   @override
-  _BottomNavBarExampleState createState() => _BottomNavBarExampleState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _BottomNavBarExampleState extends State<BottomNavBarExample> {
+class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -22,34 +20,38 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Image.asset("assets/IMG.png"),
+      appBar: AppBar(
+        title: Text('Rounded Bottom Navigation Bar'),
       ),
-      bottomNavigationBar: Container(
-        width: MediaQuery.of(context).size.width * 0.85,
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        margin: EdgeInsets.only(bottom: 16),
-        child: DotNavigationBar(
+      body: Center(
+        child: Text('Selected Index: $_selectedIndex'),
+      ),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        child: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          items: [
-            DotNavigationBarItem(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              selectedColor: Colors.purple,
+              label: 'Home',
             ),
-            DotNavigationBarItem(
-              icon: Icon(Icons.favorite_border),
-              selectedColor: Colors.pink,
-            ),
-            DotNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              selectedColor: Colors.orange,
+              label: 'Search',
             ),
-            DotNavigationBarItem(
-              icon: Icon(Icons.person),
-              selectedColor: Colors.teal,
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: 'Profile',
             ),
           ],
+          backgroundColor: Colors.blue,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white60,
+          elevation: 10,
         ),
       ),
     );

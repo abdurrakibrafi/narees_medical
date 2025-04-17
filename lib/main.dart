@@ -12,6 +12,7 @@ import 'package:restaurent_discount_app/common%20widget/language%20widget/contro
 import 'package:restaurent_discount_app/common%20widget/language%20widget/controller/localization_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/message.dart';
 import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/nurse_home_view.dart';
 import 'package:restaurent_discount_app/view/splash_view/splash_view.dart';
 import 'common widget/language widget/dep.dart' as dep;
 
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
               locale: localizationController.locale,
               fallbackLocale: Locale('en', 'US'),
               debugShowCheckedModeBanner: false,
-              home: BottomNavBarExample(),
+              home: HomeViewForNurse(),
             );
           },
         );
