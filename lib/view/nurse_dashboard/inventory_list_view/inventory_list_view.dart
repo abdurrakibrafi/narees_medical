@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/widget/inventory_card_widget.dart';
 
 class InventoryList extends StatelessWidget {
@@ -41,8 +42,27 @@ class InventoryList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomTextField(hintText: "Search", showObscure: false),
-
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Search here....',
+                hintStyle: TextStyle(color: Colors.blue.withOpacity(0.6)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
+                suffixIcon: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.mainColor),
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
             SizedBox(height: 10),
             Text(
               'Showing ${inventoryItems.length} Results',
