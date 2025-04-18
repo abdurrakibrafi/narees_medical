@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
-import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/widget/inventory_card_widget.dart';
 
@@ -13,23 +13,33 @@ class InventoryList extends StatelessWidget {
       'brand': 'SafeTouch',
       'price': '\$50.00',
       'status': 'In Stock',
-      'image': 'assets/iv1.jpg'
+      'image':
+          'https://www.farmvet.com/site/images/Products/Saline-for-Irrigation-Bottle_media-1.jpg?resizeid=9&resizeh=500&resizew=500'
     },
     {
       'name': 'Vitamin Boost IV Kit',
       'brand': 'SafeTouch',
       'price': '\$50.00',
       'status': 'Out of Stock',
-      'image': 'assets/iv2.jpg'
+      'image':
+          'https://www.farmvet.com/site/images/Products/Saline-for-Irrigation-Bottle_media-1.jpg?resizeid=9&resizeh=500&resizew=500'
     },
     {
       'name': 'Vitamin Boost IV Kit',
       'brand': 'SafeTouch',
       'price': '\$50.00',
       'status': 'In Stock',
-      'image': 'assets/iv3.jpg'
+      'image':
+          'https://www.farmvet.com/site/images/Products/Calcium-Gluconate-23-Solution_media-1.jpg?resizeid=9&resizeh=500&resizew=500'
     },
-    // Add more items as needed
+    {
+      'name': 'Vitamin Boost IV Kit',
+      'brand': 'SafeTouch',
+      'price': '\$50.00',
+      'status': 'In Stock',
+      'image':
+      'https://www.farmvet.com/site/images/Products/Saline-for-Irrigation-Bottle_media-1.jpg?resizeid=9&resizeh=500&resizew=500'
+    },
   ];
 
   @override
@@ -45,10 +55,10 @@ class InventoryList extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 hintText: 'Search here....',
-                hintStyle: TextStyle(color: Colors.blue.withOpacity(0.6)),
+                hintStyle: GoogleFonts.abhayaLibre(),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.blue),
+                  borderSide: BorderSide(color: AppColors.mainColor),
                 ),
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
@@ -62,11 +72,6 @@ class InventoryList extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Showing ${inventoryItems.length} Results',
-              style: TextStyle(fontSize: 14, color: Colors.black54),
             ),
             SizedBox(height: 20),
             Expanded(
