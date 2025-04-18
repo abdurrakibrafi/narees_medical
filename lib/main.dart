@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,22 +11,18 @@ import 'package:restaurent_discount_app/common%20widget/language%20widget/contro
 import 'package:restaurent_discount_app/common%20widget/language%20widget/controller/localization_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/message.dart';
 import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_list_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/nurse_home_view.dart';
 import 'package:restaurent_discount_app/view/splash_view/splash_view.dart';
 import 'common widget/language widget/dep.dart' as dep;
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
 
-
   await Get.put(LanguageController()).initStorage();
 
   Map<String, Map<String, String>> languages = await dep.init();
-
-
-
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -50,22 +45,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LocalizationController>(
-      builder: (localizationController) {
-        return ScreenUtilInit(
+    return ScreenUtilInit(
           designSize: const Size(360, 690),
           builder: (context, child) {
             return GetMaterialApp(
               translations: Messages(languages: languages),
-              locale: localizationController.locale,
               fallbackLocale: Locale('en', 'US'),
               debugShowCheckedModeBanner: false,
               home: HomeViewForNurse(),
             );
           },
         );
-      },
-    );
+
   }
 }
-

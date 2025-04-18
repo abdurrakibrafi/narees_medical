@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +6,6 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/marketing_material_widget.dart';
-
 import '../../../common widget/row_wise_widget.dart';
 
 class HomeViewForNurse extends StatelessWidget {
@@ -16,11 +15,11 @@ class HomeViewForNurse extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: CustomAppBarForHome(),
       body: SingleChildScrollView(
-
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // The 'Order Supplies' Card
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -131,15 +130,13 @@ class HomeViewForNurse extends StatelessWidget {
               subTitle: 'See All',
             ),
             SizedBox(height: 8),
-            // Wrapping ListView.builder inside an unrestricted container
-            Container(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, index) {
-                  return MarketingMaterialCard();
-                },
-              ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              itemBuilder: (BuildContext context, index) {
+                return MarketingMaterialCard();
+              },
             ),
           ],
         ),
@@ -147,5 +144,3 @@ class HomeViewForNurse extends StatelessWidget {
     );
   }
 }
-
-

@@ -40,8 +40,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor,
       title: Text(
         title,
-        style: GoogleFonts.poppins(
-          fontSize: fontSize ?? 15.h,
+        style: GoogleFonts.abhayaLibre(
+          fontSize: fontSize ?? 18.h,
           fontWeight: FontWeight.w500,
         ),
       ),
