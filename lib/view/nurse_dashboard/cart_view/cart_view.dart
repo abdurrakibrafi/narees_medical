@@ -39,33 +39,8 @@ class _CartPageState extends State<CartPage> {
     ),
   ];
 
-  double get totalPrice {
-    double total = 0.0;
-    for (var item in cartItems) {
-      total += item.price * item.quantity;
-    }
-    return total;
-  }
 
-  void removeItem(int index) {
-    setState(() {
-      cartItems.removeAt(index);
-    });
-  }
 
-  void increaseQuantity(int index) {
-    setState(() {
-      cartItems[index].quantity++;
-    });
-  }
-
-  void decreaseQuantity(int index) {
-    setState(() {
-      if (cartItems[index].quantity > 1) {
-        cartItems[index].quantity--;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +119,7 @@ class _CartPageState extends State<CartPage> {
                                           icon: Icon(Icons.remove),
                                           onPressed: cartItems[index].status ==
                                                   'In Stock'
-                                              ? () => decreaseQuantity(index)
+                                              ? () {}
                                               : null,
                                         ),
                                         Text(
@@ -157,7 +132,7 @@ class _CartPageState extends State<CartPage> {
                                           icon: Icon(Icons.add),
                                           onPressed: cartItems[index].status ==
                                                   'In Stock'
-                                              ? () => increaseQuantity(index)
+                                              ? () {}
                                               : null,
                                         ),
                                       ],
@@ -188,7 +163,7 @@ class _CartPageState extends State<CartPage> {
                       fontWeight: FontWeight.bold,
                     ),
                     Text(
-                      '\$${totalPrice.toStringAsFixed(2)}',
+                      '\$600.00',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
