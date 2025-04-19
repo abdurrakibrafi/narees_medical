@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ViewInventoryPage extends StatefulWidget {
   const ViewInventoryPage({Key? key}) : super(key: key);
@@ -14,6 +17,13 @@ class ViewInventoryPage extends StatefulWidget {
 class _ViewInventoryPageState extends State<ViewInventoryPage> {
   int quantity = 1;
   double price = 50.00;
+  int currentIndex = 0;
+
+  final List<String> imageUrls = [
+    'https://www.farmvet.com/site/images/Products/Saline-for-Irrigation-Bottle_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
+    'https://www.farmvet.com/site/images/Products/Calcium-Gluconate-23-Solution_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
+    'https://www.farmvet.com/site/images/Products/Saline-for-Irrigation-Bottle_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -30,24 +40,57 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
               fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
-            SizedBox(height: 5),
-            Text(
-              'Medical Supplies Co.',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+            CustomText(
+              underline: true,
+              text: 'Medical Supplies Co.',
+              fontSize: 15.h,
+              color: AppColors.mainColor,
             ),
             SizedBox(height: 12),
 
-            Center(
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        'https://www.farmvet.com/site/images/Products/Saline-for-Irrigation-Bottle_media-1.jpg?resizeid=9&resizeh=500&resizew=500'),
-                    fit: BoxFit.cover,
-                  ),
+            Card(
+              color: Colors.white,
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 260,
+                      child: PageView.builder(
+                        itemCount: imageUrls.length,
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        },
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            imageUrls[index],
+                            fit: BoxFit.fitHeight,
+                          );
+                        },
+                      ),
+                    ),
+                    // Page indicator
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: SmoothPageIndicator(
+                        controller: PageController(initialPage: 0),
+                        count: imageUrls.length,
+                        effect: WormEffect(
+                          dotColor: Colors.grey,
+                          activeDotColor: Colors.blue,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                  ],
                 ),
               ),
             ),
