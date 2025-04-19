@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
@@ -39,8 +37,12 @@ class _CartPageState extends State<CartPage> {
     ),
   ];
 
-
-
+  // Function to remove item from cart
+  void removeItem(int index) {
+    setState(() {
+      cartItems.removeAt(index); // Remove the item at the given index
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,93 +58,121 @@ class _CartPageState extends State<CartPage> {
               child: ListView.builder(
                 itemCount: cartItems.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    color: Colors.white,
-                    elevation: 2,
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  return Dismissible(
+                    key: Key(cartItems[index].name),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      removeItem(index);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text(
+                                "${cartItems[index].name} removed from cart")),
+                      );
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            size: 33.h,
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          // Product Image
-                          Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                image: NetworkImage(cartItems[index].imageUrl),
-                                fit: BoxFit.cover,
+                    child: Card(
+                      color: Colors.white,
+                      elevation: 2,
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                image: DecorationImage(
+                                  image:
+                                      NetworkImage(cartItems[index].imageUrl),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 16),
-                          // Item details
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  cartItems[index].name,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  cartItems[index].brand,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black54,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  '\$${cartItems[index].price.toString()}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-
-                                // Quantity and remove button
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.remove),
-                                          onPressed: cartItems[index].status ==
-                                                  'In Stock'
-                                              ? () {}
-                                              : null,
-                                        ),
-                                        Text(
-                                          cartItems[index].quantity.toString(),
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.add),
-                                          onPressed: cartItems[index].status ==
-                                                  'In Stock'
-                                              ? () {}
-                                              : null,
-                                        ),
-                                      ],
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    cartItems[index].name,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
-                                ),
-                              ],
+                                  ),
+                                  Text(
+                                    cartItems[index].brand,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    '\$${cartItems[index].price.toString()}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.remove),
+                                            onPressed:
+                                                cartItems[index].status ==
+                                                        'In Stock'
+                                                    ? () {}
+                                                    : null,
+                                          ),
+                                          Text(
+                                            cartItems[index]
+                                                .quantity
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.add),
+                                            onPressed:
+                                                cartItems[index].status ==
+                                                        'In Stock'
+                                                    ? () {}
+                                                    : null,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -172,12 +202,12 @@ class _CartPageState extends State<CartPage> {
                   ],
                 ),
                 SizedBox(height: 10),
-
                 CustomButtonWidget(
                   btnTextSize: 16.0,
-                    btnText: "Proceed to Payment",
-                    onTap: () {},
-                    iconWant: false),
+                  btnText: "Proceed to Payment",
+                  onTap: () {},
+                  iconWant: false,
+                ),
                 SizedBox(height: 10),
               ],
             ),
