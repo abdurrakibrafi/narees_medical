@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -190,6 +191,12 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
                 )
               ],
             ),
+            SizedBox(height: 40),
+
+            CustomButtonWidget(btnText: "Add to Cart", onTap: (){}, iconWant: false),
+            SizedBox(height: 40),
+
+
           ],
         ),)
       ),

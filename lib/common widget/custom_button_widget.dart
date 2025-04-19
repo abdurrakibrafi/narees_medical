@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +18,7 @@ class CustomButtonWidget extends StatelessWidget {
   final Color? suffixIconColor;
   final VoidCallback onTap;
 
-  final Gradient? gradient; 
+  final Gradient? gradient;
 
   const CustomButtonWidget({
     super.key,
@@ -39,14 +39,14 @@ class CustomButtonWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 50.h,
+        height: 35.h,
         width: Get.width,
         decoration: BoxDecoration(
-          gradient: gradient ?? LinearGradient(
-            colors: [Color(0xFF0071BC), Color(0xFF003456)],
-            begin: Alignment.topLeft,
-            end: Alignment.topRight
-          ),
+          gradient: gradient ??
+              LinearGradient(
+                  colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.topRight),
           border: Border.all(color: borderColor ?? Colors.transparent),
           borderRadius: BorderRadius.circular(8),
         ),
@@ -79,4 +79,3 @@ class CustomButtonWidget extends StatelessWidget {
     );
   }
 }
-
