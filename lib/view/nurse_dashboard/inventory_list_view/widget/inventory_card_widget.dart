@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 
 class InventoryItemCard extends StatelessWidget {
   final Map<String, String> item;
@@ -17,76 +18,106 @@ class InventoryItemCard extends StatelessWidget {
       elevation: 2,
       margin: EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Row(
-          children: [
-            // Image
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                image: DecorationImage(
-                  image: NetworkImage(
-                      item['image']!),
-                  fit: BoxFit.cover,
+      child: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              children: [
+                // Image
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                      image: NetworkImage(item['image']!),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(width: 16),
-            // Item details
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: item['name']!,
-                    fontSize: 16.h,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  CustomText(
-                      text: item['brand']!,
-                      fontSize: 17,
-                      color: Colors.black54),
-                  SizedBox(height: 8),
-                  CustomText(
-                      text: item['price']!,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                  SizedBox(height: 8),
-                  CustomText(
-                    text: item['status']!,
-                    fontSize: 16,
-                    color: item['status'] == 'In Stock'
-                        ? Colors.green
-                        : Colors.red,
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                SizedBox(width: 16),
+                // Item details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 34,
-                        width: 100,
-                        child: CustomButtonWidget(
-                            btnTextSize: 11.5,
-                            btnText: "Add to Cart",
-                            onTap: () {},
-                            iconWant: false),
+                      CustomText(
+                        text: item['name']!,
+                        fontSize: 16.h,
+                        fontWeight: FontWeight.bold,
                       ),
-                      
-                      
-                      Icon(Icons.remove_red_eye_outlined,color: Colors.grey,)
-                      
+                      CustomText(
+                        text: item['brand']!,
+                        fontSize: 17,
+                        color: Colors.black54,
+                      ),
+                      SizedBox(height: 8),
+                      CustomText(
+                        text: item['price']!,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SizedBox(height: 8),
+                      CustomText(
+                        text: item['status']!,
+                        fontSize: 16,
+                        color: item['status'] == 'In Stock'
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 34,
+                            width: 100,
+                            child: CustomButtonWidget(
+                                btnTextSize: 11.5,
+                                btnText: "Add to Cart",
+                                onTap: () {},
+                                iconWant: false),
+                          ),
+                          Icon(
+                            Icons.remove_red_eye_outlined,
+                            color: Colors.grey,
+                          ),
+                        ],
+                      )
                     ],
-                  )
-                ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Stock Count Positioned at Top Right
+          Positioned(
+            top: 1,
+            right: 0,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+              decoration: BoxDecoration(
+                color: Color(0xFFE8F4FA),
+
+
+                borderRadius: BorderRadius.circular(
+                  10
+                )
+
+              ),
+
+
+
+              child: CustomText(
+                text: "45",  
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.mainColor,
               ),
             ),
-            // Add to cart button
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
