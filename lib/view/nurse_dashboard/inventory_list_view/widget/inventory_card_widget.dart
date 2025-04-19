@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_details_view.dart';
 
 class InventoryItemCard extends StatelessWidget {
   final Map<String, String> item;
@@ -79,10 +82,15 @@ class InventoryItemCard extends StatelessWidget {
                                 onTap: () {},
                                 iconWant: false),
                           ),
-                          Icon(
-                            Icons.remove_red_eye_outlined,
-                            color: Colors.grey,
-                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => ViewInventoryPage());
+                            },
+                            child: Icon(
+                              Icons.remove_red_eye_outlined,
+                              color: Colors.grey,
+                            ),
+                          )
                         ],
                       )
                     ],
@@ -91,26 +99,16 @@ class InventoryItemCard extends StatelessWidget {
               ],
             ),
           ),
-          // Stock Count Positioned at Top Right
           Positioned(
             top: 1,
             right: 0,
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
               decoration: BoxDecoration(
-                color: Color(0xFFE8F4FA),
-
-
-                borderRadius: BorderRadius.circular(
-                  10
-                )
-
-              ),
-
-
-
+                  color: Color(0xFFE8F4FA),
+                  borderRadius: BorderRadius.circular(10)),
               child: CustomText(
-                text: "45",  
+                text: "45",
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: AppColors.mainColor,
