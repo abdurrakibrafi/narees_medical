@@ -14,7 +14,7 @@ class InventoryItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
-      elevation: 1,
+      elevation: 2,
       margin: EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -29,7 +29,7 @@ class InventoryItemCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
                   image: NetworkImage(
-                      item['image']!), // Assuming you have images in assets
+                      item['image']!),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -64,6 +64,7 @@ class InventoryItemCard extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
                         height: 34,
@@ -73,7 +74,11 @@ class InventoryItemCard extends StatelessWidget {
                             btnText: "Add to Cart",
                             onTap: () {},
                             iconWant: false),
-                      )
+                      ),
+                      
+                      
+                      Icon(Icons.remove_red_eye_outlined,color: Colors.grey,)
+                      
                     ],
                   )
                 ],

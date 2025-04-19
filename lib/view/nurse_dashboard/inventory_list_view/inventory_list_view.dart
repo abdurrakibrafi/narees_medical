@@ -38,7 +38,7 @@ class InventoryList extends StatelessWidget {
       'price': '\$50.00',
       'status': 'In Stock',
       'image':
-      'https://www.farmvet.com/site/images/Products/Saline-for-Irrigation-Bottle_media-1.jpg?resizeid=9&resizeh=500&resizew=500'
+          'https://www.farmvet.com/site/images/Products/Saline-for-Irrigation-Bottle_media-1.jpg?resizeid=9&resizeh=500&resizew=500'
     },
   ];
 
