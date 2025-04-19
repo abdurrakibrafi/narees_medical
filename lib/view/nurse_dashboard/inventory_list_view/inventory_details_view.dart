@@ -32,7 +32,7 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
       appBar: CustomAppBar(title: "View Inventory"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: SingleChildScrollView(child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
@@ -83,7 +83,7 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
                         count: imageUrls.length,
                         effect: WormEffect(
                           dotColor: Colors.grey,
-                          activeDotColor: Colors.blue,
+                          activeDotColor: AppColors.mainColor,
                           dotHeight: 10,
                           dotWidth: 10,
                         ),
@@ -98,60 +98,72 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
 
             Row(
               children: [
-                Text(
-                  '\$$price',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                Spacer(),
-                Text(
-                  'Qty: $quantity',
-                  style: TextStyle(fontSize: 16),
-                ),
+                CustomText(
+                    text: '\$$price',
+                    fontSize: 24.h,
+                    fontWeight: FontWeight.bold),
               ],
-            ),
-            SizedBox(height: 20),
-            // Quantity Picker
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.remove_circle_outline),
-                  onPressed: () {
-                    setState(() {
-                      if (quantity > 1) quantity--;
-                    });
-                  },
-                ),
-                Text(
-                  '$quantity',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  icon: Icon(Icons.add_circle_outline),
-                  onPressed: () {
-                    setState(() {
-                      quantity++;
-                    });
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            // Total Price Calculation
-            Text(
-              'Total: \$${(price * quantity).toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            // Description Section
-            Text(
-              'Description',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 5),
-            Text(
+
+            Divider(),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "Qty: ",
+                      fontSize: 18.h,
+                    ),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: Icon(Icons.remove_circle_outline),
+                      onPressed: () {
+                        setState(() {
+                          if (quantity > 1) quantity--;
+                        });
+                      },
+                    ),
+                    CustomText(
+                      text: '$quantity',
+                      fontSize: 17.h,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.add_circle_outline),
+                      onPressed: () {
+                        setState(() {
+                          quantity++;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                CustomText(
+                  text: 'Total: \$${(price * quantity).toStringAsFixed(2)}',
+                  fontSize: 16.h,
+                  fontWeight: FontWeight.bold,
+                ),
+              ],
+            ),
+
+            Divider(),
+
+            // Description Section
+            CustomText(
+              text: 'Description',
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+            SizedBox(height: 5),
+            CustomText(
+              textAlign: TextAlign.start,
+              text:
               'The Recovery Hydration IV Kit is specially formulated to help you recover quickly after a long night, intense workout, or dehydration. This solution includes a powerful blend of fluids and vitamins that will rehydrate and restore your body.',
-              style: TextStyle(fontSize: 16),
+              fontSize: 16,
             ),
             SizedBox(height: 10),
             // Additional Info Section
@@ -159,14 +171,15 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
               children: [
                 Icon(Icons.check_circle, color: Colors.green),
                 SizedBox(width: 5),
-                Text(
-                  'B Complex: Boosts energy and supports a healthy metabolism.',
-                  style: TextStyle(fontSize: 16),
-                ),
+                CustomText(
+                  textAlign: TextAlign.start,
+                  text:  'B Complex: Boosts energy and supports\na healthy metabolism.',
+                  fontSize: 16.h,
+                )
               ],
             ),
           ],
-        ),
+        ),)
       ),
     );
   }
