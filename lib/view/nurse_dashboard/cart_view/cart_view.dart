@@ -12,7 +12,8 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   List<CartItem> cartItems = [
     CartItem(
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl:
+          'https://www.farmvet.com/site/images/Products/Calcium-Gluconate-23-Solution_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
       name: 'Vitamin Boost IV Kit',
       brand: 'SafeTouch',
       price: 50.00,
@@ -20,7 +21,8 @@ class _CartPageState extends State<CartPage> {
       quantity: 1,
     ),
     CartItem(
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl:
+          'https://www.farmvet.com/site/images/Products/Calcium-Gluconate-23-Solution_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
       name: 'Vitamin Boost IV Kit',
       brand: 'SafeTouch',
       price: 50.00,
@@ -28,7 +30,8 @@ class _CartPageState extends State<CartPage> {
       quantity: 1,
     ),
     CartItem(
-      imageUrl: 'https://via.placeholder.com/150',
+      imageUrl:
+          'https://www.farmvet.com/site/images/Products/Calcium-Gluconate-23-Solution_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
       name: 'Vitamin Boost IV Kit',
       brand: 'SafeTouch',
       price: 50.00,
