@@ -178,6 +178,18 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
                 )
               ],
             ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.green),
+                SizedBox(width: 5),
+                CustomText(
+                  textAlign: TextAlign.start,
+                  text:  'B Complex: Boosts energy and supports\na healthy metabolism.',
+                  fontSize: 16.h,
+                )
+              ],
+            ),
           ],
         ),)
       ),
