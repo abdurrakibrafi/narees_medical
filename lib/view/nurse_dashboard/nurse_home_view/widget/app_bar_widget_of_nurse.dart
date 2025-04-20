@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_list_view.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/notification_view/notification_view.dart';
 
 class CustomAppBarForHome extends StatelessWidget
     implements PreferredSizeWidget {
@@ -65,17 +66,23 @@ class CustomAppBarForHome extends StatelessWidget
         ],
       ),
       actions: [
-        Container(
-            decoration: BoxDecoration(
-                color: Color(0xFF3E3E3E),
-                borderRadius: BorderRadius.circular(100)),
-            child: Padding(
-              padding: EdgeInsets.all(6),
-              child: Image(
-                image: AssetImage("assets/images/notification.png"),
-                width: 25,
-              ),
-            )),
+        GestureDetector(
+          onTap: () {
+            Get.to(() => NotificationPage());
+          },
+          child: Container(
+            color: Colors.white,
+              decoration: BoxDecoration(
+                  color: Color(0xFF3E3E3E),
+                  borderRadius: BorderRadius.circular(100)),
+              child: Padding(
+                padding: EdgeInsets.all(6),
+                child: Image(
+                  image: AssetImage("assets/images/notification.png"),
+                  width: 25,
+                ),
+              )),
+        ),
         SizedBox(width: 15),
         GestureDetector(
           onTap: () {
