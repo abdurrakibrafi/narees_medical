@@ -74,13 +74,17 @@ class _CartPageState extends State<CartPage> {
                       );
                     },
                     background: Container(
-                      color: Colors.red,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.red,
+                      ),
+
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Icon(
-                            size: 33.h,
+                            size: 30.h,
                             Icons.delete,
                             color: Colors.white,
                           ),
