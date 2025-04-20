@@ -71,7 +71,6 @@ class CustomAppBarForHome extends StatelessWidget
             Get.to(() => NotificationPage());
           },
           child: Container(
-            color: Colors.white,
               decoration: BoxDecoration(
                   color: Color(0xFF3E3E3E),
                   borderRadius: BorderRadius.circular(100)),
