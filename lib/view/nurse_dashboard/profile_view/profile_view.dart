@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/payment_receipts_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 
@@ -61,7 +62,6 @@ class ProfilePage extends StatelessWidget {
                 // Divider
                 Divider(),
 
-                // Supply Order History
                 ProfileOption(
                   icon: Icons.history,
                   title: 'Supply Order History',
@@ -78,7 +78,7 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.receipt,
                   title: 'Payment Receipts',
                   onTap: () {
-                    // Implement Payment Receipts navigation
+                    Get.to(() => PaymentReceiptsPage());
                   },
                 ),
 
@@ -90,7 +90,6 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.message,
                   title: 'Message',
                   onTap: () {
-                    // Implement Message navigation
                   },
                 ),
 
