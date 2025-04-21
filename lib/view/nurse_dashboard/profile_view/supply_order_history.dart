@@ -141,12 +141,11 @@ class OrderCard extends StatelessWidget {
             ),
             // Status with color
             Expanded(
-              child: Text(
-                status,
-                style: TextStyle(
-                  color: statusColor,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: CustomText(
+                text: status,
+                color: statusColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 13.h,
               ),
             ),
           ],
