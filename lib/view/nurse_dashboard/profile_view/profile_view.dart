@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/payment_receipts_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 
 import 'change_password_view.dart';
@@ -66,7 +67,7 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.history,
                   title: 'Supply Order History',
                   onTap: () {
-                    // Implement Supply Order History navigation
+                    Get.to(() => SupplyOrderHistoryPage());
                   },
                 ),
 
@@ -89,8 +90,7 @@ class ProfilePage extends StatelessWidget {
                 ProfileOption(
                   icon: Icons.message,
                   title: 'Message',
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
 
                 // Divider
