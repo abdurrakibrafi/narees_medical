@@ -122,14 +122,15 @@ class OrderCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    productName,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  CustomText(
+                    text: productName,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.h,
                   ),
                   SizedBox(height: 4),
-                  Text(
-                    company,
-                    style: TextStyle(color: Colors.grey[600]),
+                  CustomText(
+                    text: company,
+                    fontSize: 13.h,
                   ),
                 ],
               ),
