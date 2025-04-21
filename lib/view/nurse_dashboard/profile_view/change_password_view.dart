@@ -43,8 +43,7 @@ class ChangePasswordView extends StatelessWidget {
               ),
               SizedBox(height: 25.h),
               CustomButtonWidget(
-                  btnText: "Update Password", onTap: () {
-              }, iconWant: false)
+                  btnText: "Update Password", onTap: () {}, iconWant: false)
             ],
           ),
         ));
