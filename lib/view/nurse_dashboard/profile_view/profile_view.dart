@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
+
+import 'change_password_view.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -97,7 +101,7 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.lock,
                   title: 'Change Password',
                   onTap: () {
-                    // Implement Change Password navigation
+                  Get.to(()=> ChangePasswordView());
                   },
                 ),
 
