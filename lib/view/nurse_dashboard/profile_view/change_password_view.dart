@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 
 import '../../../common widget/custom_text_filed.dart';
@@ -19,6 +20,7 @@ class ChangePasswordView extends StatelessWidget {
           padding: AppPadding.bodyPadding,
           child: Column(
             children: [
+              SizedBox(height: 35.h),
               CustomTextField(
                 fillColor: Color(0xFFE4E4E4),
                 borderColor: Colors.transparent,
@@ -39,6 +41,9 @@ class ChangePasswordView extends StatelessWidget {
                 hintText: "Enter confirm password",
                 showObscure: false,
               ),
+              SizedBox(height: 25.h),
+              CustomButtonWidget(
+                  btnText: "Update Password", onTap: () {}, iconWant: false)
             ],
           ),
         ));
