@@ -47,16 +47,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-          designSize: const Size(360, 690),
-          builder: (context, child) {
-            return GetMaterialApp(
-              translations: Messages(languages: languages),
-              fallbackLocale: Locale('en', 'US'),
-              debugShowCheckedModeBanner: false,
-              home: ProfilePage(),
-            );
-          },
+      designSize: const Size(360, 690),
+      builder: (context, child) {
+        return GetMaterialApp(
+          translations: Messages(languages: languages),
+          fallbackLocale: Locale('en', 'US'),
+          debugShowCheckedModeBanner: false,
+          home: SplashView(),
         );
-
+      },
+    );
   }
 }

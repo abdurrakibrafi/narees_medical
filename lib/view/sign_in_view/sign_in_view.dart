@@ -120,6 +120,21 @@ class SignInView extends StatelessWidget {
                         iconWant: false,
                       ),
                     ),
+
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: "Don’t have an account?",
+                        ),
+                        SizedBox(width: 5),
+                        CustomText(
+                          text: "Sign Up",
+                          fontWeight: FontWeight.bold,
+                        )
+                      ],
+                    )
                   ],
                 ),
               ),
