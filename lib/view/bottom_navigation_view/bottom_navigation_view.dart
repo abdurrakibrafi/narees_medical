@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_final_fields, prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,6 +27,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget _buildImageIcon(String assetPath, bool isSelected) {
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        isSelected ? AppColors.mainColor : Colors.black.withOpacity(0.4),
+        BlendMode.srcIn,
+      ),
+      child: Image.asset(
+        assetPath,
+        width: 23,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,15 +50,16 @@ class _MyHomePageState extends State<MyHomePage> {
           selectedItemColor: AppColors.mainColor,
           unselectedLabelStyle: GoogleFonts.abhayaLibre(fontSize: 12.h),
           backgroundColor: Colors.white,
-          selectedLabelStyle: GoogleFonts.abhayaLibre(color: AppColors.mainColor,fontSize: 14.h),
+          selectedLabelStyle: GoogleFonts.abhayaLibre(
+              color: AppColors.mainColor, fontSize: 14.h),
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           iconSize: 22,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-              icon:
-                  Image(image: AssetImage("assets/images/Home.png"), width: 23,),
+              icon: _buildImageIcon(
+                  "assets/images/Home.png", _selectedIndex == 0),
               label: 'Home',
             ),
             BottomNavigationBarItem(
@@ -63,9 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
               label: 'Add User',
             ),
             BottomNavigationBarItem(
-              icon: Image(
-                  image: AssetImage("assets/images/profile-add.png"),
-                  width: 23),
+              icon: _buildImageIcon(
+                  "assets/images/profile-add.png", _selectedIndex == 4),
               label: 'Profile',
             ),
           ],
