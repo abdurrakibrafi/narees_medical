@@ -6,9 +6,9 @@ import 'package:get/get_core/src/get_main.dart' show Get;
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
-import 'package:restaurent_discount_app/view/sign_in_view/profile_complete_view.dart';
-
-import '../../uitilies/app_colors.dart';
+import 'package:restaurent_discount_app/view/auth_view/sign_in_view/profile_complete_view.dart';
+import 'package:restaurent_discount_app/view/auth_view/sign_up_view/sign_up_view.dart';
+import '../../../uitilies/app_colors.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
@@ -49,7 +49,7 @@ class SignInView extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     CustomText(
-                      text: 'Welcome! Sign in to\nYour Nurse Portal',
+                      text: 'Welcome to Sign in!\n',
                       textAlign: TextAlign.center,
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
@@ -129,9 +129,14 @@ class SignInView extends StatelessWidget {
                           text: "Don’t have an account?",
                         ),
                         SizedBox(width: 5),
-                        CustomText(
-                          text: "Sign Up",
-                          fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => SignUpView());
+                          },
+                          child: CustomText(
+                            text: "Sign Up",
+                            fontWeight: FontWeight.bold,
+                          ),
                         )
                       ],
                     )

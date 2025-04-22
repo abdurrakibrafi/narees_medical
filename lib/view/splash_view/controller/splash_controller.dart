@@ -3,9 +3,9 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
-import 'package:restaurent_discount_app/view/sign_in_view/sign_in_view.dart';
 
-import '../../sign_in_view/get_started_view.dart';
+import '../../auth_view/sign_in_view/get_started_view.dart';
+
 
 class SplashController extends GetxController {
   Timer? timer;
