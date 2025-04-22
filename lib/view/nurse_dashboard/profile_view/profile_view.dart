@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/payment_receipts_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
@@ -11,6 +12,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranni
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 
 import 'change_password_view.dart';
+import 'edit_profile.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -34,12 +36,10 @@ class ProfilePage extends StatelessWidget {
                 SizedBox(height: 16),
                 // Profile Name
                 Center(
-                  child: Text(
-                    'Anna Sulaiya',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: CustomText(
+                    text: 'Anna Sulaiya',
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 20),
@@ -47,7 +47,9 @@ class ProfilePage extends StatelessWidget {
                 ProfileOption(
                   icon: Icons.person_3_outlined,
                   title: 'Edit Profile',
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => EditProfile());
+                  },
                 ),
 
                 Divider(),
@@ -57,7 +59,7 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.school,
                   title: 'Training & Certification',
                   onTap: () {
-                    Get.to(()=> TrainingAndCertificationPage());
+                    Get.to(() => TrainingAndCertificationPage());
                   },
                 ),
 
