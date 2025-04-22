@@ -9,6 +9,7 @@ import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/view/auth_view/sign_in_view/profile_complete_view.dart';
 import 'package:restaurent_discount_app/view/auth_view/sign_up_view/sign_up_view.dart';
 import '../../../uitilies/app_colors.dart';
+import '../forget_password_view/forget_password_view.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
@@ -75,37 +76,54 @@ class SignInView extends StatelessWidget {
                     ),
 
                     // Remember Me
+
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Theme(
-                          data: Theme.of(context).copyWith(
-                            checkboxTheme: CheckboxThemeData(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                                side: BorderSide(color: AppColors.mainColor),
+                        Row(
+                          children: [
+                            Theme(
+                              data: Theme.of(context).copyWith(
+                                checkboxTheme: CheckboxThemeData(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                    side:
+                                        BorderSide(color: AppColors.mainColor),
+                                  ),
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  visualDensity: VisualDensity.compact,
+                                ),
                               ),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              visualDensity: VisualDensity.compact,
+                              child: Checkbox(
+                                value: false,
+                                onChanged: (_) {},
+                                side: BorderSide(
+                                    color: AppColors
+                                        .mainColor), // Also directly here
+                                activeColor: AppColors.mainColor,
+                              ),
                             ),
-                          ),
-                          child: Checkbox(
-                            value: false,
-                            onChanged: (_) {},
-                            side: BorderSide(
-                                color:
-                                    AppColors.mainColor), // Also directly here
-                            activeColor: AppColors.mainColor,
-                          ),
+                            SizedBox(width: 4), // optional spacing
+                            CustomText(
+                              text: "Remember Me",
+                              fontSize: 16,
+                              color: AppColors.mainColor.withOpacity(0.8),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 4), // optional spacing
-                        CustomText(
-                          text: "Remember Me",
-                          fontSize: 16,
-                          color: AppColors.mainColor.withOpacity(0.8),
-                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => ForgetPasswordView());
+                          },
+                          child: CustomText(
+                            text: "Forgot Password",
+                            fontSize: 16,
+                          ),
+                        )
                       ],
                     ),
+
                     SizedBox(height: 20),
 
                     // Sign In Button
