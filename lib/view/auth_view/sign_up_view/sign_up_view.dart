@@ -4,6 +4,7 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/view/auth_view/sign_in_view/profile_complete_view.dart';
+import 'package:restaurent_discount_app/view/auth_view/sign_in_view/sign_in_view.dart';
 import '../../../uitilies/app_colors.dart';
 
 class SignUpView extends StatefulWidget {
@@ -194,9 +195,14 @@ class _SignUpViewState extends State<SignUpView> {
                             text: "Already have an account?",
                           ),
                           SizedBox(width: 5),
-                          CustomText(
-                            text: "Sign In",
-                            fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => SignInView());
+                            },
+                            child: CustomText(
+                              text: "Sign In",
+                              fontWeight: FontWeight.bold,
+                            ),
                           )
                         ],
                       )
