@@ -7,6 +7,7 @@ import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.da
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/payment_receipts_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 
 import 'change_password_view.dart';
@@ -56,7 +57,7 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.school,
                   title: 'Training & Certification',
                   onTap: () {
-                    // Implement Training & Certification navigation
+                    Get.to(()=> TrainingAndCertificationPage());
                   },
                 ),
 
