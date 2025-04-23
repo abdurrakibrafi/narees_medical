@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart'; // To format the selected date
+import 'package:intl/intl.dart';
+import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart'; // To format the selected date
 
 class CustomDatePicker extends StatefulWidget {
   final Function(String) onDateSelected;
@@ -38,10 +39,14 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           }
         },
         child: Container(
+          width: 150,
           height: 35.h,
           child: Center(
-            child: Text(
-                textAlign: TextAlign.center, _selectedDate ?? "Select Date"),
+            child: CustomText(
+              textAlign: TextAlign.center,
+              text: _selectedDate ?? "Select Date",
+              fontSize: 13.h,
+            ),
           ),
           decoration: BoxDecoration(
               color: widget.color, borderRadius: BorderRadius.circular(10)),

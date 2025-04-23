@@ -4,10 +4,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 
 import '../../../../common widget/custom_date_picker.dart';
 import '../../../../common widget/custom_dropdown_controller.dart';
 import '../../../../common widget/custom_text_filed.dart';
+import '../../../../common widget/custom_time_picker.dart';
 
 class CustomBottomSheet extends StatefulWidget {
   @override
@@ -93,46 +95,36 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
 
           SizedBox(height: 20),
 
-          CustomDatePicker(
-            onDateSelected: (date) {
-              setState(() {
-                selectedDate = date;
-              });
-            },
-            color: Color(0xFFE4E4E4),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomDatePicker(
+                onDateSelected: (date) {
+                  setState(() {
+                    selectedDate = date;
+                  });
+                },
+                color: Color(0xFFE4E4E4),
+              ),
+              CustomTimePicker(
+                onTimeSelected: (time) {
+                  setState(() {
+                    selectedTime = time;
+                  });
+                },
+                color: Color(0xFFE4E4E4),
+              ),
+            ],
           ),
-
-          SizedBox(height: 20),
-
-          // Time Picker (You can add your own time picker similarly)
-          // Custom(
-          //   onTimeSelected: (time) {
-          //     setState(() {
-          //       selectedTime = time;
-          //     });
-          //   },
-          // ),
 
           SizedBox(height: 20),
 
           // Send Form Button and Cancel Button
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  // Handle form submission or further action
-                },
-                child: Text("Send Form"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the bottom sheet
-                },
-                child: Text("Cancel"),
-              ),
-            ],
-          ),
+
+          CustomButtonWidget(
+              btnText: "Send Form", onTap: () {}, iconWant: false),
+
+          SizedBox(height: 20),
         ],
       ),
     );

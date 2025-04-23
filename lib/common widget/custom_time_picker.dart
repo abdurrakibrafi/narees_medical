@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 
 class CustomTimePicker extends StatefulWidget {
   final Function(String) onTimeSelected;
@@ -27,14 +28,21 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
 
           if (selectedTime != null) {
             String formattedTime = selectedTime.format(context);
-            onTimeSelected(formattedTime); // Call the callback
+            widget.onTimeSelected(formattedTime);
+            setState(() {
+              _selectedDate = formattedTime;
+            });
           }
         },
         child: Container(
+          width: 150,
           height: 35.h,
           child: Center(
-            child: Text(
-                textAlign: TextAlign.center, _selectedDate ?? "Select Time"),
+            child: CustomText(
+              textAlign: TextAlign.center,
+              fontSize: 13.h,
+              text: _selectedDate ?? "Select Time",
+            ),
           ),
           decoration: BoxDecoration(
               color: widget.color, borderRadius: BorderRadius.circular(10)),
