@@ -77,6 +77,7 @@ dependencies:
   sweet_nav_bar: ^1.0.7
   smooth_page_indicator:
   animated_notch_bottom_bar: ^1.0.3
+  table_calendar: ^3.0.0
 
 
 

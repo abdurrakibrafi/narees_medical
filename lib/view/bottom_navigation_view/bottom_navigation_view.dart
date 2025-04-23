@@ -1,22 +1,27 @@
+// ignore_for_file: prefer_final_fields, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_list_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/nurse_home_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/profile_view.dart';
 
-class MyHomePage extends StatefulWidget {
+import '../nurse_dashboard/appointment_view/appointment_view.dart';
+
+class BottomNavigation extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _BottomNavigationState createState() => _BottomNavigationState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
 
   List<Widget> _pages = [
     HomeViewForNurse(),
-    HomeViewForNurse(),
-    HomeViewForNurse(),
+    InventoryList(),
+    AppoinmentView(),
     HomeViewForNurse(),
     ProfilePage(),
   ];
@@ -63,20 +68,22 @@ class _MyHomePageState extends State<MyHomePage> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.inventory),
+              icon: _buildImageIcon(
+                  "assets/images/layer.png", _selectedIndex == 1),
               label: 'Inventory',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.note),
-              label: 'Notes',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_add),
-              label: 'Add User',
+              icon: _buildImageIcon(
+                  "assets/images/stickynote.png", _selectedIndex == 2),
+              label: 'Appointment',
             ),
             BottomNavigationBarItem(
               icon: _buildImageIcon(
-                  "assets/images/profile-add.png", _selectedIndex == 4),
+                  "assets/images/profile-add.png", _selectedIndex == 3),
+              label: 'Patient',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_2_outlined),
               label: 'Profile',
             ),
           ],

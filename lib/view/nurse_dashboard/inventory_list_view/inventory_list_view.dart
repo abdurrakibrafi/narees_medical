@@ -46,7 +46,10 @@ class InventoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Inventory List"),
+      appBar: CustomAppBar(
+
+          leading: Container(),
+          title: "Inventory List"),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(

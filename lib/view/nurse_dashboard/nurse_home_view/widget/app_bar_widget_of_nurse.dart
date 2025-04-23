@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/cart_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_list_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/notification_view/notification_view.dart';
 
@@ -85,7 +86,7 @@ class CustomAppBarForHome extends StatelessWidget
         SizedBox(width: 15),
         GestureDetector(
           onTap: () {
-            Get.to(() => InventoryList());
+            Get.to(() => CartPage());
           },
           child: Container(
               decoration: BoxDecoration(

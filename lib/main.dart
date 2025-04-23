@@ -8,13 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/controller/language_controller.dart';
-import 'package:restaurent_discount_app/common%20widget/language%20widget/controller/localization_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/message.dart';
 import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_list_view.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/nurse_home_view.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/profile_view.dart';
-import 'package:restaurent_discount_app/view/splash_view/splash_view.dart';
 import 'common widget/language widget/dep.dart' as dep;
 
 Future<void> main() async {
@@ -53,7 +48,7 @@ class MyApp extends StatelessWidget {
           translations: Messages(languages: languages),
           fallbackLocale: Locale('en', 'US'),
           debugShowCheckedModeBanner: false,
-          home: MyHomePage(),
+          home: BottomNavigation(),
         );
       },
     );
