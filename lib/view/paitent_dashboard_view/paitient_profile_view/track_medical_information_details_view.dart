@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,13 +12,13 @@ class TrackMedicalDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Number of tabs
+      length: 3, // Number of tabs
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.white, // AppBar background color
           title: CustomText(
-            text: 'Training & Certification',
+            text: 'Track Medical Details',
             fontSize: 16.h,
           ),
           leading: IconButton(
@@ -27,15 +27,25 @@ class TrackMedicalDetailsView extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          bottom: TabBar(
-            indicatorColor: AppColors.mainColor,
-            labelStyle: GoogleFonts.abhayaLibre(fontSize: 15.h),
-            tabs: [
-              Tab(
-                text: 'Completed Modules',
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(
+                kToolbarHeight),
+            child: Container(
+              color: AppColors.mainColor,
+              child: TabBar(
+
+                unselectedLabelColor: Colors.white,
+                indicatorColor: Colors.white, // Tab indicator color
+                labelStyle: GoogleFonts.abhayaLibre(fontSize: 15.h),
+                tabs: [
+                  Tab(
+                    text: 'Patient Information',
+                  ),
+                  Tab(text: 'Medical History'),
+                  Tab(text: 'Payment'),
+                ],
               ),
-              Tab(text: 'Certificate'),
-            ],
+            ),
           ),
         ),
         body: TabBarView(
@@ -66,6 +76,11 @@ class TrackMedicalDetailsView extends StatelessWidget {
                   );
                 },
               ),
+            ),
+            // Placeholder text for "Payment" tab
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text("Payment tab content"),
             ),
           ],
         ),
