@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 
 class CustomSuccessAlertDialog {
   static void showCustomDialog({
@@ -12,7 +13,9 @@ class CustomSuccessAlertDialog {
     bool showButton = true, // Add the showButton parameter with a default value of true
   }) {
     Get.dialog(
+
       Dialog(
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),
@@ -24,8 +27,8 @@ class CustomSuccessAlertDialog {
               // Icon
               Icon(
                 Icons.check_circle,
-                color: Colors.blue,
-                size: 90.h,
+                color: AppColors.mainColor,
+                size: 70.h,
               ),
               SizedBox(height: 5.h),
               // Title
@@ -33,8 +36,8 @@ class CustomSuccessAlertDialog {
                 title,
                 style: GoogleFonts.kumbhSans(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20.sp,
-                  color: Colors.blue,
+                  fontSize: 17.sp,
+                  color: AppColors.mainColor,
                 ),
                 textAlign: TextAlign.center,
               ),

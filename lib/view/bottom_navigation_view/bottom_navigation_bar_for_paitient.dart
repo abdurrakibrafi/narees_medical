@@ -10,6 +10,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/profil
 
 import '../nurse_dashboard/appointment_view/appointment_view.dart';
 import '../paitent_dashboard_view/home_view/paitent_home_view.dart';
+import '../paitent_dashboard_view/search_view/nurse_search_view.dart';
 
 class BottomNavigationBarForPaitient extends StatefulWidget {
   @override
@@ -23,8 +24,9 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
     HomeViewForPaitinet(),
     InventoryList(),
     AppoinmentView(),
+    NurseSearchView(),
     HomeViewForNurse(),
-    ProfilePage(),
+
   ];
 
   void _onItemTapped(int index) {
@@ -80,12 +82,15 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
             ),
             BottomNavigationBarItem(
               icon: _buildImageIcon(
-                  "assets/images/profile-add.png", _selectedIndex == 3),
-              label: 'Patient',
+                  "assets/images/search.png", _selectedIndex == 3),
+
+              label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_2_outlined),
-              label: 'Profile',
+              icon: _buildImageIcon(
+                  "assets/images/profile-add.png", _selectedIndex == 4),
+              label: 'Profile'
+                  ,
             ),
           ],
         ),
