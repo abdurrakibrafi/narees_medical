@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +16,7 @@ class TrackMedicalDetailsView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white, // AppBar background color
+          backgroundColor: Colors.white,
           title: CustomText(
             text: 'Track Medical Details',
             fontSize: 16.h,
@@ -28,14 +28,14 @@ class TrackMedicalDetailsView extends StatelessWidget {
             },
           ),
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(
-                kToolbarHeight),
+            preferredSize: Size.fromHeight(kToolbarHeight),
             child: Container(
               color: AppColors.mainColor,
               child: TabBar(
-
+                isScrollable: true,
                 unselectedLabelColor: Colors.white,
-                indicatorColor: Colors.white, // Tab indicator color
+                labelColor: Colors.white,
+                indicatorColor: Colors.white,
                 labelStyle: GoogleFonts.abhayaLibre(fontSize: 15.h),
                 tabs: [
                   Tab(
@@ -50,7 +50,6 @@ class TrackMedicalDetailsView extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            // Completed Modules Tab
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ListView.builder(
@@ -64,7 +63,7 @@ class TrackMedicalDetailsView extends StatelessWidget {
                 },
               ),
             ),
-            // Certificate Tab
+
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ListView.builder(
