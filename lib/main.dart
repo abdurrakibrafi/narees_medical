@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
           fallbackLocale: Locale('en', 'US'),
           debugShowCheckedModeBanner: false,
           home: BottomNavigationBarForPaitient(),
+          //  home: BottomNavigation(),
         );
       },
     );

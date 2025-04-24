@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,9 +9,17 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/appoinment_details_view.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/track_medical_information_details_view.dart';
 
 class AppointmentCard extends StatelessWidget {
-  AppointmentCard();
+  final bool? btnShow;
+  final bool? goToDetails;
+  // final bool? detailsView;
+
+  AppointmentCard(
+    this.btnShow,
+    this.goToDetails,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +54,9 @@ class AppointmentCard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => ViewAppointmentScreen());
+                      goToDetails == true
+                          ? Get.to(() => ViewAppointmentScreen())
+                          : Get.to(() => TrackMedicalDetailsView());
                     },
                     child: Icon(
                       Icons.remove_red_eye_outlined,
@@ -88,13 +100,15 @@ class AppointmentCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10),
-              Row(
-                children: [
-                  StatusButton(status: 'Accepted', color: Colors.green),
-                  SizedBox(width: 10),
-                  StatusButton(status: 'Canceled', color: Colors.red),
-                ],
-              ),
+              btnShow == true
+                  ? Row(
+                      children: [
+                        StatusButton(status: 'Accepted', color: Colors.green),
+                        SizedBox(width: 10),
+                        StatusButton(status: 'Canceled', color: Colors.red),
+                      ],
+                    )
+                  : StatusButton(status: 'Complete', color: Colors.green),
             ],
           ),
         ),

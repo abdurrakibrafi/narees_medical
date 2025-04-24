@@ -7,12 +7,14 @@ class ProfileOption extends StatelessWidget {
   final IconData icon;
   final String title;
   final VoidCallback onTap;
+  final Color? color;
 
   const ProfileOption({
     Key? key,
     required this.icon,
     required this.title,
     required this.onTap,
+     this.color,
   }) : super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class ProfileOption extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Colors.black.withOpacity(0.6),
+              color: color ?? Colors.black.withOpacity(0.6),
               size: 28,
             ),
             SizedBox(width: 16),
@@ -34,6 +36,7 @@ class ProfileOption extends StatelessWidget {
                 textAlign: TextAlign.start,
                 text: title,
                 fontSize: 18,
+                color: color ?? Colors.black,
               ),
             ),
             Icon(
