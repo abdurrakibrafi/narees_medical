@@ -40,12 +40,13 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         },
         child: Container(
           width: 150,
-          height: 35.h,
+          height: 43.h,
           child: Center(
             child: CustomText(
               textAlign: TextAlign.center,
               text: _selectedDate ?? "Select Date",
               fontSize: 13.h,
+              color: Colors.black.withOpacity(0.7),
             ),
           ),
           decoration: BoxDecoration(

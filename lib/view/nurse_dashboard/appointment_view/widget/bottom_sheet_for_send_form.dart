@@ -1,4 +1,3 @@
-// Custom Bottom Sheet Widget
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   String selectedDate = "Select Date";
   String selectedTime = "Select Time";
   String selectedForm =
-      "HIPAA Compliant Consent Form"; // Default value for form selection
+      "HIPAA Compliant Consent Form";
 
   @override
   Widget build(BuildContext context) {

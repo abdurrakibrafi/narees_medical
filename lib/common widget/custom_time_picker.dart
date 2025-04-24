@@ -36,12 +36,13 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         },
         child: Container(
           width: 150,
-          height: 35.h,
+          height: 43.h,
           child: Center(
             child: CustomText(
               textAlign: TextAlign.center,
               fontSize: 13.h,
               text: _selectedDate ?? "Select Time",
+              color: Colors.black.withOpacity(0.7),
             ),
           ),
           decoration: BoxDecoration(
