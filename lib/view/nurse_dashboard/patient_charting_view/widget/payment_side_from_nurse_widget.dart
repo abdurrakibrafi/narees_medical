@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:restaurent_discount_app/common%20controller/custom%20alert%20dialog/custom_alert_dialog.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_success_alert_dialog.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 
 import '../../../../common widget/custom text/custom_text_widget.dart';
@@ -57,7 +59,10 @@ class PaymentSideFromNurseWidget extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.topRight),
                 btnText: "Submit",
-                onTap: () {},
+                onTap: () {
+                  CustomSuccessAlertDialog.showCustomDialog(
+                      title: "Payment ", content: "", onConfirm: () {});
+                },
                 iconWant: false,
               ),
             ),
