@@ -17,8 +17,8 @@ class RowWiseDetailTextWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(text: title, fontSize: 16.h, fontWeight: FontWeight.w500),
-          CustomText(text: value, fontSize: 16.h, color: Colors.grey),
+          CustomText(text: title, fontSize: 14.h, fontWeight: FontWeight.w500),
+          CustomText(text: value, fontSize: 13.h, color: Colors.grey),
         ],
       ),
     );

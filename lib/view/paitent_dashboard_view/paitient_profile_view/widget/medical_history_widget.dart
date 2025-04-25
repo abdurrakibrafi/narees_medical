@@ -30,61 +30,78 @@ class MedicalHistoryWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: "Encounter",fontWeight: FontWeight.bold,fontSize: 17.h,),
-
-
+                    CustomText(
+                      text: "Encounter",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17.h,
+                    ),
                     RowWiseDetailTextWidget(
                         title: 'Blood Pressure:', value: '120/80 mm Hg '),
                     Divider(),
-                    RowWiseDetailTextWidget(
-                        title: 'Heart Rate:', value: '75'),
+                    RowWiseDetailTextWidget(title: 'Heart Rate:', value: '75'),
                     Divider(),
                     RowWiseDetailTextWidget(
-                        title: 'Temperature (°F):', value: 'anna879@gmail.com'),
+                        title: 'Temperature (°F):', value: '100.2'),
                     Divider(),
                     RowWiseDetailTextWidget(
-                        title: 'Phone Number:', value: '(234) 555-1234'),
+                        title: 'Oxygen Level (%):', value: '98%'),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.grey.withOpacity(0.5),
+                  width: 2,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "Medical History",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17.h,
+                    ),
+                    RowWiseDetailTextWidget(title: 'Log Procedures', value: ''),
                     Divider(),
                     RowWiseDetailTextWidget(
-                        title: 'Treatment Type:', value: 'Hydration IV Treatment'),
+                        title: 'Procedure Performed:',
+                        value: 'IV Hydration Therapy'),
                     Divider(),
                     RowWiseDetailTextWidget(
-                        title: 'Physical address:', value: '123/A, Florida, UK'),
+                        title: 'Medications Administered:',
+                        value: 'Vitamin B12 - 20.00'),
                     Divider(),
-                    RowWiseDetailTextWidget(
-                        title: 'Location:', value: '123/A, Florida, UK'),
-                    Divider(),
-                    RowWiseDetailTextWidget(
-                        title: 'Zip Code:', value: '1217'),
-                    SizedBox(height: 10.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                            text: "Procedure Performed:",
+                            fontSize: 14.h,
+                            fontWeight: FontWeight.w500),
+                        SizedBox(
+                          width: 145,
+                          child: CustomText(
+                            textAlign: TextAlign.start,
+                              text:
+                                  "Patient tolerated the IV hydration therapy well with no immediate complications. No signs of allergic reactions or discomfort during infusion. The site was clean, and dressing was applied post-procedure. Patient advised to hydrate throughout the day.",
+                              fontSize: 13.h,
+                              color: Colors.grey),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
             ),
 
-            // Patient ID Section
-            SizedBox(height: 10.h),
-            CustomText(
-              text: 'Patient ID',
-              fontSize: 17.h,
-              fontWeight: FontWeight.bold,
-            ),
-            SizedBox(height: 10.h),
-
-            // Patient ID Image
-            Container(
-              padding: EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn1VL1TA_ZSbMC9SQ-gtV_fxlDEImE8HWvbVxKea6F5aZ04YjpiecrhwwvCrX8jQQyUH0&usqp=CAU',
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: 150.h,
-              ),
-            ),
             SizedBox(height: 40.h),
           ],
         ),
