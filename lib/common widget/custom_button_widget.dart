@@ -13,11 +13,11 @@ class CustomButtonWidget extends StatelessWidget {
   final dynamic iconSize;
   final bool iconWant;
   final Color? btnTextColor;
+  final Color? btnColor;
   final Color? borderColor;
   final IconData? iconData;
   final Color? suffixIconColor;
   final VoidCallback onTap;
-
   final Gradient? gradient;
 
   const CustomButtonWidget({
@@ -32,6 +32,7 @@ class CustomButtonWidget extends StatelessWidget {
     this.iconData,
     this.suffixIconColor,
     this.iconSize,
+    this.btnColor,
   });
 
   @override
@@ -42,11 +43,13 @@ class CustomButtonWidget extends StatelessWidget {
         height: 38.h,
         width: Get.width,
         decoration: BoxDecoration(
-          gradient: gradient ??
-              LinearGradient(
+          color: btnColor, // Set btnColor here, if provided
+          gradient: gradient != null && btnColor == null
+              ? LinearGradient(
                   colors: [Color(0xFF0071BC), Color(0xFF003456)],
                   begin: Alignment.topLeft,
-                  end: Alignment.topRight),
+                  end: Alignment.topRight)
+              : null,
           border: Border.all(color: borderColor ?? Colors.transparent),
           borderRadius: BorderRadius.circular(8),
         ),

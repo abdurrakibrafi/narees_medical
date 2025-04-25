@@ -18,8 +18,7 @@ class CustomBottomSheet extends StatefulWidget {
 class _CustomBottomSheetState extends State<CustomBottomSheet> {
   String selectedDate = "Select Date";
   String selectedTime = "Select Time";
-  String selectedForm =
-      "HIPAA Compliant Consent Form";
+  String selectedForm = "HIPAA Compliant Consent Form";
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,6 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
             fontWeight: FontWeight.bold,
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 20),
 
           // Form Dropdown
           SizedBox(
@@ -121,9 +119,15 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
           // Send Form Button and Cancel Button
 
           CustomButtonWidget(
-              btnText: "Send Form", onTap: () {}, iconWant: false),
+              gradient: LinearGradient(
+                  colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.topRight),
+              btnText: "Send Form",
+              onTap: () {},
+              iconWant: false),
 
-          SizedBox(height: 20),
+          SizedBox(height: 40),
         ],
       ),
     );

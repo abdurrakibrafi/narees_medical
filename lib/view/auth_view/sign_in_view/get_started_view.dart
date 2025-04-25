@@ -1,10 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:restaurent_discount_app/view/auth_view/sign_in_view/sign_in_view.dart';
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_button_widget.dart';
-
 
 class GetStartedView extends StatelessWidget {
   const GetStartedView({super.key});
@@ -52,6 +53,10 @@ class GetStartedView extends StatelessWidget {
                       height: 55,
                       width: double.infinity,
                       child: CustomButtonWidget(
+                        gradient: LinearGradient(
+                            colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.topRight),
                         btnText: "Get Started",
                         onTap: () {
                           Get.to(() => SignInView());

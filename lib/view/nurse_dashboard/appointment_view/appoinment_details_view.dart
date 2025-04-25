@@ -95,10 +95,17 @@ class ViewAppointmentScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: CustomButtonWidget(
+                    gradient: LinearGradient(
+                        colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.topRight),
+
+
                     btnText: "Send Form to Patient",
                     onTap: () {
                       // Open the custom bottom sheet when clicked
                       showModalBottomSheet(
+
                         backgroundColor: Colors.white,
                         context: context,
                         builder: (context) {

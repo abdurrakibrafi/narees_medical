@@ -200,6 +200,11 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
                 SizedBox(height: 40),
 
                 CustomButtonWidget(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
+
                     btnText: "Add to Cart",
                     onTap: () {
                       Get.to(() => CartPage());

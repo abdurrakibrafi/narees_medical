@@ -210,6 +210,10 @@ class _CartPageState extends State<CartPage> {
                 ),
                 SizedBox(height: 10),
                 CustomButtonWidget(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
                   btnTextSize: 16.0,
                   btnText: "Proceed to Payment",
                   onTap: () {},

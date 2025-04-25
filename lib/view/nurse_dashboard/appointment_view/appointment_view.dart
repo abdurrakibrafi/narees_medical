@@ -240,7 +240,7 @@ class _AppoinmentViewState extends State<AppoinmentView> {
             child: ListView.builder(
               itemCount: 6,
               itemBuilder: (context, index) {
-                return AppointmentCard(true, false);
+                return AppointmentCard(true, true);
               },
             ),
           ),

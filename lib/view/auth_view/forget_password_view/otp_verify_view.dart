@@ -80,6 +80,10 @@ class OTPFormView extends StatelessWidget {
                       height: 55,
                       width: double.infinity,
                       child: CustomButtonWidget(
+                        gradient: LinearGradient(
+                            colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.topRight),
                         btnText: "Verify",
                         onTap: () {
                           Get.to(() => CreateNewPassword());

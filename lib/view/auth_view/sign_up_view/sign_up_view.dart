@@ -181,6 +181,10 @@ class _SignUpViewState extends State<SignUpView> {
                         height: 55,
                         width: double.infinity,
                         child: CustomButtonWidget(
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.topRight),
                           btnText: "Sign Up",
                           onTap: () {
                             Get.to(() => ProfileCompleteView());
