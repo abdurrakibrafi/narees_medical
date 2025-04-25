@@ -143,6 +143,12 @@ class PaymentReceiptCard extends StatelessWidget {
             // Download PDF Button
 
             CustomButtonWidget(
+
+              gradient: LinearGradient(
+                  colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.topRight),
+
               btnText: "Download PDF Receipt",
               onTap: () {},
               iconWant: true,

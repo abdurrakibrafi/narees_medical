@@ -338,6 +338,11 @@ class SecondStepProfile extends StatelessWidget {
                 SizedBox(
                   height: 50,
                   child: CustomButtonWidget(
+                    gradient: LinearGradient(
+                        colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.topRight),
+
                       btnText: "Submit",
                       onTap: () {
                         CustomAlertDialog.showCustomDialog(

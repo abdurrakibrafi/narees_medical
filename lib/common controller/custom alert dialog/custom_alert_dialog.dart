@@ -45,6 +45,10 @@ class CustomAlertDialog {
                           height: 35.h,
                           width: Get.width / 3.2,
                           child: CustomButtonWidget(
+                            gradient: LinearGradient(
+                                colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.topRight),
                             btnTextColor: Colors.white,
                             btnText: actionName,
                             onTap: onConfirm,
@@ -55,6 +59,11 @@ class CustomAlertDialog {
                           height: 35.h,
                           width: Get.width / 3.2,
                           child: CustomButtonWidget(
+                            gradient: LinearGradient(
+                                colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.topRight),
+
                             borderColor: Colors.grey,
                             btnTextColor: Colors.white,
                             btnText: cancelName,

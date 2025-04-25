@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -53,8 +55,7 @@ class CustomSuccessAlertDialog {
               ),
               ...customWidgets,
               SizedBox(height: 20.h),
-              // Button (conditionally displayed based on showButton)
-              if (showButton) // Only show the button if showButton is true
+              if (showButton)
                 SizedBox(
                   height: 45,
                   width: Get.width / 2.5,
