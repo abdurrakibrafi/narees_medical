@@ -9,6 +9,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/nur
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/profile_view.dart';
 
 import '../nurse_dashboard/appointment_view/appointment_view.dart';
+import '../nurse_dashboard/patient_charting_view/patient_charting_view.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     HomeViewForNurse(),
     InventoryList(),
     AppoinmentView(),
-    HomeViewForNurse(),
+    PatientChartingView(),
     ProfilePage(),
   ];
 

@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
           translations: Messages(languages: languages),
           fallbackLocale: Locale('en', 'US'),
           debugShowCheckedModeBanner: false,
-          home: BottomNavigationBarForPaitient(),
+          home: BottomNavigation(),
           //  home: BottomNavigation(),
         );
       },
