@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/patient_charting_card_view.dart';
+
+import 'add_patient_chart_view.dart';
 
 class PatientChartingView extends StatelessWidget {
   const PatientChartingView({super.key});
@@ -24,7 +28,9 @@ class PatientChartingView extends StatelessWidget {
                 btnTextSize: 13.h,
                 btnTextColor: AppColors.mainColor,
                 btnText: "Add Patient Chart",
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => AddPatientChartView());
+                },
                 iconWant: true,
                 suffixIconColor: AppColors.mainColor.withOpacity(0.4),
                 iconData: Icons.add,
