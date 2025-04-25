@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/widget/row_wise_detail_text_widget.dart';
 
 import '../../../nurse_dashboard/profile_view/widget/certification_card_widget.dart';
 
@@ -22,23 +23,31 @@ class PatientInformationView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildDetailRow('First Name:', 'Anna'),
+                      RowWiseDetailTextWidget(
+                          title: 'First Name:', value: 'Anna'),
                       Divider(),
-                      _buildDetailRow('Last Name:', 'Suraiya'),
+                      RowWiseDetailTextWidget(
+                          title: 'Last Name:', value: 'Suraiya'),
                       Divider(),
-                      _buildDetailRow('Email Address:', 'anna879@gmail.com'),
+                      RowWiseDetailTextWidget(
+                          title: 'Email Address:', value: 'anna879@gmail.com'),
                       Divider(),
-                      _buildDetailRow('Phone Number:', '(234) 555-1234'),
+                      RowWiseDetailTextWidget(
+                          title: 'Phone Number:', value: '(234) 555-1234'),
                       Divider(),
-                      _buildDetailRow(
-                          'Treatment Type:', 'Hydration IV Treatment'),
+                      RowWiseDetailTextWidget(
+                          title: 'Treatment Type:',
+                          value: 'Hydration IV Treatment'),
                       Divider(),
-                      _buildDetailRow(
-                          'Physical address:', '123/A, Florida, UK'),
+                      RowWiseDetailTextWidget(
+                          title: 'Physical address:',
+                          value: '123/A, Florida, UK'),
                       Divider(),
-                      _buildDetailRow('Location:', '123/A, Florida, UK'),
+                      RowWiseDetailTextWidget(
+                          title: 'Location:', value: '123/A, Florida, UK'),
                       Divider(),
-                      _buildDetailRow('Zip Code:', '1217'),
+                      RowWiseDetailTextWidget(
+                          title: 'Zip Code:', value: '1217'),
 
                       SizedBox(height: 10.h),
 
@@ -76,34 +85,5 @@ class PatientInformationView extends StatelessWidget {
                     ],
                   ),
                 ))));
-  }
-
-  Widget _buildDetailRow(String title, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomText(text: title, fontSize: 16.h, fontWeight: FontWeight.w500),
-          CustomText(text: value, fontSize: 16.h, color: Colors.grey),
-        ],
-      ),
-    );
-  }
-
-  // Helper function for creating download links
-  Widget _buildDownloadLink(String title, String size) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(title,
-              style: TextStyle(fontSize: 16.h, fontWeight: FontWeight.w500)),
-          Text(size, style: TextStyle(fontSize: 14.h, color: Colors.blue)),
-          Icon(Icons.download, color: Colors.blue),
-        ],
-      ),
-    );
   }
 }
