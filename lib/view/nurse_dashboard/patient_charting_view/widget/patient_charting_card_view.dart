@@ -4,8 +4,12 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+
+import '../hippa_form_view.dart';
 
 class PatientChartingCard extends StatelessWidget {
   PatientChartingCard();
@@ -41,7 +45,9 @@ class PatientChartingCard extends StatelessWidget {
                     fontSize: 19.sp,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => HippaFormView());
+                    },
                     child: Icon(
                       Icons.remove_red_eye_outlined,
                       color: Colors.amber,
@@ -56,11 +62,6 @@ class PatientChartingCard extends StatelessWidget {
                 color: Colors.grey,
               ),
               SizedBox(height: 5),
-              CustomText(
-                text: 'GFE Status: Pending',
-                fontSize: 14.sp,
-                color: Colors.grey,
-              ),
               SizedBox(height: 10),
               Row(
                 children: [
