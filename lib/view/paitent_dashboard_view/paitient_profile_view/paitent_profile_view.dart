@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:restaurent_discount_app/common%20controller/custom%20alert%20dialog/custom_alert_dialog.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/payment_receipts_view.dart';
+import 'package:restaurent_discount_app/view/auth_view/sign_in_view/sign_in_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/track_medical_information_view.dart';
 
@@ -20,7 +20,7 @@ class PaitientProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Profile"),
+      appBar: CustomAppBar(leading: Container(), title: "Profile"),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
@@ -106,7 +106,19 @@ class PaitientProfileView extends StatelessWidget {
                   color: Colors.red,
                   icon: Icons.logout,
                   title: 'Log Out',
-                  onTap: () {},
+                  onTap: () {
+                    CustomAlertDialog.showCustomDialog(
+
+                        title: "Logout",
+                        content:
+                            "If you want to logout your account click on yes",
+                        cancelName: "No",
+                        actionName: "Yes",
+                        confirmText: "Yes",
+                        onConfirm: () {
+                          Get.offAll(() => SignInView());
+                        });
+                  },
                 ),
               ],
             ),

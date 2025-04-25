@@ -9,6 +9,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/module_card_widget.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/widget/medical_history_widget.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/widget/patient_information.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/widget/payment_tab_widget.dart';
 
 class TrackMedicalDetailsView extends StatelessWidget {
   @override
@@ -52,16 +53,9 @@ class TrackMedicalDetailsView extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-
-
-
             PatientInformationView(),
-
             MedicalHistoryWidget(),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text("Payment tab content"),
-            ),
+            PaymentTabWidget(),
           ],
         ),
       ),

@@ -20,6 +20,7 @@ class CustomAlertDialog {
   }) {
     Get.dialog(
       Dialog(
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.zero, // No border radius
         ),
