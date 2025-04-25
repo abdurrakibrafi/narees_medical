@@ -4,16 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 
+import '../../../nurse_dashboard/profile_view/widget/certification_card_widget.dart';
+
 class PatientInformationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(child: Container(
         padding: EdgeInsets.all(15),
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border:
-                    Border.all(color: Colors.grey.withOpacity(0.5), width: 2)),
+                Border.all(color: Colors.grey.withOpacity(0.5), width: 2)),
             child: Padding(
               padding: EdgeInsets.all(10),
               child: Column(
@@ -22,24 +24,31 @@ class PatientInformationView extends StatelessWidget {
                   _buildDetailRow('First Name:', 'Anna'),
                   Divider(),
                   _buildDetailRow('Last Name:', 'Suraiya'),
+                  Divider(),
                   _buildDetailRow('Email Address:', 'anna879@gmail.com'),
+                  Divider(),
                   _buildDetailRow('Phone Number:', '(234) 555-1234'),
+                  Divider(),
                   _buildDetailRow('Treatment Type:', 'Hydration IV Treatment'),
+                  Divider(),
                   _buildDetailRow('Physical address:', '123/A, Florida, UK'),
+                  Divider(),
                   _buildDetailRow('Location:', '123/A, Florida, UK'),
+                  Divider(),
                   _buildDetailRow('Zip Code:', '1217'),
 
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 10.h),
 
                   // Document Section
-                  Text('Document',
-                      style: TextStyle(
-                          fontSize: 20.h, fontWeight: FontWeight.bold)),
+                  CustomText(
+                      text: 'Document',
+                      fontSize: 20.h,
+                      fontWeight: FontWeight.bold),
                   SizedBox(height: 10.h),
-                  _buildDownloadLink('Download HIPAA Compliant.pdf', '153 Mb'),
-                  _buildDownloadLink('Download Medical History.pdf', '153 Mb'),
-                  _buildDownloadLink(
-                      'Download Payment Agreement.pdf', '153 Mb'),
+                  CertificateCard(
+                    certificateName: 'Hydration Therapy.pdf',
+                    fileSize: '153 Mb',
+                  ),
 
                   SizedBox(height: 30.h),
 
@@ -62,7 +71,7 @@ class PatientInformationView extends StatelessWidget {
                   ),
                 ],
               ),
-            )));
+            ))));
   }
 
   Widget _buildDetailRow(String title, String value) {
