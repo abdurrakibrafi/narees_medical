@@ -10,10 +10,10 @@ class CustomSuccessAlertDialog {
     required String title,
     required String content,
     required VoidCallback onConfirm,
-    bool showButton = true, // Add the showButton parameter with a default value of true
+    bool showButton = true,
+    List<Widget> customWidgets = const [],
   }) {
     Get.dialog(
-
       Dialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
@@ -51,6 +51,7 @@ class CustomSuccessAlertDialog {
                 ),
                 textAlign: TextAlign.center,
               ),
+              ...customWidgets,
               SizedBox(height: 20.h),
               // Button (conditionally displayed based on showButton)
               if (showButton) // Only show the button if showButton is true
@@ -58,12 +59,19 @@ class CustomSuccessAlertDialog {
                   height: 45,
                   width: Get.width / 2.5,
                   child: CustomButtonWidget(
+                    gradient: LinearGradient(
+                        colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.topRight),
                     btnTextColor: Colors.white,
                     btnText: "Go to Home",
                     onTap: onConfirm,
                     iconWant: false,
                   ),
                 ),
+              SizedBox(
+                  height:
+                      10.h), // Add spacing between button and custom widgets
             ],
           ),
         ),

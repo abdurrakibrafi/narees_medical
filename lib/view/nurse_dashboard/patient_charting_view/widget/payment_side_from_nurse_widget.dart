@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20controller/custom%20alert%20dialog/custom_alert_dialog.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_success_alert_dialog.dart';
+import 'package:restaurent_discount_app/common%20widget/row_wise_widget.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 
 import '../../../../common widget/custom text/custom_text_widget.dart';
@@ -60,8 +61,16 @@ class PaymentSideFromNurseWidget extends StatelessWidget {
                     end: Alignment.topRight),
                 btnText: "Submit",
                 onTap: () {
-                  CustomSuccessAlertDialog.showCustomDialog(
-                      title: "Payment ", content: "", onConfirm: () {});
+                  CustomSuccessAlertDialog.showCustomDialog(customWidgets: [
+                    RowWiseWidget(
+                        title: "Transaction ID", subTitle: "#TXN20250307"),
+                    RowWiseWidget(title: "Date", subTitle: "03-03-24"),
+                    RowWiseWidget(
+                        title: "Procedure Performed", subTitle: "#TXN20250307"),
+                    RowWiseWidget(
+                        title: "Payment Method", subTitle: "Credit"),
+                    RowWiseWidget(title: "Processed by", subTitle: "Rafi"),
+                  ], title: "Payment ", content: "", onConfirm: () {});
                 },
                 iconWant: false,
               ),
