@@ -8,6 +8,7 @@ import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/additional_information_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/encounter_data_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/nurse_side_medical_history.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/payment_side_from_nurse_widget.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/widget/patient_information.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/widget/payment_tab_widget.dart';
 
@@ -59,7 +60,7 @@ class HippaFormView extends StatelessWidget {
             EncounterDataWidget(),
             NurseSideMedicalHistory(),
             Additional_information_widget(),
-            PaymentTabWidget(),
+            PaymentSideFromNurseWidget(),
           ],
         ),
       ),
