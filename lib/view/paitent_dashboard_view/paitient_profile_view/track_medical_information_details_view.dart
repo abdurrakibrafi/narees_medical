@@ -7,6 +7,7 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/certification_card_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/module_card_widget.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/widget/patient_information.dart';
 
 class TrackMedicalDetailsView extends StatelessWidget {
   @override
@@ -50,19 +51,10 @@ class TrackMedicalDetailsView extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView.builder(
-                itemCount: 4, // Total number of modules
-                itemBuilder: (context, index) {
-                  return ModuleCard(
-                    moduleName: 'Hydration Therapy Basics',
-                    progress: '100%',
-                    totalLessons: '21/24 Lesson',
-                  );
-                },
-              ),
-            ),
+
+
+
+            PatientInformationView(),
 
             Padding(
               padding: const EdgeInsets.all(16.0),
