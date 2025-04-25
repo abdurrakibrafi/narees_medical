@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/widget/row_wise_detail_text_widget.dart';
@@ -28,14 +30,17 @@ class MedicalHistoryWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    CustomText(text: "Encounter",fontWeight: FontWeight.bold,fontSize: 17.h,),
+
+
                     RowWiseDetailTextWidget(
-                        title: 'First Name:', value: 'Anna'),
+                        title: 'Blood Pressure:', value: '120/80 mm Hg '),
                     Divider(),
                     RowWiseDetailTextWidget(
-                        title: 'Last Name:', value: 'Suraiya'),
+                        title: 'Heart Rate:', value: '75'),
                     Divider(),
                     RowWiseDetailTextWidget(
-                        title: 'Email Address:', value: 'anna879@gmail.com'),
+                        title: 'Temperature (°F):', value: 'anna879@gmail.com'),
                     Divider(),
                     RowWiseDetailTextWidget(
                         title: 'Phone Number:', value: '(234) 555-1234'),
