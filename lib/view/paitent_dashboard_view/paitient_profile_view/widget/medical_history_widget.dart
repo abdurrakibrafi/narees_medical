@@ -89,7 +89,7 @@ class MedicalHistoryWidget extends StatelessWidget {
                         SizedBox(
                           width: 145,
                           child: CustomText(
-                            textAlign: TextAlign.start,
+                              textAlign: TextAlign.start,
                               text:
                                   "Patient tolerated the IV hydration therapy well with no immediate complications. No signs of allergic reactions or discomfort during infusion. The site was clean, and dressing was applied post-procedure. Patient advised to hydrate throughout the day.",
                               fontSize: 13.h,
@@ -101,7 +101,54 @@ class MedicalHistoryWidget extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 20),
 
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.grey.withOpacity(0.5),
+                  width: 2,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "Additional Image, or Documents",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17.h,
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                            text: "Additional Notes:",
+                            fontSize: 14.h,
+                            fontWeight: FontWeight.w500),
+                        SizedBox(
+                          width: 145,
+                          child: CustomText(
+                              textAlign: TextAlign.start,
+                              text:
+                                  "Patient tolerated the IV hydration therapy well with no immediate complications. No signs of allergic reactions or discomfort during infusion. The site was clean, and dressing was applied post-procedure. Patient advised to hydrate throughout the day.",
+                              fontSize: 13.h,
+                              color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    CertificateCard(
+                      certificateName: 'File of medical',
+                      fileSize: '456',
+                    )
+                  ],
+                ),
+              ),
+            ),
             SizedBox(height: 40.h),
           ],
         ),
