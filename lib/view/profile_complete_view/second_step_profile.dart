@@ -279,6 +279,13 @@ class SecondStepProfile extends StatelessWidget {
                                           height: 39,
                                           width: 100,
                                           child: CustomButtonWidget(
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF0071BC),
+                                                    Color(0xFF003456)
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.topRight),
                                               btnTextSize: 15.0,
                                               btnText: "Select",
                                               onTap: () {},
@@ -338,11 +345,10 @@ class SecondStepProfile extends StatelessWidget {
                 SizedBox(
                   height: 50,
                   child: CustomButtonWidget(
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF0071BC), Color(0xFF003456)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.topRight),
-
+                      gradient: LinearGradient(
+                          colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.topRight),
                       btnText: "Submit",
                       onTap: () {
                         CustomAlertDialog.showCustomDialog(

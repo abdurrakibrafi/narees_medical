@@ -10,16 +10,20 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settin
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
-
+import '../../../common controller/custom alert dialog/custom_alert_dialog.dart';
+import '../../auth_view/sign_in_view/sign_in_view.dart';
+import '../message_view/message_view_of_nurse.dart';
 import 'change_password_view.dart';
 import 'edit_profile.dart';
 
 class ProfilePage extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Profile"),
+      appBar: CustomAppBar(leading: Container(), title: "Profile"),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
@@ -93,7 +97,9 @@ class ProfilePage extends StatelessWidget {
                 ProfileOption(
                   icon: Icons.message,
                   title: 'Message',
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => ChatScreen());
+                  },
                 ),
 
                 // Divider
@@ -128,7 +134,16 @@ class ProfilePage extends StatelessWidget {
                   icon: Icons.logout,
                   title: 'Log Out',
                   onTap: () {
-                    // Implement Log Out functionality
+                    CustomAlertDialog.showCustomDialog(
+                        title: "Logout",
+                        content:
+                            "If you want to logout your account click on yes",
+                        cancelName: "No",
+                        actionName: "Yes",
+                        confirmText: "Yes",
+                        onConfirm: () {
+                          Get.offAll(() => SignInView());
+                        });
                   },
                 ),
               ],

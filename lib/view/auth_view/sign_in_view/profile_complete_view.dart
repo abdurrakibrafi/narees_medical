@@ -54,6 +54,11 @@ class _ProfileCompleteViewState extends State<ProfileCompleteView> {
                 SizedBox(
                   height: 50,
                   child: CustomButtonWidget(
+                    gradient: LinearGradient(
+                        colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.topRight),
+
                       btnText: "Profile Complete",
                       onTap: () {
                         Get.to(() => ProfileFillUpView());
