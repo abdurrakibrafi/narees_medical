@@ -9,6 +9,8 @@ class ApiUrl {
   /// http://159.223.184.53:6006/api/v1
 
   static const String login = "$baseUrl/auth/sign-in";
+  static const String forgetPassword = "$baseUrl/auth/forget-password";
+  static const String verifyOTP = "$baseUrl/auth/verify-account";
 
   static String getChatId({required String hireId}) =>
       "$baseUrl/chat/customer/$hireId";
