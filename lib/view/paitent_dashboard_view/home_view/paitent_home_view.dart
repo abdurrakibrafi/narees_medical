@@ -35,56 +35,6 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // The 'Order Supplies' Card
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.blue.withOpacity(0.2),
-                    Colors.white,
-                    Colors.white,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: () {},
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue.withOpacity(0.2),
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: AppColors.mainColor,
-                            size: 18,
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        CustomText(
-                          text: 'ORDER SUPPLIES',
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
             SizedBox(height: 15),
             Card(
               color: Colors.white,
@@ -204,7 +154,13 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                     ),
                     SizedBox(height: 30),
                     CustomButtonWidget(
-                        btnText: "Submit", onTap: () {}, iconWant: false),
+                        gradient: LinearGradient(
+                            colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.topRight),
+                        btnText: "Submit",
+                        onTap: () {},
+                        iconWant: false),
                     SizedBox(height: 40),
                   ],
                 ),

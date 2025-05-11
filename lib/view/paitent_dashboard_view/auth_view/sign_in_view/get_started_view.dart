@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:restaurent_discount_app/view/auth_view/sign_in_view/sign_in_view.dart';
-import '../../../common widget/custom text/custom_text_widget.dart';
-import '../../../common widget/custom_button_widget.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/sign_in_view/sign_in_view.dart';
+import '../../../../common widget/custom text/custom_text_widget.dart';
+import '../../../../common widget/custom_button_widget.dart';
 
 class GetStartedView extends StatelessWidget {
   const GetStartedView({super.key});

@@ -62,7 +62,7 @@ class BaseClient {
     };
 
     http.Response response =
-    await http.delete(Uri.parse(api), body: body, headers: headers);
+        await http.delete(Uri.parse(api), body: body, headers: headers);
     return response;
   }
 

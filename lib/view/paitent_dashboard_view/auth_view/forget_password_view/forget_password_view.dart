@@ -6,9 +6,7 @@ import 'package:get/get_core/src/get_main.dart' show Get;
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
-import 'package:restaurent_discount_app/view/auth_view/sign_in_view/profile_complete_view.dart';
-import 'package:restaurent_discount_app/view/auth_view/sign_up_view/sign_up_view.dart';
-import '../../../uitilies/app_colors.dart';
+import '../../../../uitilies/app_colors.dart';
 import 'otp_verify_view.dart';
 
 class ForgetPasswordView extends StatelessWidget {

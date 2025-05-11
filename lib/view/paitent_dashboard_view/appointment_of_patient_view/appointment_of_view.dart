@@ -9,12 +9,12 @@ import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/widget/appoiment_card_widget.dart'
     show AppointmentCard;
 
-class AppoinmentView extends StatefulWidget {
+class AppoinmentViewOfPatient extends StatefulWidget {
   @override
-  _AppoinmentViewState createState() => _AppoinmentViewState();
+  _AppoinmentViewOfPatientState createState() => _AppoinmentViewOfPatientState();
 }
 
-class _AppoinmentViewState extends State<AppoinmentView> {
+class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
   late DateTime _focusedDay = DateTime.now();
   late DateTime _selectedDay = DateTime.now();
   final ScrollController _scrollController = ScrollController();
@@ -187,8 +187,8 @@ class _AppoinmentViewState extends State<AppoinmentView> {
                                         color: isSelected
                                             ? Colors.white
                                             : isToday
-                                                ? AppColors.mainColor
-                                                : Colors.transparent,
+                                            ? AppColors.mainColor
+                                            : Colors.transparent,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Text(
@@ -197,8 +197,8 @@ class _AppoinmentViewState extends State<AppoinmentView> {
                                           color: isSelected
                                               ? AppColors.mainColor
                                               : isToday
-                                                  ? Colors.white
-                                                  : Colors.black,
+                                              ? Colors.white
+                                              : Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: isToday ? 8 : 18,
                                           fontFamily: 'Montserrat',
@@ -212,8 +212,8 @@ class _AppoinmentViewState extends State<AppoinmentView> {
                                         color: isSelected
                                             ? Colors.white
                                             : isToday
-                                                ? Colors.grey[600]
-                                                : Colors.grey[600],
+                                            ? Colors.grey[600]
+                                            : Colors.grey[600],
                                         fontWeight: FontWeight.bold,
                                         fontSize: 11,
                                       ),
@@ -238,7 +238,7 @@ class _AppoinmentViewState extends State<AppoinmentView> {
             child: ListView.builder(
               itemCount: 6,
               itemBuilder: (context, index) {
-                return AppointmentCard(true, true);
+                return AppointmentCard(false, false);
               },
             ),
           ),

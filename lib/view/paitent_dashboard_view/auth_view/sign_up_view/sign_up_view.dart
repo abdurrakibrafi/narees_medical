@@ -5,9 +5,10 @@ import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
-import 'package:restaurent_discount_app/view/auth_view/sign_in_view/profile_complete_view.dart';
-import 'package:restaurent_discount_app/view/auth_view/sign_in_view/sign_in_view.dart';
-import '../../../uitilies/app_colors.dart';
+
+import '../../../../uitilies/app_colors.dart';
+import '../sign_in_view/profile_complete_view.dart';
+import '../sign_in_view/sign_in_view.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -74,7 +75,7 @@ class _SignUpViewState extends State<SignUpView> {
                               children: [
                                 Radio<String>(
                                   activeColor: AppColors.mainColor,
-                                  value: 'Nurse',
+                                  value: 'Provider',
                                   groupValue: _selectedRole,
                                   onChanged: (value) {
                                     setState(() {
@@ -83,7 +84,7 @@ class _SignUpViewState extends State<SignUpView> {
                                   },
                                 ),
                                 CustomText(
-                                  text: 'Nurse',
+                                  text: 'Provider',
                                   fontSize: 16,
                                 ),
                               ],

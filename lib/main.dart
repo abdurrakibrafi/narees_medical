@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/controller/language_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/message.dart';
-import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_bar_for_paitient.dart';
-import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
+import 'package:restaurent_discount_app/view/splash_view/splash_view.dart';
 import 'common widget/language widget/dep.dart' as dep;
 
 Future<void> main() async {
@@ -49,7 +47,7 @@ class MyApp extends StatelessWidget {
           translations: Messages(languages: languages),
           fallbackLocale: Locale('en', 'US'),
           debugShowCheckedModeBanner: false,
-          home: BottomNavigation(),
+          home: SplashView(),
           //  home: BottomNavigation(),
         );
       },

@@ -11,14 +11,12 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 import '../../../common controller/custom alert dialog/custom_alert_dialog.dart';
-import '../../auth_view/sign_in_view/sign_in_view.dart';
+import '../../paitent_dashboard_view/auth_view/sign_in_view/sign_in_view.dart';
 import '../message_view/message_view_of_nurse.dart';
 import 'change_password_view.dart';
 import 'edit_profile.dart';
 
 class ProfilePage extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

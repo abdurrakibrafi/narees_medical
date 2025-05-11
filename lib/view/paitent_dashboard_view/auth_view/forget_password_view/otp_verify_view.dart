@@ -5,13 +5,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart' show Get;
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
-import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
-import 'package:restaurent_discount_app/view/auth_view/sign_in_view/sign_in_view.dart';
-import '../../../uitilies/app_colors.dart';
-import 'otp_verify_view.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/forget_password_view/widget/otp_form_filed_widget.dart';
+import '../../../../uitilies/app_colors.dart';
+import 'create_new_password_view.dart';
 
-class CreateNewPassword extends StatelessWidget {
-  const CreateNewPassword({super.key});
+class OTPFormView extends StatelessWidget {
+  OTPFormView({super.key});
+
+  final TextEditingController otpFormFiled = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,34 +50,31 @@ class CreateNewPassword extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     CustomText(
-                      text: 'Create New Password !',
+                      text: 'Verify your OTP Code',
                       textAlign: TextAlign.center,
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
-
                     SizedBox(height: 70),
 
-                    // Email
-                    CustomTextField(
-                      fillColor: Color(0xFFE4E4E4),
-                      borderColor: Colors.transparent,
-                      hintText: "Enter new password",
-                      showObscure: true,
-                    ),
-                    SizedBox(height: 20),
-
-                    // Email
-                    CustomTextField(
-                      fillColor: Color(0xFFE4E4E4),
-                      borderColor: Colors.transparent,
-                      hintText: "Enter confirm password",
-                      showObscure: true,
-                    ),
+                    OtpForm(controller: otpFormFiled),
                     SizedBox(height: 20),
 
                     // Remember Me
+
+                    CustomText(
+                      text: "Didn’t receive OTP",
+                      fontSize: 16,
+                    ),
+                    CustomText(
+                      text: "Resend Code",
+                      underline: true,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+
+                    SizedBox(height: 20),
 
                     SizedBox(
                       height: 55,
@@ -86,9 +84,9 @@ class CreateNewPassword extends StatelessWidget {
                             colors: [Color(0xFF0071BC), Color(0xFF003456)],
                             begin: Alignment.topLeft,
                             end: Alignment.topRight),
-                        btnText: "Create",
+                        btnText: "Verify",
                         onTap: () {
-                          Get.to(() => SignInView());
+                          Get.to(() => CreateNewPassword());
                         },
                         iconWant: false,
                       ),

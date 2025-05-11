@@ -4,7 +4,8 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
 
-import '../../auth_view/sign_in_view/get_started_view.dart';
+import '../../paitent_dashboard_view/auth_view/sign_in_view/get_started_view.dart';
+
 
 
 class SplashController extends GetxController {

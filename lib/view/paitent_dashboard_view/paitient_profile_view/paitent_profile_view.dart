@@ -6,7 +6,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20controller/custom%20alert%20dialog/custom_alert_dialog.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
-import 'package:restaurent_discount_app/view/auth_view/sign_in_view/sign_in_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
@@ -14,6 +13,7 @@ import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_pro
 
 import '../../nurse_dashboard/profile_view/change_password_view.dart';
 import '../../nurse_dashboard/profile_view/edit_profile.dart';
+import '../auth_view/sign_in_view/sign_in_view.dart';
 
 class PaitientProfileView extends StatelessWidget {
   @override

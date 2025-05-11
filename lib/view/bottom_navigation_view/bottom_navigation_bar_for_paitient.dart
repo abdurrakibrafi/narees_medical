@@ -5,10 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_list_view.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/nurse_home_view.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/profile_view.dart';
-
-import '../nurse_dashboard/appointment_view/appointment_view.dart';
+import '../paitent_dashboard_view/appointment_of_patient_view/appointment_of_view.dart';
 import '../paitent_dashboard_view/home_view/paitent_home_view.dart';
 import '../paitent_dashboard_view/paitient_profile_view/paitent_profile_view.dart';
 import '../paitent_dashboard_view/search_view/nurse_search_view.dart';
@@ -24,7 +21,7 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
   List<Widget> _pages = [
     HomeViewForPaitinet(),
     InventoryList(),
-    AppoinmentView(),
+    AppoinmentViewOfPatient(),
     NurseSearchView(),
     PaitientProfileView(),
   ];

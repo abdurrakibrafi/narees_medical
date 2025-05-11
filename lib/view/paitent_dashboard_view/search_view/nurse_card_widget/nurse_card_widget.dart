@@ -103,6 +103,10 @@ class NurseCardWidget extends StatelessWidget {
             SizedBox(
               height: 31.h,
               child: CustomButtonWidget(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
                   btnTextSize: 15.0,
                   btnText: "Select Nurse",
                   onTap: onTap,
