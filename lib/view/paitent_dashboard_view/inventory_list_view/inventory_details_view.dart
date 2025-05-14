@@ -7,11 +7,14 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/cart_view.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/controller/add_to_cart_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ViewInventoryPage extends StatefulWidget {
   final String proName;
+  final String proId;
   final dynamic price;
   final List<dynamic> images;
   final String desc;
@@ -23,7 +26,8 @@ class ViewInventoryPage extends StatefulWidget {
       this.price,
       required this.images,
       required this.desc,
-      required this.supplierName})
+      required this.supplierName,
+      required this.proId})
       : super(key: key);
 
   @override
@@ -34,6 +38,9 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
   int quantity = 1;
   late double price;
   int currentIndex = 0;
+
+  final AddToCartController _addToCartController =
+      Get.put(AddToCartController());
 
   @override
   void initState() {
@@ -53,7 +60,7 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: widget.proName, // Use passed product name
+                  text: widget.proName,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
@@ -177,16 +184,21 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
                   fontSize: 16,
                 ),
                 SizedBox(height: 40),
-                CustomButtonWidget(
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF0071BC), Color(0xFF003456)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.topRight),
-                    btnText: "Add to Cart",
-                    onTap: () {
-                      Get.to(() => CartPage());
-                    },
-                    iconWant: false),
+                Obx(() {
+                  return _addToCartController.isLoading.value == true
+                      ? CustomLoader()
+                      : CustomButtonWidget(
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.topRight),
+                          btnText: "Add to Cart",
+                          onTap: () {
+                            _addToCartController.addProductToCart(
+                                productId: widget.proId, quantity: quantity);
+                          },
+                          iconWant: false);
+                }),
                 SizedBox(height: 40),
               ],
             ),

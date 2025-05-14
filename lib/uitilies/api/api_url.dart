@@ -15,6 +15,7 @@ class ApiUrl {
   static const String signInEndPoint = "$baseUrl/auth/sign-up";
   static const String settings = "$baseUrl/settings";
   static const String cart = "$baseUrl/cart";
+  static const String cartAdd = "$baseUrl/cart/add";
 
   static String deleteCart({required String cartId}) => "$baseUrl/cart/$cartId";
 

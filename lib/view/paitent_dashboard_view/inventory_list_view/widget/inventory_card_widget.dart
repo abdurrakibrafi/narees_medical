@@ -98,7 +98,7 @@ class InventoryItemCard extends StatelessWidget {
                                     .map((image) => image.url)
                                     .toList(),
                                 desc: item.description ?? 'No Description Available',
-                                supplierName: item.supplierName ?? 'Unknown Supplier',
+                                supplierName: item.supplierName ?? 'Unknown Supplier', proId: item.productId.toString(),
                               ));
                             },
                             child: Icon(
