@@ -6,13 +6,18 @@ import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/widget/cart_item_widget.dart'; // Import CartItemWidget
-import 'controller/cart_get_controller.dart'; // Import CartGetController
+import '../../../common widget/not_found_widget.dart';
+import 'controller/cart_get_controller.dart';
+import 'controller/delete_cart_controller.dart';
 
 class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CartGetController controller = Get.put(CartGetController());
+    final DeleteCartController deleteController =
+        Get.put(DeleteCartController());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -24,7 +29,18 @@ class CartPage extends StatelessWidget {
           children: [
             Obx(() {
               if (controller.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CustomLoader());
+              }
+
+              if (controller.cartData.value.data?.isEmpty ?? true) {
+                return Column(
+                  children: [
+                    SizedBox(height: 150.h),
+                    NotFoundWidget(
+                      message: "Opps! No item found in your cart.",
+                    )
+                  ],
+                );
               }
 
               return Expanded(
@@ -32,22 +48,24 @@ class CartPage extends StatelessWidget {
                   itemCount: controller.cartData.value.data?.length ?? 0,
                   itemBuilder: (context, index) {
                     var cartData = controller.cartData.value.data?[index];
-                    if (cartData == null) return Container();
+
+                    if (cartData == null || cartData.cartItem.isEmpty) {
+                      return Center(
+                          child: NotFoundWidget(
+                        message: 'Opps! No item available.',
+                      ));
+                    }
+
+                    var cartItem = cartData.cartItem[0];
+
                     return CartItemWidget(
-                      cartItem: cartData.cartItem[
-                          0], // Assuming there's at least one cart item
-                      onDismissed: () {
-                        controller.cartData.value.data?.removeAt(index);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                "${cartData.cartItem[0].product?.name} removed from cart"),
-                          ),
-                        );
+                      cartItem: cartItem,
+                      onDismissed: () async {
+                        await deleteController.deleteCart(cartId: cartItem.id);
+                        controller.getCart();
                       },
                       onQuantityUpdate: (int change) {
-                        var currentQuantity =
-                            cartData.cartItem[0].quantity ?? 0;
+                        var currentQuantity = cartItem.quantity ?? 0;
                         var newQuantity = currentQuantity + change;
                         if (newQuantity > 0) {}
                       },
@@ -74,8 +92,14 @@ class CartPage extends StatelessWidget {
                             0.0,
                             (sum, cartData) {
                               return sum! +
-                                  (cartData.cartItem[0].product?.price ?? 0.0) *
-                                      (cartData.cartItem[0].quantity ?? 0);
+                                  (cartData.cartItem.isNotEmpty
+                                          ? cartData
+                                                  .cartItem[0].product?.price ??
+                                              0.0
+                                          : 0.0) *
+                                      (cartData.cartItem.isNotEmpty
+                                          ? cartData.cartItem[0].quantity ?? 0
+                                          : 0);
                             },
                           ) ??
                           0.0;

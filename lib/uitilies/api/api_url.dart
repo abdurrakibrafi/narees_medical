@@ -16,6 +16,8 @@ class ApiUrl {
   static const String settings = "$baseUrl/settings";
   static const String cart = "$baseUrl/cart";
 
+  static String deleteCart({required String cartId}) => "$baseUrl/cart/$cartId";
+
   static String getChatId({required String hireId}) =>
       "$baseUrl/chat/customer/$hireId";
 
