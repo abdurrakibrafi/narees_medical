@@ -92,14 +92,17 @@ class InventoryItemCard extends StatelessWidget {
                             onTap: () {
                               // Pass necessary data to ViewInventoryPage
                               Get.to(() => ViewInventoryPage(
-                                proName: item.name ?? 'Unknown Name',
-                                price: item.price ?? 0.0,
-                                images: item.productImages
-                                    .map((image) => image.url)
-                                    .toList(),
-                                desc: item.description ?? 'No Description Available',
-                                supplierName: item.supplierName ?? 'Unknown Supplier', proId: item.productId.toString(),
-                              ));
+                                    proName: item.name ?? 'Unknown Name',
+                                    price: item.price ?? 0.0,
+                                    images: item.productImages
+                                        .map((image) => image.url)
+                                        .toList(),
+                                    desc: item.description ??
+                                        'No Description Available',
+                                    supplierName:
+                                        item.supplierName ?? 'Unknown Supplier',
+                                    proId: item.id.toString(),
+                                  ));
                             },
                             child: Icon(
                               Icons.remove_red_eye_outlined,

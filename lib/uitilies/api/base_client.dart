@@ -30,23 +30,38 @@ class BaseClient {
     return response;
   }
 
-  static postRequest({required String api, body}) async {
+  static Future<http.Response> postRequest({required String api, required dynamic body}) async {
     debugPrint('\nYou hit: $api');
     debugPrint('Request Body: ${jsonEncode(body)}');
 
-    /// getx storage
+    /// Get the access token from local storage
     final StorageService _storageService = Get.put(StorageService());
     String? accessToken = _storageService.read<String>('accessToken');
 
     var headers = {
-      'Accept': 'application/json',
-      "Authorization": "Bearer $accessToken"
+      "Authorization": "Bearer $accessToken",
+      'Content-Type': 'application/json'
     };
 
-    http.Response response = await http.post(Uri.parse(api),
-        body: body, headers: headers, encoding: Encoding.getByName("utf-8"));
-    return response;
+    // Ensure the body is properly encoded as JSON
+    var jsonBody = jsonEncode(body);
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(api),
+        body: jsonBody,
+        headers: headers,
+      );
+
+      // Return the response
+      return response;
+    } on SocketException {
+      throw noInternetMessage; // Handle internet connection issues
+    } catch (e) {
+      throw 'Error: $e'; // Catch other errors
+    }
   }
+
 
   static deleteRequest({required String api, body}) async {
     debugPrint('\nYou hit: $api');

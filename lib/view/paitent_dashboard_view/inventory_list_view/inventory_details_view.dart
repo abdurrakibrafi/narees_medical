@@ -195,7 +195,7 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
                           btnText: "Add to Cart",
                           onTap: () {
                             _addToCartController.addProductToCart(
-                                productId: widget.proId, quantity: quantity);
+                                productId: widget.proId, quantity: int.tryParse(quantity.toString()));
                           },
                           iconWant: false);
                 }),
