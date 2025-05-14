@@ -13,6 +13,7 @@ class ApiUrl {
   static const String verifyOTP = "$baseUrl/auth/verify-account";
   static const String resetPassword = "$baseUrl/auth/reset-password";
   static const String signInEndPoint = "$baseUrl/auth/sign-up";
+  static const String settings = "$baseUrl/settings";
 
   static String getChatId({required String hireId}) =>
       "$baseUrl/chat/customer/$hireId";

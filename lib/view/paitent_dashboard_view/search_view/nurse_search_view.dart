@@ -18,7 +18,7 @@ class NurseSearchView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Search"),
+      appBar: CustomAppBar(title: "Search",leading: Container(),),
       body: Padding(
         padding: AppPadding.bodyPadding,
         child: Column(
