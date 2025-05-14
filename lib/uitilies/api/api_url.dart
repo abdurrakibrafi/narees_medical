@@ -11,6 +11,8 @@ class ApiUrl {
   static const String login = "$baseUrl/auth/sign-in";
   static const String forgetPassword = "$baseUrl/auth/forget-password";
   static const String verifyOTP = "$baseUrl/auth/verify-account";
+  static const String resetPassword = "$baseUrl/auth/reset-password";
+  static const String signInEndPoint = "$baseUrl/auth/sign-up";
 
   static String getChatId({required String hireId}) =>
       "$baseUrl/chat/customer/$hireId";

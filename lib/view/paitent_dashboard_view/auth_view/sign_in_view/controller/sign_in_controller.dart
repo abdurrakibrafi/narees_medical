@@ -7,6 +7,7 @@ import 'package:restaurent_discount_app/uitilies/api/api_url.dart';
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
 import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
 import '../../../../bottom_navigation_view/bottom_navigation_bar_for_paitient.dart';
+import '../../../../tranning_module/tranning_module_view.dart';
 
 class SignInController extends GetxController {
   var isLoading = false.obs;
@@ -46,7 +47,16 @@ class SignInController extends GetxController {
           await _storageService.write('role', role);
           await _storageService.write('id', id);
 
-          Get.offAll(() => BottomNavigationBarForPaitient());
+          // Conditional navigation based on role
+          if (role == "NURSE") {
+            Get.offAll(
+                () => TrainingPortalScreen());
+          } else if (role == "PATIENT") {
+            Get.offAll(() =>
+                BottomNavigationBarForPaitient());
+          } else {
+            CustomToast.showToast("Invalid role detected", isError: true);
+          }
 
           CustomToast.showToast("Login Successfully Done!");
         } else {

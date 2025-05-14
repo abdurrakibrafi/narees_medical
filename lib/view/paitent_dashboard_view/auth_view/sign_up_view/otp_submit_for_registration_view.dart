@@ -1,24 +1,22 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart' show Get;
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
-import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
-import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/forget_password_view/controller/change_password_controller.dart';
+import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/forget_password_view/widget/otp_form_filed_widget.dart';
 import '../../../../uitilies/app_colors.dart';
-import '../../../../uitilies/custom_toast.dart';
+import 'controller/otp_submit_for_registration_controller.dart';
 
-class CreateNewPassword extends StatelessWidget {
-  CreateNewPassword({super.key});
+class OTPFormViewRegistrationView extends StatelessWidget {
+  OTPFormViewRegistrationView({super.key});
 
-  final CreateNewPasswordController _createNewPasswordController =
-      Get.put(CreateNewPasswordController());
-
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController otpFormFiled = TextEditingController();
+  final OTPControllerRegistration _otpController =
+      Get.put(OTPControllerRegistration());
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +32,12 @@ class CreateNewPassword extends StatelessWidget {
               ),
             ),
           ),
-
           Positioned.fill(
             child: Image.asset(
               'assets/images/bg.png',
               fit: BoxFit.cover,
             ),
           ),
-
-          // White content overlay with slight transparency
           Positioned.fill(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -56,7 +51,7 @@ class CreateNewPassword extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     CustomText(
-                      text: 'Create New Password !',
+                      text: 'Verify your OTP Code',
                       textAlign: TextAlign.center,
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
@@ -64,28 +59,26 @@ class CreateNewPassword extends StatelessWidget {
                     ),
                     SizedBox(height: 70),
 
-                    // Password Field
-                    CustomTextField(
-                      controller: passwordController,
-                      fillColor: Color(0xFFE4E4E4),
-                      borderColor: Colors.transparent,
-                      hintText: "Enter new password",
-                      showObscure: true,
-                    ),
+                    OtpForm(controller: otpFormFiled),
                     SizedBox(height: 20),
 
-                    // Confirm Password Field
-                    CustomTextField(
-                      controller: confirmPasswordController,
-                      fillColor: Color(0xFFE4E4E4),
-                      borderColor: Colors.transparent,
-                      hintText: "Enter confirm password",
-                      showObscure: true,
+                    // Remember Me
+
+                    CustomText(
+                      text: "Didn’t receive OTP",
+                      fontSize: 16,
                     ),
+                    CustomText(
+                      text: "Resend Code",
+                      underline: true,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+
                     SizedBox(height: 20),
 
                     Obx(() {
-                      return _createNewPasswordController.isLoading.value
+                      return _otpController.isLoading.value == true
                           ? CustomLoader()
                           : SizedBox(
                               height: 55,
@@ -98,26 +91,14 @@ class CreateNewPassword extends StatelessWidget {
                                     ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.topRight),
-                                btnText: "Create",
+                                btnText: "Verify",
                                 onTap: () {
-                                  String password = passwordController.text;
-                                  String confirmPassword =
-                                      confirmPasswordController.text;
-
-                                  if (password.isEmpty ||
-                                      confirmPassword.isEmpty) {
-                                    CustomToast.showToast(
-                                      "Please fill out both fields",
-                                      isError: true,
-                                    );
-                                  } else if (password != confirmPassword) {
-                                    CustomToast.showToast(
-                                      "Passwords do not match",
-                                      isError: true,
-                                    );
+                                  if (otpFormFiled.text.isEmpty) {
+                                    CustomToast.showToast("Please enter otp",
+                                        isError: true);
                                   } else {
-                                    _createNewPasswordController.resetPassword(
-                                        newPass: password);
+                                    _otpController.otpSubmit(
+                                        otp: otpFormFiled.text);
                                   }
                                 },
                                 iconWant: false,
