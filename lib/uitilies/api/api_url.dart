@@ -16,4 +16,7 @@ class ApiUrl {
 
   static String getChatId({required String hireId}) =>
       "$baseUrl/chat/customer/$hireId";
+
+  static String inventoryForPatient({required String role}) =>
+      "$baseUrl/product?productFor=$role&limit=9999";
 }

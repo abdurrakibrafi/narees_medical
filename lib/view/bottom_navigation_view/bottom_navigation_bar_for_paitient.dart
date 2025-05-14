@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_list_view.dart';
 import '../paitent_dashboard_view/appointment_of_patient_view/appointment_of_view.dart';
 import '../paitent_dashboard_view/home_view/paitent_home_view.dart';
+import '../paitent_dashboard_view/inventory_list_view/inventory_list_view.dart';
 import '../paitent_dashboard_view/paitient_profile_view/paitent_profile_view.dart';
 import '../paitent_dashboard_view/search_view/nurse_search_view.dart';
 
@@ -48,6 +48,7 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.circular(45),

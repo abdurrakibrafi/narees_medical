@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/inventory_list_view/inventory_list_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/nurse_home_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/profile_view.dart';
 
 import '../nurse_dashboard/appointment_view/appointment_view.dart';
 import '../nurse_dashboard/patient_charting_view/patient_charting_view.dart';
+import '../paitent_dashboard_view/inventory_list_view/inventory_list_view.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
