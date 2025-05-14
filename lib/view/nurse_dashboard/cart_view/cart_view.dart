@@ -1,54 +1,19 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/widget/cart_item_widget.dart'; // Import CartItemWidget
+import 'controller/cart_get_controller.dart'; // Import CartGetController
 
-class CartPage extends StatefulWidget {
-  @override
-  _CartPageState createState() => _CartPageState();
-}
-
-class _CartPageState extends State<CartPage> {
-  List<CartItem> cartItems = [
-    CartItem(
-      imageUrl:
-          'https://www.farmvet.com/site/images/Products/Calcium-Gluconate-23-Solution_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
-      name: 'Vitamin Boost IV Kit',
-      brand: 'SafeTouch',
-      price: 50.00,
-      status: 'In Stock',
-      quantity: 1,
-    ),
-    CartItem(
-      imageUrl:
-          'https://www.farmvet.com/site/images/Products/Calcium-Gluconate-23-Solution_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
-      name: 'Vitamin Boost IV Kit',
-      brand: 'SafeTouch',
-      price: 50.00,
-      status: 'Out of Stock',
-      quantity: 1,
-    ),
-    CartItem(
-      imageUrl:
-          'https://www.farmvet.com/site/images/Products/Calcium-Gluconate-23-Solution_media-1.jpg?resizeid=9&resizeh=500&resizew=500',
-      name: 'Vitamin Boost IV Kit',
-      brand: 'SafeTouch',
-      price: 50.00,
-      status: 'In Stock',
-      quantity: 1,
-    ),
-  ];
-
-  // Function to remove item from cart
-  void removeItem(int index) {
-    setState(() {
-      cartItems.removeAt(index); // Remove the item at the given index
-    });
-  }
-
+class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final CartGetController controller = Get.put(CartGetController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(title: "My Cart"),
@@ -57,135 +22,40 @@ class _CartPageState extends State<CartPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: cartItems.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    key: Key(cartItems[index].name),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      removeItem(index);
+            Obx(() {
+              if (controller.isLoading.value) {
+                return Center(child: CircularProgressIndicator());
+              }
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: controller.cartData.value.data?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    var cartData = controller.cartData.value.data?[index];
+                    if (cartData == null) return Container();
+                    return CartItemWidget(
+                      cartItem: cartData.cartItem[
+                          0], // Assuming there's at least one cart item
+                      onDismissed: () {
+                        controller.cartData.value.data?.removeAt(index);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
                             content: Text(
-                                "${cartItems[index].name} removed from cart")),
-                      );
-                    },
-                    background: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.red,
-                      ),
-
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            size: 30.h,
-                            Icons.delete,
-                            color: Colors.white,
+                                "${cartData.cartItem[0].product?.name} removed from cart"),
                           ),
-                        ),
-                      ),
-                    ),
-                    child: Card(
-                      color: Colors.white,
-                      elevation: 2,
-                      margin: EdgeInsets.symmetric(vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                image: DecorationImage(
-                                  image:
-                                      NetworkImage(cartItems[index].imageUrl),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cartItems[index].name,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    cartItems[index].brand,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    '\$${cartItems[index].price.toString()}',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(Icons.remove),
-                                            onPressed:
-                                                cartItems[index].status ==
-                                                        'In Stock'
-                                                    ? () {}
-                                                    : null,
-                                          ),
-                                          Text(
-                                            cartItems[index]
-                                                .quantity
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.add),
-                                            onPressed:
-                                                cartItems[index].status ==
-                                                        'In Stock'
-                                                    ? () {}
-                                                    : null,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                        );
+                      },
+                      onQuantityUpdate: (int change) {
+                        var currentQuantity =
+                            cartData.cartItem[0].quantity ?? 0;
+                        var newQuantity = currentQuantity + change;
+                        if (newQuantity > 0) {}
+                      },
+                    );
+                  },
+                ),
+              );
+            }),
             Divider(),
             SizedBox(height: 10),
             Column(
@@ -199,13 +69,25 @@ class _CartPageState extends State<CartPage> {
                       fontSize: 18.h,
                       fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      '\$600.00',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    Obx(() {
+                      double totalPrice = controller.cartData.value.data?.fold(
+                            0.0,
+                            (sum, cartData) {
+                              return sum! +
+                                  (cartData.cartItem[0].product?.price ?? 0.0) *
+                                      (cartData.cartItem[0].quantity ?? 0);
+                            },
+                          ) ??
+                          0.0;
+
+                      return Text(
+                        '\$${totalPrice.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }),
                   ],
                 ),
                 SizedBox(height: 10),
@@ -216,7 +98,9 @@ class _CartPageState extends State<CartPage> {
                       end: Alignment.topRight),
                   btnTextSize: 16.0,
                   btnText: "Proceed to Payment",
-                  onTap: () {},
+                  onTap: () {
+                    // Handle proceed to payment logic
+                  },
                   iconWant: false,
                 ),
                 SizedBox(height: 10),
@@ -227,22 +111,4 @@ class _CartPageState extends State<CartPage> {
       ),
     );
   }
-}
-
-class CartItem {
-  final String imageUrl;
-  final String name;
-  final String brand;
-  final double price;
-  final String status;
-  int quantity;
-
-  CartItem({
-    required this.imageUrl,
-    required this.name,
-    required this.brand,
-    required this.price,
-    required this.status,
-    this.quantity = 1,
-  });
 }
