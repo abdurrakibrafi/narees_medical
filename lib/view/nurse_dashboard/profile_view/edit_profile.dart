@@ -89,17 +89,17 @@ class _EditProfileState extends State<EditProfile> {
                         borderRadius: BorderRadius.circular(100),
                         child: _imageFile != null
                             ? Image.file(
-                          File(_imageFile!.path),
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        )
+                                File(_imageFile!.path),
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              )
                             : Image.network(
-                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
+                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       Positioned(
                         bottom: 4,
@@ -177,14 +177,14 @@ class _EditProfileState extends State<EditProfile> {
                 CustomTextField(
                   fillColor: Color(0xFFE4E4E4),
                   borderColor: Colors.transparent,
-                  hintText: "Registration Id",
+                  hintText: "Location",
                   showObscure: false,
                 ),
                 SizedBox(height: 20),
                 CustomTextField(
                   fillColor: Color(0xFFE4E4E4),
                   borderColor: Colors.transparent,
-                  hintText: "Joined Date",
+                  hintText: "Zip Code",
                   showObscure: false,
                 ),
                 SizedBox(height: 20),
@@ -243,11 +243,8 @@ class _EditProfileState extends State<EditProfile> {
                         colors: [Color(0xFF0071BC), Color(0xFF003456)],
                         begin: Alignment.topLeft,
                         end: Alignment.topRight),
-
-                    btnText: "Next",
-                    onTap: () {
-                      // Get.to(() => SecondStepProfile());
-                    },
+                    btnText: "Submit",
+                    onTap: () {},
                     iconWant: false,
                   ),
                 ),
