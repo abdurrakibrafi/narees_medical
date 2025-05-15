@@ -14,12 +14,13 @@ class ChangePasswordController extends GetxController {
       {required String oldPass, required dynamic newPass}) async {
     isLoading(true);
 
-    List<Map<String, dynamic>> body = [
-      {"oldPassword": oldPass, "newPassword": newPass}
-    ];
+    Map<String, dynamic> body = {
+      "oldPassword": oldPass,
+      "newPassword": newPass
+    };
 
     try {
-      var response = await BaseClient.postRequest(
+      var response = await BaseClient.patchRequest(
         api: ApiUrl.changePassword,
         body: body,
       );
