@@ -6,7 +6,7 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
-import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/forget_password_view/controller/change_password_controller.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/forget_password_view/controller/reset_password_controller.dart';
 import '../../../../uitilies/app_colors.dart';
 import '../../../../uitilies/custom_toast.dart';
 

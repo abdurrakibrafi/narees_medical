@@ -23,10 +23,9 @@ class AddToCartController extends GetxController {
     ];
 
     try {
-      // Call the postRequest method from BaseClient
       var response = await BaseClient.postRequest(
-        api: ApiUrl.cartAdd, // API endpoint for adding a product to the cart
-        body: body, // The body of the request is now a map
+        api: ApiUrl.cartAdd,
+        body: body,
       );
 
       // Check the response status code
