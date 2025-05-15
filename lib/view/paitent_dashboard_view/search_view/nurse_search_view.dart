@@ -1,6 +1,3 @@
-// NurseSearchView.dart
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,7 +13,7 @@ import 'package:restaurent_discount_app/view/paitent_dashboard_view/search_view/
 import 'nurse_card_widget/nurse_card_widget.dart';
 
 class NurseSearchView extends StatefulWidget {
-  NurseSearchView({Key? key}) : super(key: key);
+  const NurseSearchView({Key? key}) : super(key: key);
 
   @override
   State<NurseSearchView> createState() => _NurseSearchViewState();
@@ -24,41 +21,40 @@ class NurseSearchView extends StatefulWidget {
 
 class _NurseSearchViewState extends State<NurseSearchView> {
   final AllNurseController _allNurseController = Get.put(AllNurseController());
-  List filteredNurses = [];
-  TextEditingController searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
+  // Make sure this list is typed correctly, assuming your nurse model type is dynamic here:
+  List<dynamic> _filteredNurses = [];
 
   @override
   void initState() {
     super.initState();
-    ever(_allNurseController.nurseData, (_) {
-      if (_allNurseController.nurseData.value.data != null) {
-        filteredNurses = List.from(_allNurseController.nurseData.value.data!);
-        setState(() {});
-      }
-    });
+    _allNurseController.getNurse();
+    _searchController.addListener(_onSearchChanged);
   }
 
-  void _filterNurses(String query) {
-    final allNurses = _allNurseController.nurseData.value.data ?? [];
+  void _onSearchChanged() {
+    final query = _searchController.text.toLowerCase();
+
     if (query.isEmpty) {
-      filteredNurses = List.from(allNurses);
+      setState(() {
+        _filteredNurses = _allNurseController.nurseData.value.data ?? [];
+      });
     } else {
-      filteredNurses = allNurses.where((nurse) {
-        final name = (nurse.fullname ?? '').toLowerCase();
-        return name.contains(query.toLowerCase());
-      }).toList();
+      setState(() {
+        _filteredNurses = (_allNurseController.nurseData.value.data ?? [])
+            .where((nurse) =>
+            (nurse.fullname ?? "").toLowerCase().contains(query))
+            .toList();
+      });
     }
-    setState(() {});
   }
 
-  List<String> _parseSpecialty(dynamic specialty) {
-    if (specialty == null) return [];
-    if (specialty is String) {
-      return specialty.split(',').map((e) => e.trim()).toList();
-    } else if (specialty is List) {
-      return specialty.map((e) => e.toString()).toList();
-    }
-    return [];
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -75,8 +71,7 @@ class _NurseSearchViewState extends State<NurseSearchView> {
           children: [
             SizedBox(height: 20),
             TextField(
-              controller: searchController,
-              onChanged: _filterNurses,
+              controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search here....',
                 hintStyle: GoogleFonts.abhayaLibre(),
@@ -85,7 +80,7 @@ class _NurseSearchViewState extends State<NurseSearchView> {
                   borderSide: BorderSide(color: AppColors.mainColor),
                 ),
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
+                EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
                 suffixIcon: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -104,26 +99,41 @@ class _NurseSearchViewState extends State<NurseSearchView> {
                   return Center(child: CustomLoader());
                 }
 
-                if (filteredNurses.isEmpty) {
-                  return Center(
-                      child: NotFoundWidget(message: "No Nurse Found"));
+                // Use filtered list if search text is not empty, else full list
+                final List<dynamic> displayList =
+                _searchController.text.isEmpty
+                    ? (_allNurseController.nurseData.value.data ?? [])
+                    : _filteredNurses;
+
+                if (displayList.isEmpty) {
+                  return Center(child: NotFoundWidget(message: "No Nurse Found"));
                 }
 
                 return ListView.builder(
-                  itemCount: filteredNurses.length,
+                  itemCount: displayList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final nurse = filteredNurses[index];
+                    final nurse = displayList[index];
+
+                    // Explicitly cast the specialty split list to List<String>
+                    List<String> servicesList = [];
+                    if (nurse.specialty != null && nurse.specialty is String) {
+                      servicesList = (nurse.specialty as String)
+                          .split(',')
+                          .map((e) => e.trim())
+                          .toList();
+                    }
+
                     return NurseCardWidget(
                       nurseName: nurse.fullname ?? "N/A",
                       profileImageUrl: nurse.profilePicture ??
                           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                      services: _parseSpecialty(nurse.specialty),
+                      services: servicesList,
                       availability: nurse.location.toString(),
                       onTap: () {
                         CustomSuccessAlertDialog.showCustomDialog(
                             title: "Success",
                             content:
-                                "You have successfully selected nurse. We will let you know when the nurse approve your request.",
+                            "You have successfully selected nurse. We will let you know when the nurse approve your request.",
                             onConfirm: () {});
                       },
                       email: nurse.email.toString(),

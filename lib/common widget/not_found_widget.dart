@@ -10,7 +10,8 @@ class NotFoundWidget extends StatelessWidget {
   const NotFoundWidget({
     Key? key,
     this.buttonText = "Retry",
-    this.onButtonPressed, required this.message,
+    this.onButtonPressed,
+    required this.message,
   }) : super(key: key);
 
   @override
@@ -20,7 +21,7 @@ class NotFoundWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 150),
+          SizedBox(height: 100),
           Icon(
             Icons.search_off,
             size: 50.h,
