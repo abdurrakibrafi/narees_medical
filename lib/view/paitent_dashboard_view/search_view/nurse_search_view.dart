@@ -15,10 +15,51 @@ import 'package:restaurent_discount_app/view/paitent_dashboard_view/search_view/
 
 import 'nurse_card_widget/nurse_card_widget.dart';
 
-class NurseSearchView extends StatelessWidget {
+class NurseSearchView extends StatefulWidget {
   NurseSearchView({Key? key}) : super(key: key);
 
+  @override
+  State<NurseSearchView> createState() => _NurseSearchViewState();
+}
+
+class _NurseSearchViewState extends State<NurseSearchView> {
   final AllNurseController _allNurseController = Get.put(AllNurseController());
+  List filteredNurses = [];
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    ever(_allNurseController.nurseData, (_) {
+      if (_allNurseController.nurseData.value.data != null) {
+        filteredNurses = List.from(_allNurseController.nurseData.value.data!);
+        setState(() {});
+      }
+    });
+  }
+
+  void _filterNurses(String query) {
+    final allNurses = _allNurseController.nurseData.value.data ?? [];
+    if (query.isEmpty) {
+      filteredNurses = List.from(allNurses);
+    } else {
+      filteredNurses = allNurses.where((nurse) {
+        final name = (nurse.fullname ?? '').toLowerCase();
+        return name.contains(query.toLowerCase());
+      }).toList();
+    }
+    setState(() {});
+  }
+
+  List<String> _parseSpecialty(dynamic specialty) {
+    if (specialty == null) return [];
+    if (specialty is String) {
+      return specialty.split(',').map((e) => e.trim()).toList();
+    } else if (specialty is List) {
+      return specialty.map((e) => e.toString()).toList();
+    }
+    return [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +75,8 @@ class NurseSearchView extends StatelessWidget {
           children: [
             SizedBox(height: 20),
             TextField(
-              onChanged: (value) {
-
-
-
-              },
+              controller: searchController,
+              onChanged: _filterNurses,
               decoration: InputDecoration(
                 hintText: 'Search here....',
                 hintStyle: GoogleFonts.abhayaLibre(),
@@ -66,27 +104,20 @@ class NurseSearchView extends StatelessWidget {
                   return Center(child: CustomLoader());
                 }
 
-                if (_allNurseController.nurseData.value.data == null ||
-                    _allNurseController.nurseData.value.data!.isEmpty) {
+                if (filteredNurses.isEmpty) {
                   return Center(
                       child: NotFoundWidget(message: "No Nurse Found"));
                 }
 
                 return ListView.builder(
-                  itemCount: _allNurseController.nurseData.value.data!.length,
+                  itemCount: filteredNurses.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final nurse =
-                        _allNurseController.nurseData.value.data![index];
+                    final nurse = filteredNurses[index];
                     return NurseCardWidget(
                       nurseName: nurse.fullname ?? "N/A",
                       profileImageUrl: nurse.profilePicture ??
                           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                      services: nurse.specialty != null
-                          ? nurse.specialty!
-                              .split(',')
-                              .map((e) => e.trim())
-                              .toList()
-                          : [],
+                      services: _parseSpecialty(nurse.specialty),
                       availability: nurse.location.toString(),
                       onTap: () {
                         CustomSuccessAlertDialog.showCustomDialog(
