@@ -1,11 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, avoid_print, sort_child_properties_last
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
@@ -13,9 +10,13 @@ import 'package:restaurent_discount_app/common%20widget/custom_dropdown_controll
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 import '../../../common widget/custom_button_widget.dart';
-import '../profile_complete_view/second_step_profile.dart';
 
 class EditProfile extends StatefulWidget {
+  final bool? spacilizaion;
+  final bool? docs;
+
+  const EditProfile({super.key, this.spacilizaion, this.docs});
+
   @override
   State<EditProfile> createState() => _EditProfileState();
 }
@@ -188,30 +189,34 @@ class _EditProfileState extends State<EditProfile> {
                   showObscure: false,
                 ),
                 SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: CustomDropdown(
-                    label: 'Specialization',
-                    hint: 'Select Specialization',
-                    value: 'IV Therapy Specialist',
-                    items: [
-                      'IV Therapy Specialist',
-                      'General Practitioner',
-                      'Nurse',
-                      'Surgeon'
-                    ],
-                    onChanged: (value) {
-                      print(value);
-                    },
+
+                if (widget.spacilizaion ?? false)
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomDropdown(
+                      label: 'Specialization',
+                      hint: 'Select Specialization',
+                      value: 'IV Therapy Specialist',
+                      items: [
+                        'IV Therapy Specialist',
+                        'General Practitioner',
+                        'Nurse',
+                        'Surgeon'
+                      ],
+                      onChanged: (value) {
+                        print(value);
+                      },
+                    ),
                   ),
-                ),
                 SizedBox(height: 20),
-                CustomText(
-                  text: "Upload Documents",
-                  fontSize: 15.h,
-                ),
-                SizedBox(height: 10),
-                Container(
+                // Conditionally show Upload Documents section
+                if (widget.docs ?? false) ...[
+                  CustomText(
+                    text: "Upload Documents",
+                    fontSize: 15.h,
+                  ),
+                  SizedBox(height: 10),
+                  Container(
                     color: Color(0xFFE4E4E4),
                     child: Row(
                       children: [
@@ -233,8 +238,10 @@ class _EditProfileState extends State<EditProfile> {
                           fontSize: 14.h,
                         )
                       ],
-                    )),
-                SizedBox(height: 30),
+                    ),
+                  ),
+                ],
+                SizedBox(height: 20),
                 SizedBox(
                   height: 55,
                   width: double.infinity,
@@ -243,7 +250,7 @@ class _EditProfileState extends State<EditProfile> {
                         colors: [Color(0xFF0071BC), Color(0xFF003456)],
                         begin: Alignment.topLeft,
                         end: Alignment.topRight),
-                    btnText: "Submit",
+                    btnText: "Update",
                     onTap: () {},
                     iconWant: false,
                   ),

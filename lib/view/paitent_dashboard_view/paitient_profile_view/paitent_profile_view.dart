@@ -77,7 +77,10 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 icon: Icons.person_3_outlined,
                 title: 'Edit Profile',
                 onTap: () {
-                  Get.to(() => EditProfile());
+                  Get.to(() => EditProfile(
+                        spacilizaion: false,
+                        docs: false,
+                      ));
                 },
               ),
               Divider(),
