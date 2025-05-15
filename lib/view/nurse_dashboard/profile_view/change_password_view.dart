@@ -43,6 +43,13 @@ class ChangePasswordView extends StatelessWidget {
               ),
               SizedBox(height: 25.h),
               CustomButtonWidget(
+                  gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF0071BC),
+                        Color(0xFF003456)
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
                   btnText: "Update Password", onTap: () {}, iconWant: false)
             ],
           ),

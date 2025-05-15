@@ -61,7 +61,10 @@ class CartPage extends StatelessWidget {
                     return CartItemWidget(
                       cartItem: cartItem,
                       onDismissed: () async {
-                        await deleteController.deleteCart(cartId: cartItem.id);
+                        await deleteController.deleteCart(
+                            cartId: controller
+                                .cartData.value.data![index].cartItem[index].id
+                                .toString());
                         controller.getCart();
                       },
                       onQuantityUpdate: (int change) {
