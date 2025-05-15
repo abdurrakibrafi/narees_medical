@@ -7,7 +7,7 @@ import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dar
 
 class NurseCardWidget extends StatelessWidget {
   final String nurseName;
-  final String distance;
+  final String email;
   final String profileImageUrl;
   final List<String> services;
   final String availability;
@@ -15,7 +15,7 @@ class NurseCardWidget extends StatelessWidget {
 
   const NurseCardWidget({
     required this.nurseName,
-    required this.distance,
+    required this.email,
     required this.profileImageUrl,
     required this.services,
     required this.availability,
@@ -41,13 +41,24 @@ class NurseCardWidget extends StatelessWidget {
                 ),
                 SizedBox(width: 10),
                 Expanded(
-                  child: CustomText(
-                    textAlign: TextAlign.start,
-                    text: nurseName,
-                    fontSize: 17.h,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      textAlign: TextAlign.start,
+                      text: nurseName,
+                      fontSize: 17.h,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    CustomText(
+                      textAlign: TextAlign.start,
+                      text: email,
+                      fontSize: 13.h,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ],
+                )),
               ],
             ),
             SizedBox(height: 10),
@@ -84,7 +95,7 @@ class NurseCardWidget extends StatelessWidget {
             // Availability
             Row(
               children: [
-                Icon(Icons.calendar_today_outlined, size: 16),
+                Icon(Icons.location_on_outlined, size: 16),
                 SizedBox(width: 6),
                 Expanded(
                   child: CustomText(

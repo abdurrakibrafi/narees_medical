@@ -1,30 +1,44 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// NurseSearchView.dart
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:restaurent_discount_app/common%20controller/custom%20alert%20dialog/custom_alert_dialog.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_success_alert_dialog.dart';
+import 'package:restaurent_discount_app/common%20widget/not_found_widget.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/search_view/controller/all_nurse_controller.dart';
 
-import '../../../uitilies/app_colors.dart';
 import 'nurse_card_widget/nurse_card_widget.dart';
 
 class NurseSearchView extends StatelessWidget {
-  const NurseSearchView({super.key});
+  NurseSearchView({Key? key}) : super(key: key);
+
+  final AllNurseController _allNurseController = Get.put(AllNurseController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Search",leading: Container(),),
+      appBar: CustomAppBar(
+        title: "Search",
+        leading: Container(),
+      ),
       body: Padding(
         padding: AppPadding.bodyPadding,
         child: Column(
           children: [
             SizedBox(height: 20),
             TextField(
+              onChanged: (value) {
+
+
+
+              },
               decoration: InputDecoration(
                 hintText: 'Search here....',
                 hintStyle: GoogleFonts.abhayaLibre(),
@@ -47,26 +61,46 @@ class NurseSearchView extends StatelessWidget {
             ),
             SizedBox(height: 15.h),
             Expanded(
-                child: ListView.builder(
-                    itemCount: 4,
-                    itemBuilder: (BuildContext context, index) {
-                      return NurseCardWidget(
-                        nurseName: "Nurse Emma Davis",
-                        distance: "3.2 mi",
-                        profileImageUrl:
-                            "https://c8.alamy.com/comp/D91YB6/beautiful-medical-nurse-portrait-in-office-D91YB6.jpg",
-                        services: ["IV Hydration", "Vitamin B12"],
-                        availability:
-                            "Available Mar 5, 2025, Morning (8 AM - 12 PM)",
-                        onTap: () {
-                          CustomSuccessAlertDialog.showCustomDialog(
-                              title: "Success",
-                              content:
-                                  "You have successfully selected nurse. We will let you know when the nurse approve your request.",
-                              onConfirm: () {});
-                        },
-                      );
-                    }))
+              child: Obx(() {
+                if (_allNurseController.isLoading.value) {
+                  return Center(child: CustomLoader());
+                }
+
+                if (_allNurseController.nurseData.value.data == null ||
+                    _allNurseController.nurseData.value.data!.isEmpty) {
+                  return Center(
+                      child: NotFoundWidget(message: "No Nurse Found"));
+                }
+
+                return ListView.builder(
+                  itemCount: _allNurseController.nurseData.value.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final nurse =
+                        _allNurseController.nurseData.value.data![index];
+                    return NurseCardWidget(
+                      nurseName: nurse.fullname ?? "N/A",
+                      profileImageUrl: nurse.profilePicture ??
+                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                      services: nurse.specialty != null
+                          ? nurse.specialty!
+                              .split(',')
+                              .map((e) => e.trim())
+                              .toList()
+                          : [],
+                      availability: nurse.location.toString(),
+                      onTap: () {
+                        CustomSuccessAlertDialog.showCustomDialog(
+                            title: "Success",
+                            content:
+                                "You have successfully selected nurse. We will let you know when the nurse approve your request.",
+                            onConfirm: () {});
+                      },
+                      email: nurse.email.toString(),
+                    );
+                  },
+                );
+              }),
+            ),
           ],
         ),
       ),

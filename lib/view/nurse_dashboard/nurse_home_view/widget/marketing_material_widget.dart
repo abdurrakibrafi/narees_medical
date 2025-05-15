@@ -6,6 +6,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 
+import '../../../../common widget/chached_network_image.dart';
+
 class MarketingMaterialCard extends StatelessWidget {
   final String desc;
   final String tag;
@@ -50,7 +52,7 @@ class MarketingMaterialCard extends StatelessWidget {
               child: CustomText(
                 textAlign: TextAlign.start,
                 text: desc,
-                fontSize: 21,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
@@ -76,33 +78,11 @@ class MarketingMaterialCard extends StatelessWidget {
                         BorderRadius.vertical(bottom: Radius.circular(12)),
                   ),
                   child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.vertical(bottom: Radius.circular(12)),
-                    child: CachedNetworkImage(
-                      imageUrl: image,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: Colors.grey.shade300,
-                        child: Center(
-                          child: Icon(
-                            Icons.image,
-                            size: 60,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.grey.shade300,
-                        child: Center(
-                          child: Icon(
-                            Icons.broken_image,
-                            size: 60,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(12)),
+                      child: CustomCachedImage(
+                        imageUrl: image,
+                      )),
                 ),
                 Positioned(
                   bottom: 0,

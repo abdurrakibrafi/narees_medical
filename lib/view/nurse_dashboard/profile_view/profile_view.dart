@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:restaurent_discount_app/common%20widget/chached_network_image.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/controller/get_profile_controller.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/payment_receipts_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
@@ -16,7 +18,21 @@ import '../message_view/message_view_of_nurse.dart';
 import 'change_password_view.dart';
 import 'edit_profile.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late final ProfileGetController _profileGetController;
+
+  @override
+  void initState() {
+    super.initState();
+    _profileGetController = Get.put(ProfileGetController());
+    _profileGetController.getProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,24 +44,37 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: NetworkImage(
-                        'https://img.freepik.com/free-photo/black-nurse-their-workspace_52683-100571.jpg?semt=ais_hybrid&w=740'),
-                  ),
-                ),
-                SizedBox(height: 16),
-                // Profile Name
-                Center(
-                  child: CustomText(
-                    text: 'Anna Sulaiya',
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Obx(() {
+                  return _profileGetController.isLoading.value
+                      ? CustomLoader()
+                      : Column(
+                          children: [
+                            ClipOval(
+                              child: CustomCachedImage(
+                                height: 140.0,
+                                width: 140.0,
+                                imageUrl: _profileGetController
+                                        .profile.value.data?.profilePicture
+                                        .toString() ??
+                                    "",
+                              ),
+                            ),
+                            SizedBox(height: 16),
+                            // Profile Name
+                            Center(
+                              child: CustomText(
+                                text: _profileGetController
+                                        .profile.value.data?.fullname
+                                        .toString() ??
+                                    "n/a",
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        );
+                }),
                 SizedBox(height: 20),
-
                 ProfileOption(
                   icon: Icons.person_3_outlined,
                   title: 'Edit Profile',
@@ -53,10 +82,7 @@ class ProfilePage extends StatelessWidget {
                     Get.to(() => EditProfile());
                   },
                 ),
-
                 Divider(),
-
-                // Training & Certification
                 ProfileOption(
                   icon: Icons.school,
                   title: 'Training & Certification',
@@ -64,10 +90,7 @@ class ProfilePage extends StatelessWidget {
                     Get.to(() => TrainingAndCertificationPage());
                   },
                 ),
-
-                // Divider
                 Divider(),
-
                 ProfileOption(
                   icon: Icons.history,
                   title: 'Supply Order History',
@@ -75,11 +98,7 @@ class ProfilePage extends StatelessWidget {
                     Get.to(() => SupplyOrderHistoryPage());
                   },
                 ),
-
-                // Divider
                 Divider(),
-
-                // Payment Receipts
                 ProfileOption(
                   icon: Icons.receipt,
                   title: 'Payment Receipts',
@@ -87,11 +106,7 @@ class ProfilePage extends StatelessWidget {
                     Get.to(() => PaymentReceiptsPage());
                   },
                 ),
-
-                // Divider
                 Divider(),
-
-                // Message
                 ProfileOption(
                   icon: Icons.message,
                   title: 'Message',
@@ -99,11 +114,7 @@ class ProfilePage extends StatelessWidget {
                     Get.to(() => ChatScreen());
                   },
                 ),
-
-                // Divider
                 Divider(),
-
-                // Change Password
                 ProfileOption(
                   icon: Icons.lock,
                   title: 'Change Password',
@@ -111,11 +122,7 @@ class ProfilePage extends StatelessWidget {
                     Get.to(() => ChangePasswordView());
                   },
                 ),
-
-                // Divider
                 Divider(),
-
-                // Settings
                 ProfileOption(
                   icon: Icons.settings,
                   title: 'Settings',
@@ -123,11 +130,7 @@ class ProfilePage extends StatelessWidget {
                     Get.to(() => SettingsView());
                   },
                 ),
-
-                // Divider
                 Divider(),
-
-                // Log Out
                 ProfileOption(
                   icon: Icons.logout,
                   title: 'Log Out',
