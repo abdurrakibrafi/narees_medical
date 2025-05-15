@@ -18,6 +18,8 @@ class ApiUrl {
   static const String profileUpdate = "$baseUrl/user/profile";
   static const String cartAdd = "$baseUrl/cart/add";
   static const String changePassword = "$baseUrl/auth/change-password";
+  static const String marketingMaterial =
+      "$baseUrl/market-material?searchTerm=tag1&limit=9999";
 
   static String deleteCart({required String cartId}) => "$baseUrl/cart/$cartId";
 

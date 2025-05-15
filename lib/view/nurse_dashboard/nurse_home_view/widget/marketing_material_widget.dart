@@ -1,99 +1,155 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_super_parameters
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 
 class MarketingMaterialCard extends StatelessWidget {
+  final String desc;
+  final String tag;
+  final String image;
+  final DateTime? createdAt;
+
+  const MarketingMaterialCard({
+    Key? key,
+    required this.desc,
+    required this.tag,
+    required this.image,
+    this.createdAt,
+  }) : super(key: key);
+
+  String getTimeAgo(DateTime? date) {
+    if (date == null) return '';
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inDays > 1) return '${difference.inDays} days ago';
+    if (difference.inDays == 1) return '1 day ago';
+    if (difference.inHours >= 1) return '${difference.inHours} hours ago';
+    if (difference.inMinutes >= 1) return '${difference.inMinutes} minutes ago';
+    return 'Just now';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(top: 10),child: Card(
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      elevation: 2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: CustomText(
-              textAlign: TextAlign.start,
-              text:
-              'Revitalize your body with a premium IV hydration session! 💧\nFeeling tired or dehydrated? Our mobile IV therapy comes to you! Book with me today for a quick energy boost.\n#MobileIV #VitaMedics"',
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-              color: Colors.black87,
-            ),
-          ),
-
-          // Image section with overlay
-          Stack(
-            children: [
-              // Image section
-              Container(
-                width: double.infinity,
-                height: 180,
-                decoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius.vertical(bottom: Radius.circular(12)),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRleWSzsHCA4WdEGSP6rjoBbdBo8wcJ9jkwWutmrFFCj2DgI0RFUnQ9QbQ558uy_wyjavc&usqp=CAU',
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: Card(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        elevation: 2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CustomText(
+                textAlign: TextAlign.start,
+                text: desc,
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
-
-              Positioned(
-                bottom: 0,
-                left: 1,
-                right: 1,
-                child: Container(
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CustomText(
+                textAlign: TextAlign.start,
+                text: tag.split(', ').map((t) => '#$t').join(' '),
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: AppColors.mainColor,
+              ),
+            ),
+            // Image section with overlay
+            Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 180,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
-                    ),
-                    color: Colors.black.withOpacity(0.4),
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(12)),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Post time
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: CustomText(
-                          text: '2 days ago',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.h,
-                          color: Colors.white,
-                        ),
-                      ),
-                      // Share button
-
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.white),
-                          child: Image.asset(
-                            "assets/images/Vector.png",
-                            width: 28,
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(12)),
+                    child: CachedNetworkImage(
+                      imageUrl: image,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        color: Colors.grey.shade300,
+                        child: Center(
+                          child: Icon(
+                            Icons.image,
+                            size: 60,
+                            color: Colors.grey.shade600,
                           ),
                         ),
-                      )
-                    ],
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: Colors.grey.shade300,
+                        child: Center(
+                          child: Icon(
+                            Icons.broken_image,
+                            size: 60,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                Positioned(
+                  bottom: 0,
+                  left: 1,
+                  right: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                      ),
+                      color: Colors.black.withOpacity(0.4),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: CustomText(
+                            text: getTimeAgo(createdAt),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.h,
+                            color: Colors.white,
+                          ),
+                        ),
+                        // Share button
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: Colors.white),
+                            child: Image.asset(
+                              "assets/images/Vector.png",
+                              width: 28,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

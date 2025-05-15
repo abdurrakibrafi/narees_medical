@@ -49,6 +49,7 @@ class _DashboardForNurseState extends State<DashboardForNurse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.circular(45),
