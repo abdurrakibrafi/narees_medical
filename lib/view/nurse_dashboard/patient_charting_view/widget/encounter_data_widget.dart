@@ -9,7 +9,7 @@ import '../../../../common widget/custom text/custom_text_widget.dart';
 import '../../../../common widget/custom_button_widget.dart';
 import '../../../../common widget/custom_text_filed.dart';
 import '../../../../uitilies/constant.dart';
-import '../../../profile_complete_view/second_step_profile.dart';
+import '../../profile_complete_view/second_step_profile.dart';
 
 class EncounterDataWidget extends StatelessWidget {
   const EncounterDataWidget({super.key});
@@ -69,7 +69,7 @@ class EncounterDataWidget extends StatelessWidget {
                       end: Alignment.topRight),
                   btnText: "Submit",
                   onTap: () {
-                    Get.to(() => SecondStepProfile());
+                    // Get.to(() => SecondStepProfile());
                   },
                   iconWant: false,
                 ),

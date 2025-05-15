@@ -6,7 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import '../../../../common widget/custom text/custom_text_widget.dart';
-import '../../../profile_complete_view/profile_complete_view.dart';
+import '../../../nurse_dashboard/profile_complete_view/profile_complete_view.dart';
 
 
 class ProfileCompleteView extends StatefulWidget {
@@ -24,6 +24,11 @@ class _ProfileCompleteViewState extends State<ProfileCompleteView> {
       _showSuccessDialog();
     });
   }
+
+
+
+
+
 
   void _showSuccessDialog() {
     showDialog(

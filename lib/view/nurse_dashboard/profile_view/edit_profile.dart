@@ -12,9 +12,8 @@ import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.da
 import 'package:restaurent_discount_app/common%20widget/custom_dropdown_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
-import 'package:restaurent_discount_app/view/profile_complete_view/second_step_profile.dart';
-
 import '../../../common widget/custom_button_widget.dart';
+import '../profile_complete_view/second_step_profile.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -247,7 +246,7 @@ class _EditProfileState extends State<EditProfile> {
 
                     btnText: "Next",
                     onTap: () {
-                      Get.to(() => SecondStepProfile());
+                      // Get.to(() => SecondStepProfile());
                     },
                     iconWant: false,
                   ),

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'dart:convert';
 import 'package:get/get.dart';
@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:restaurent_discount_app/uitilies/api/api_url.dart';
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
 import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
+import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/sign_in_view/profile_complete_view.dart';
 import '../../../../bottom_navigation_view/bottom_navigation_bar_for_paitient.dart';
 import '../../../../tranning_module/tranning_module_view.dart';
 
@@ -42,18 +44,20 @@ class SignInController extends GetxController {
           String accessToken = responseBody['data']['accessToken'];
           String role = responseBody['data']['role'];
           String id = responseBody['data']['id'];
+          dynamic loginCount = responseBody['data']['loginCount'];
 
           await _storageService.write('accessToken', accessToken);
           await _storageService.write('role', role);
           await _storageService.write('id', id);
 
-          // Conditional navigation based on role
           if (role == "NURSE") {
-            Get.offAll(
-                () => TrainingPortalScreen());
+            if (loginCount != null && loginCount > 1) {
+              Get.offAll(() => DashboardForNurse());
+            } else {
+              Get.offAll(() => ProfileCompleteView());
+            }
           } else if (role == "PATIENT") {
-            Get.offAll(() =>
-                BottomNavigationBarForPaitient());
+            Get.offAll(() => BottomNavigationBarForPaitient());
           } else {
             CustomToast.showToast("Invalid role detected", isError: true);
           }

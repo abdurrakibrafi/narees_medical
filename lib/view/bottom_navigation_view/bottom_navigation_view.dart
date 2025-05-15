@@ -11,12 +11,12 @@ import '../nurse_dashboard/appointment_view/appointment_view.dart';
 import '../nurse_dashboard/patient_charting_view/patient_charting_view.dart';
 import '../paitent_dashboard_view/inventory_list_view/inventory_list_view.dart';
 
-class BottomNavigation extends StatefulWidget {
+class DashboardForNurse extends StatefulWidget {
   @override
-  _BottomNavigationState createState() => _BottomNavigationState();
+  _DashboardForNurseState createState() => _DashboardForNurseState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class _DashboardForNurseState extends State<DashboardForNurse> {
   int _selectedIndex = 0;
 
   List<Widget> _pages = [

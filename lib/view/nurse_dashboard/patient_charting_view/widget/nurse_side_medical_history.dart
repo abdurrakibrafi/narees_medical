@@ -8,8 +8,6 @@ import '../../../../common widget/custom_button_widget.dart';
 import '../../../../common widget/custom_dropdown_controller.dart';
 import '../../../../common widget/custom_text_filed.dart';
 import '../../../../uitilies/constant.dart';
-import '../../../profile_complete_view/second_step_profile.dart'
-    show SecondStepProfile;
 
 class NurseSideMedicalHistory extends StatelessWidget {
   const NurseSideMedicalHistory({super.key});

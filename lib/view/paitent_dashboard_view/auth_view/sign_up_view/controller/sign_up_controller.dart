@@ -24,7 +24,6 @@ class RegisterController extends GetxController {
       var uri = Uri.parse(ApiUrl.signInEndPoint);
       final StorageService _storageService = StorageService();
 
-      // Creating the data as a JSON string
       var data = jsonEncode({
         'email': email,
         'password': password,
@@ -34,7 +33,6 @@ class RegisterController extends GetxController {
         'role': role,
       });
 
-      // Create the multipart request
       var request = http.MultipartRequest('POST', uri)..fields['data'] = data;
 
       print("Request Body: ${request.fields}");

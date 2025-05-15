@@ -10,9 +10,9 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
-import 'package:restaurent_discount_app/view/profile_complete_view/second_step_profile.dart';
 
 import '../../../common widget/custom_button_widget.dart';
+import '../profile_complete_view/second_step_profile.dart';
 
 class AddPatientChartView extends StatefulWidget {
   @override
@@ -172,7 +172,7 @@ class _AddPatientChartViewState extends State<AddPatientChartView> {
                         end: Alignment.topRight),
                     btnText: "Submit",
                     onTap: () {
-                      Get.to(() => SecondStepProfile());
+                      // Get.to(() => SecondStepProfile());
                     },
                     iconWant: false,
                   ),
