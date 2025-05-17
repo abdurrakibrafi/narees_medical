@@ -11,9 +11,11 @@ class CustomSuccessAlertDialog {
   static void showCustomDialog({
     required String title,
     required String content,
+    required String? btnText,
     required VoidCallback onConfirm,
     bool showButton = true,
     List<Widget> customWidgets = const [],
+    RxBool? isLoading, // new param
   }) {
     Get.dialog(
       Dialog(
@@ -26,14 +28,12 @@ class CustomSuccessAlertDialog {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Icon
               Icon(
                 Icons.check_circle,
                 color: AppColors.mainColor,
                 size: 70.h,
               ),
               SizedBox(height: 5.h),
-              // Title
               Text(
                 title,
                 style: GoogleFonts.kumbhSans(
@@ -44,7 +44,6 @@ class CustomSuccessAlertDialog {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10.h),
-              // Content
               Text(
                 content,
                 style: GoogleFonts.kumbhSans(
@@ -59,20 +58,47 @@ class CustomSuccessAlertDialog {
                 SizedBox(
                   height: 45,
                   width: Get.width / 2.5,
-                  child: CustomButtonWidget(
+                  child: isLoading != null
+                      ? Obx(() {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        padding: EdgeInsets.zero,
+                        backgroundColor: Color(0xFF0071BC),
+                      ),
+                      onPressed: isLoading.value ? null : onConfirm,
+                      child: isLoading.value
+                          ? SizedBox(
+                        width: 24.w,
+                        height: 24.h,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                          : Text(
+                        btnText ?? "",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                    );
+                  })
+                      : CustomButtonWidget(
                     gradient: LinearGradient(
                         colors: [Color(0xFF0071BC), Color(0xFF003456)],
                         begin: Alignment.topLeft,
                         end: Alignment.topRight),
                     btnTextColor: Colors.white,
-                    btnText: "Go to Home",
+                    btnText: btnText ?? "",
                     onTap: onConfirm,
                     iconWant: false,
                   ),
                 ),
-              SizedBox(
-                  height:
-                      10.h), // Add spacing between button and custom widgets
+              SizedBox(height: 10.h),
             ],
           ),
         ),
@@ -80,4 +106,5 @@ class CustomSuccessAlertDialog {
       barrierDismissible: true,
     );
   }
+
 }

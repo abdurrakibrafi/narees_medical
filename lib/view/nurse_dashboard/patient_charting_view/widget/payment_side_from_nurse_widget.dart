@@ -61,16 +61,22 @@ class PaymentSideFromNurseWidget extends StatelessWidget {
                     end: Alignment.topRight),
                 btnText: "Submit",
                 onTap: () {
-                  CustomSuccessAlertDialog.showCustomDialog(customWidgets: [
-                    RowWiseWidget(
-                        title: "Transaction ID", subTitle: "#TXN20250307"),
-                    RowWiseWidget(title: "Date", subTitle: "03-03-24"),
-                    RowWiseWidget(
-                        title: "Procedure Performed", subTitle: "#TXN20250307"),
-                    RowWiseWidget(
-                        title: "Payment Method", subTitle: "Credit"),
-                    RowWiseWidget(title: "Processed by", subTitle: "Rafi"),
-                  ], title: "Payment ", content: "", onConfirm: () {});
+                  CustomSuccessAlertDialog.showCustomDialog(
+                      customWidgets: [
+                        RowWiseWidget(
+                            title: "Transaction ID", subTitle: "#TXN20250307"),
+                        RowWiseWidget(title: "Date", subTitle: "03-03-24"),
+                        RowWiseWidget(
+                            title: "Procedure Performed",
+                            subTitle: "#TXN20250307"),
+                        RowWiseWidget(
+                            title: "Payment Method", subTitle: "Credit"),
+                        RowWiseWidget(title: "Processed by", subTitle: "Rafi"),
+                      ],
+                      title: "Payment ",
+                      content: "",
+                      onConfirm: () {},
+                      btnText: 'Go to home');
                 },
                 iconWant: false,
               ),

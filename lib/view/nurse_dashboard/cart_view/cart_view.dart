@@ -7,6 +7,7 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/controller/order_post_cart_controller.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/widget/cart_item_widget.dart'; // Import CartItemWidget
 import '../../../common widget/not_found_widget.dart';
 import 'controller/cart_get_controller.dart';
@@ -18,6 +19,9 @@ class CartPage extends StatelessWidget {
     final CartGetController controller = Get.put(CartGetController());
     final DeleteCartController deleteController =
         Get.put(DeleteCartController());
+
+    final OrderCreatePostController _controller =
+        Get.put(OrderCreatePostController());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -118,18 +122,22 @@ class CartPage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10),
-                CustomButtonWidget(
-                  gradient: LinearGradient(
-                      colors: [Color(0xFF0071BC), Color(0xFF003456)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.topRight),
-                  btnTextSize: 16.0,
-                  btnText: "Proceed to Payment",
-                  onTap: () {
-                    // Handle proceed to payment logic
-                  },
-                  iconWant: false,
-                ),
+                Obx(() {
+                  return _controller.isLoading.value == true
+                      ? CustomLoader()
+                      : CustomButtonWidget(
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.topRight),
+                          btnTextSize: 16.0,
+                          btnText: "Proceed to Payment",
+                          onTap: () {
+                            _controller.orderCreate();
+                          },
+                          iconWant: false,
+                        );
+                }),
                 SizedBox(height: 10),
               ],
             ),

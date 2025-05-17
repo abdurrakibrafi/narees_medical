@@ -12,6 +12,7 @@ import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.da
 import 'package:restaurent_discount_app/common%20widget/custom_dropdown_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/controller/update_profile_controller.dart';
 import '../../../common widget/custom_button_widget.dart';
 
@@ -308,7 +309,7 @@ class _EditProfileState extends State<EditProfile> {
                 width: double.infinity,
                 child: Obx(() {
                   if (_updateProfileController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(child: CustomLoader());
                   }
                   return CustomButtonWidget(
                     gradient: LinearGradient(
@@ -317,14 +318,12 @@ class _EditProfileState extends State<EditProfile> {
                         end: Alignment.topRight),
                     btnText: "Update",
                     onTap: () async {
-                      // Call the update profile API
                       await _updateProfileController.updateProfile(
                         firstName: _firstNameController.text.trim(),
                         lastName: _lastNameController.text.trim(),
                         location: _locationController.text.trim(),
                         zipCode: _zipCodeController.text.trim(),
                         email: _emailController.text.trim(),
-                        role: "PATIENT",
                         phoneNumber: phoneC.text,
                         profilePicture:
                             _imageFile != null ? File(_imageFile!.path) : null,

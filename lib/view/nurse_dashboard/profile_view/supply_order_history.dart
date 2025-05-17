@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
-import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/order_card_widget.dart';
 
 class SupplyOrderHistoryPage extends StatelessWidget {
   @override
@@ -50,13 +50,10 @@ class SupplyOrderHistoryPage extends StatelessWidget {
                     ],
                   ),
                 )),
-
-            Divider(), // Divider after the header
-
-            // ListView to display orders
+            Divider(),
             Expanded(
               child: ListView.builder(
-                itemCount: 4, // Total number of orders
+                itemCount: 4,
                 itemBuilder: (context, index) {
                   return OrderCard(
                     productName: 'IV Fluid Bag (1L Saline)',
@@ -69,83 +66,6 @@ class SupplyOrderHistoryPage extends StatelessWidget {
                             : 'Pending',
                   );
                 },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// OrderCard Widget to display individual order details
-class OrderCard extends StatelessWidget {
-  final String productName;
-  final String company;
-  final int quantity;
-  final String status;
-
-  const OrderCard({
-    Key? key,
-    required this.productName,
-    required this.company,
-    required this.quantity,
-    required this.status,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // Color for the status text
-    Color statusColor;
-    if (status == 'Approve') {
-      statusColor = Colors.green;
-    } else if (status == 'Reject') {
-      statusColor = Colors.red;
-    } else {
-      statusColor = Colors.orange; // Pending color
-    }
-
-    return Card(
-      color: Colors.white,
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      elevation: 0.3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            // Product name and company
-            Expanded(
-              flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: productName,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.h,
-                  ),
-                  SizedBox(height: 4),
-                  CustomText(
-                    text: company,
-                    fontSize: 13.h,
-                  ),
-                ],
-              ),
-            ),
-            // Quantity
-            Expanded(
-              child: Text('$quantity'),
-            ),
-            // Status with color
-            Expanded(
-              child: CustomText(
-                text: status,
-                color: statusColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 13.h,
               ),
             ),
           ],

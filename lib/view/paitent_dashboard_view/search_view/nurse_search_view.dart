@@ -134,7 +134,7 @@ class _NurseSearchViewState extends State<NurseSearchView> {
                             title: "Success",
                             content:
                             "You have successfully selected nurse. We will let you know when the nurse approve your request.",
-                            onConfirm: () {});
+                            onConfirm: () {}, btnText: 'Go to home');
                       },
                       email: nurse.email.toString(),
                     );

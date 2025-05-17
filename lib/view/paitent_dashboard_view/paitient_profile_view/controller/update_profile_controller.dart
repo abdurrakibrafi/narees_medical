@@ -18,7 +18,6 @@ class UpdateProfileController extends GetxController {
     required String location,
     required String zipCode,
     required String email,
-    required String role,
     required String phoneNumber,
     File? profilePicture,
   }) async {
@@ -52,7 +51,6 @@ class UpdateProfileController extends GetxController {
         'lastName': lastName,
         'location': location,
         'zipCode': zipCode,
-        'role': role,
       });
 
       print("Request headers: ${request.headers}");
@@ -70,7 +68,7 @@ class UpdateProfileController extends GetxController {
 
         if (responseJson['success'] == true) {
           CustomToast.showToast("Profile update successful!");
-          Get.to(() => BottomNavigationBarForPaitient());
+          Get.offAll(() => BottomNavigationBarForPaitient());
         } else {
           String errorMessage =
               responseJson['message'] ?? 'Update failed. Please try again.';
