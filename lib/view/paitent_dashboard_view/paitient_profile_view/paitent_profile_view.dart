@@ -80,18 +80,18 @@ class _ProfilePageState extends State<PaitientProfileView> {
                   final data = _profileGetController.profile.value.data;
 
                   Get.to(() => EditProfile(
-                    spacilizaion: false,
-                    docs: false,
-                    firstName: data?.firstName ?? '',
-                    lastame: data?.lastName ?? '',
-                    emailAddress: data?.email ?? '',
-                    image: data?.profilePicture ?? '',
-                    location:  '',
-                    zipCode:  '',
-                  ));
+                        spacilizaion: false,
+                        docs: false,
+                        firstName: data?.firstName ?? '',
+                        lastame: data?.lastName ?? '',
+                        emailAddress: data?.email ?? '',
+                        image: data?.profilePicture ?? '',
+                        location: '',
+                        zipCode: '',
+                        phoneNumber: '',
+                      ));
                 },
               ),
-
               Divider(),
               ProfileOption(
                 icon: Icons.history,

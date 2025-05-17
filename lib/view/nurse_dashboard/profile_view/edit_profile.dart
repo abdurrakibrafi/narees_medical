@@ -3,12 +3,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_dropdown_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/controller/update_profile_controller.dart';
 import '../../../common widget/custom_button_widget.dart';
 
 class EditProfile extends StatefulWidget {
@@ -17,6 +21,7 @@ class EditProfile extends StatefulWidget {
   final String emailAddress;
   final String image;
   final String location;
+  final String phoneNumber;
   final String zipCode;
 
   final bool? spacilizaion;
@@ -31,7 +36,8 @@ class EditProfile extends StatefulWidget {
       required this.emailAddress,
       required this.image,
       required this.location,
-      required this.zipCode});
+      required this.zipCode,
+      required this.phoneNumber});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -42,12 +48,16 @@ class _EditProfileState extends State<EditProfile> {
   XFile? _imageFile;
   String selectedValue = "Specialization";
 
+  final UpdateProfileController _updateProfileController =
+      Get.put(UpdateProfileController());
+
   // Controllers
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
   late TextEditingController _locationController;
   late TextEditingController _zipCodeController;
+  late TextEditingController phoneC;
 
   @override
   void initState() {
@@ -57,6 +67,7 @@ class _EditProfileState extends State<EditProfile> {
     _emailController = TextEditingController(text: widget.emailAddress);
     _locationController = TextEditingController(text: widget.location);
     _zipCodeController = TextEditingController(text: widget.zipCode);
+    phoneC = TextEditingController(text: widget.phoneNumber);
   }
 
   @override
@@ -133,19 +144,19 @@ class _EditProfileState extends State<EditProfile> {
                       borderRadius: BorderRadius.circular(100),
                       child: _imageFile != null
                           ? Image.file(
-                        File(_imageFile!.path),
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      )
+                              File(_imageFile!.path),
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            )
                           : Image.network(
-                        widget.image.isNotEmpty
-                            ? widget.image
-                            : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
+                              widget.image.isNotEmpty
+                                  ? widget.image
+                                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     Positioned(
                       bottom: 4,
@@ -209,6 +220,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
               SizedBox(height: 20),
               CustomTextField(
+                readOnly: true,
                 controller: _emailController,
                 fillColor: Color(0xFFE4E4E4),
                 borderColor: Colors.transparent,
@@ -217,6 +229,7 @@ class _EditProfileState extends State<EditProfile> {
               ),
               SizedBox(height: 20),
               CustomTextField(
+                controller: phoneC,
                 fillColor: Color(0xFFE4E4E4),
                 borderColor: Colors.transparent,
                 hintText: "Phone number",
@@ -239,7 +252,6 @@ class _EditProfileState extends State<EditProfile> {
                 showObscure: false,
               ),
               SizedBox(height: 20),
-
               if (widget.spacilizaion ?? false)
                 SizedBox(
                   width: double.infinity,
@@ -294,15 +306,33 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(
                 height: 55,
                 width: double.infinity,
-                child: CustomButtonWidget(
-                  gradient: LinearGradient(
-                      colors: [Color(0xFF0071BC), Color(0xFF003456)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.topRight),
-                  btnText: "Update",
-                  onTap: () {},
-                  iconWant: false,
-                ),
+                child: Obx(() {
+                  if (_updateProfileController.isLoading.value) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return CustomButtonWidget(
+                    gradient: LinearGradient(
+                        colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.topRight),
+                    btnText: "Update",
+                    onTap: () async {
+                      // Call the update profile API
+                      await _updateProfileController.updateProfile(
+                        firstName: _firstNameController.text.trim(),
+                        lastName: _lastNameController.text.trim(),
+                        location: _locationController.text.trim(),
+                        zipCode: _zipCodeController.text.trim(),
+                        email: _emailController.text.trim(),
+                        role: "PATIENT",
+                        phoneNumber: phoneC.text,
+                        profilePicture:
+                            _imageFile != null ? File(_imageFile!.path) : null,
+                      );
+                    },
+                    iconWant: false,
+                  );
+                }),
               ),
               SizedBox(height: 30),
             ],
@@ -312,4 +342,3 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 }
-

@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           emailAddress: '',
                           image: '',
                           location: '',
-                          zipCode: '',
+                          zipCode: '', phoneNumber: '',
                         ));
                   },
                 ),
