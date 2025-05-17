@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,9 +23,9 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color statusColor;
-    if (status == 'Approve') {
+    if (status == 'APPROVED') {
       statusColor = Colors.green;
-    } else if (status == 'Reject') {
+    } else if (status == 'PENDING') {
       statusColor = Colors.red;
     } else {
       statusColor = Colors.orange; // Pending color
@@ -40,7 +42,6 @@ class OrderCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            // Product name and company
             Expanded(
               flex: 3,
               child: Column(
@@ -63,13 +64,13 @@ class OrderCard extends StatelessWidget {
             Expanded(
               child: Text('$quantity'),
             ),
-            // Status with color
+
             Expanded(
               child: CustomText(
                 text: status,
                 color: statusColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 13.h,
+                fontSize: 11.h,
               ),
             ),
           ],
