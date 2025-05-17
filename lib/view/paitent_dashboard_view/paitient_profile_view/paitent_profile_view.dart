@@ -77,12 +77,21 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 icon: Icons.person_3_outlined,
                 title: 'Edit Profile',
                 onTap: () {
+                  final data = _profileGetController.profile.value.data;
+
                   Get.to(() => EditProfile(
-                        spacilizaion: false,
-                        docs: false,
-                      ));
+                    spacilizaion: false,
+                    docs: false,
+                    firstName: data?.firstName ?? '',
+                    lastame: data?.lastName ?? '',
+                    emailAddress: data?.email ?? '',
+                    image: data?.profilePicture ?? '',
+                    location:  '',
+                    zipCode:  '',
+                  ));
                 },
               ),
+
               Divider(),
               ProfileOption(
                 icon: Icons.history,

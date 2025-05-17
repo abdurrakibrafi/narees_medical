@@ -12,10 +12,26 @@ import 'package:restaurent_discount_app/uitilies/constant.dart';
 import '../../../common widget/custom_button_widget.dart';
 
 class EditProfile extends StatefulWidget {
+  final String firstName;
+  final String lastame;
+  final String emailAddress;
+  final String image;
+  final String location;
+  final String zipCode;
+
   final bool? spacilizaion;
   final bool? docs;
 
-  const EditProfile({super.key, this.spacilizaion, this.docs});
+  const EditProfile(
+      {super.key,
+      this.spacilizaion,
+      this.docs,
+      required this.firstName,
+      required this.lastame,
+      required this.emailAddress,
+      required this.image,
+      required this.location,
+      required this.zipCode});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -25,6 +41,33 @@ class _EditProfileState extends State<EditProfile> {
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
   String selectedValue = "Specialization";
+
+  // Controllers
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
+  late TextEditingController _emailController;
+  late TextEditingController _locationController;
+  late TextEditingController _zipCodeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _firstNameController = TextEditingController(text: widget.firstName);
+    _lastNameController = TextEditingController(text: widget.lastame);
+    _emailController = TextEditingController(text: widget.emailAddress);
+    _locationController = TextEditingController(text: widget.location);
+    _zipCodeController = TextEditingController(text: widget.zipCode);
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _locationController.dispose();
+    _zipCodeController.dispose();
+    super.dispose();
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -75,190 +118,198 @@ class _EditProfileState extends State<EditProfile> {
       appBar: CustomAppBar(title: "Update Profile"),
       backgroundColor: Colors.white,
       body: Container(
-          padding: AppPadding.bodyPadding,
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                Center(
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: _imageFile != null
-                            ? Image.file(
-                                File(_imageFile!.path),
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.network(
-                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                      Positioned(
-                        bottom: 4,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: () => _showImagePickerOptions(context),
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(50),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Icon(
-                              Icons.camera_alt_outlined,
-                              color: Colors.blue,
-                              size: 22,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 40),
-                CustomText(
-                  text: "Personal Information",
-                  fontSize: 15.h,
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        padding: AppPadding.bodyPadding,
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              Center(
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: CustomTextField(
-                        fillColor: Color(0xFFE4E4E4),
-                        borderColor: Colors.transparent,
-                        hintText: "First Name",
-                        showObscure: false,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: _imageFile != null
+                          ? Image.file(
+                        File(_imageFile!.path),
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      )
+                          : Image.network(
+                        widget.image.isNotEmpty
+                            ? widget.image
+                            : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: CustomTextField(
-                        fillColor: Color(0xFFE4E4E4),
-                        borderColor: Colors.transparent,
-                        hintText: "Last Name",
-                        showObscure: false,
+                    Positioned(
+                      bottom: 4,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () => _showImagePickerOptions(context),
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(50),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.camera_alt_outlined,
+                            color: Colors.blue,
+                            size: 22,
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                CustomTextField(
-                  fillColor: Color(0xFFE4E4E4),
-                  borderColor: Colors.transparent,
-                  hintText: "Email Address",
-                  showObscure: false,
-                ),
-                SizedBox(height: 20),
-                CustomTextField(
-                  fillColor: Color(0xFFE4E4E4),
-                  borderColor: Colors.transparent,
-                  hintText: "Phone number",
-                  showObscure: false,
-                ),
-                SizedBox(height: 20),
-                CustomTextField(
-                  fillColor: Color(0xFFE4E4E4),
-                  borderColor: Colors.transparent,
-                  hintText: "Location",
-                  showObscure: false,
-                ),
-                SizedBox(height: 20),
-                CustomTextField(
-                  fillColor: Color(0xFFE4E4E4),
-                  borderColor: Colors.transparent,
-                  hintText: "Zip Code",
-                  showObscure: false,
-                ),
-                SizedBox(height: 20),
-
-                if (widget.spacilizaion ?? false)
-                  SizedBox(
-                    width: double.infinity,
-                    child: CustomDropdown(
-                      label: 'Specialization',
-                      hint: 'Select Specialization',
-                      value: 'IV Therapy Specialist',
-                      items: [
-                        'IV Therapy Specialist',
-                        'General Practitioner',
-                        'Nurse',
-                        'Surgeon'
-                      ],
-                      onChanged: (value) {
-                        print(value);
-                      },
+              ),
+              SizedBox(height: 40),
+              CustomText(
+                text: "Personal Information",
+                fontSize: 15.h,
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      controller: _firstNameController,
+                      fillColor: Color(0xFFE4E4E4),
+                      borderColor: Colors.transparent,
+                      hintText: "First Name",
+                      showObscure: false,
                     ),
                   ),
-                SizedBox(height: 20),
-                // Conditionally show Upload Documents section
-                if (widget.docs ?? false) ...[
-                  CustomText(
-                    text: "Upload Documents",
-                    fontSize: 15.h,
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    color: Color(0xFFE4E4E4),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(3),
-                          child: CustomText(
-                            text: "Choose file",
-                            fontSize: 14.h,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        CustomText(
-                          text: "Add more image",
-                          color: Colors.grey,
-                          fontSize: 14.h,
-                        )
-                      ],
+                  SizedBox(width: 12),
+                  Expanded(
+                    child: CustomTextField(
+                      controller: _lastNameController,
+                      fillColor: Color(0xFFE4E4E4),
+                      borderColor: Colors.transparent,
+                      hintText: "Last Name",
+                      showObscure: false,
                     ),
                   ),
                 ],
-                SizedBox(height: 20),
+              ),
+              SizedBox(height: 20),
+              CustomTextField(
+                controller: _emailController,
+                fillColor: Color(0xFFE4E4E4),
+                borderColor: Colors.transparent,
+                hintText: "Email Address",
+                showObscure: false,
+              ),
+              SizedBox(height: 20),
+              CustomTextField(
+                fillColor: Color(0xFFE4E4E4),
+                borderColor: Colors.transparent,
+                hintText: "Phone number",
+                showObscure: false,
+              ),
+              SizedBox(height: 20),
+              CustomTextField(
+                controller: _locationController,
+                fillColor: Color(0xFFE4E4E4),
+                borderColor: Colors.transparent,
+                hintText: "Location",
+                showObscure: false,
+              ),
+              SizedBox(height: 20),
+              CustomTextField(
+                controller: _zipCodeController,
+                fillColor: Color(0xFFE4E4E4),
+                borderColor: Colors.transparent,
+                hintText: "Zip Code",
+                showObscure: false,
+              ),
+              SizedBox(height: 20),
+
+              if (widget.spacilizaion ?? false)
                 SizedBox(
-                  height: 55,
                   width: double.infinity,
-                  child: CustomButtonWidget(
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF0071BC), Color(0xFF003456)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.topRight),
-                    btnText: "Update",
-                    onTap: () {},
-                    iconWant: false,
+                  child: CustomDropdown(
+                    label: 'Specialization',
+                    hint: 'Select Specialization',
+                    value: 'IV Therapy Specialist',
+                    items: [
+                      'IV Therapy Specialist',
+                      'General Practitioner',
+                      'Nurse',
+                      'Surgeon'
+                    ],
+                    onChanged: (value) {
+                      print(value);
+                    },
                   ),
                 ),
-                SizedBox(height: 30),
+              SizedBox(height: 20),
+              if (widget.docs ?? false) ...[
+                CustomText(
+                  text: "Upload Documents",
+                  fontSize: 15.h,
+                ),
+                SizedBox(height: 10),
+                Container(
+                  color: Color(0xFFE4E4E4),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(3),
+                        child: CustomText(
+                          text: "Choose file",
+                          fontSize: 14.h,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      CustomText(
+                        text: "Add more image",
+                        color: Colors.grey,
+                        fontSize: 14.h,
+                      )
+                    ],
+                  ),
+                ),
               ],
-            ),
-          )),
+              SizedBox(height: 20),
+              SizedBox(
+                height: 55,
+                width: double.infinity,
+                child: CustomButtonWidget(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
+                  btnText: "Update",
+                  onTap: () {},
+                  iconWant: false,
+                ),
+              ),
+              SizedBox(height: 30),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
+

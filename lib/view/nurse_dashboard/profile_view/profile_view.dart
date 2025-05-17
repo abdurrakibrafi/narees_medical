@@ -79,7 +79,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: Icons.person_3_outlined,
                   title: 'Edit Profile',
                   onTap: () {
-                    Get.to(() => EditProfile());
+                    Get.to(() => EditProfile(
+                          firstName: '',
+                          lastame: '',
+                          emailAddress: '',
+                          image: '',
+                          location: '',
+                          zipCode: '',
+                        ));
                   },
                 ),
                 Divider(),
