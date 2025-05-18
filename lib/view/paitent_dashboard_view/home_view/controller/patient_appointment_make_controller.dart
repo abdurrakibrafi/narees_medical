@@ -12,13 +12,21 @@ class AddToCartController extends GetxController {
   final CartGetController _controller = Get.put(CartGetController());
 
   Future<void> addProductToCart(
-      {required String productId, required dynamic quantity}) async {
+      {required String firstName, required String lastName}) async {
     isLoading(true);
 
     List<Map<String, dynamic>> body = [
       {
-        "productId": productId.toString(),
-        "quantity": quantity,
+        "firstName": "Sarah",
+        "lastName": "Johnson",
+        "nurseId": "681f5dee18232c02209159f2",
+        "treatmentType": "Vaccination",
+        "phoneNumber": "555-1234",
+        "isRemainder": true,
+        "reason": "Flu shot reminder",
+        "date": "2023-11-15",
+        "location": "Dhaka Medical Hospital",
+        "zipCode": "1200"
       }
     ];
 
