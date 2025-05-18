@@ -6,27 +6,35 @@ import 'package:restaurent_discount_app/uitilies/api/api_url.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/cart_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/controller/cart_get_controller.dart';
 
-class AddToCartController extends GetxController {
+class AppointmentMakeController extends GetxController {
   var isLoading = false.obs;
 
   final CartGetController _controller = Get.put(CartGetController());
 
-  Future<void> addProductToCart(
-      {required String firstName, required String lastName}) async {
+  Future<void> addProductToCart({
+    required String firstName,
+    required String lastName,
+    required String treatmentType,
+    required String phoneNumber,
+    required String reason,
+    required String date,
+    required String location,
+    required bool reminder,
+    required String zipCode,
+  }) async {
     isLoading(true);
 
     List<Map<String, dynamic>> body = [
       {
-        "firstName": "Sarah",
-        "lastName": "Johnson",
-        "nurseId": "681f5dee18232c02209159f2",
-        "treatmentType": "Vaccination",
-        "phoneNumber": "555-1234",
-        "isRemainder": true,
-        "reason": "Flu shot reminder",
-        "date": "2023-11-15",
-        "location": "Dhaka Medical Hospital",
-        "zipCode": "1200"
+        "firstName": firstName,
+        "lastName": lastName,
+        "treatmentType": treatmentType,
+        "phoneNumber": phoneNumber,
+        "isRemainder": reminder,
+        "reason": reason,
+        "date": date,
+        "location": location,
+        "zipCode": zipCode
       }
     ];
 

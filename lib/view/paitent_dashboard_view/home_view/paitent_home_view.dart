@@ -2,18 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_date_picker.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/marketing_material_widget.dart';
+import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_dropdown_controller.dart'
     show CustomDropdown;
 import '../../../common widget/custom_text_filed.dart';
 import '../../../common widget/custom_time_picker.dart';
-import '../../../common widget/row_wise_widget.dart';
+import 'controller/patient_appointment_make_controller.dart';
 
 class HomeViewForPaitinet extends StatefulWidget {
   @override
@@ -24,6 +26,60 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
   String selectedTreatment = 'IV Hydration';
   String selectedDate = "Select Date";
   String selectedTime = "Select Time";
+  bool reminder = false;
+
+  // Controllers for text fields
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController zipCodeController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController reasonController = TextEditingController();
+
+  final AppointmentMakeController _appointmentMakeController =
+      Get.put(AppointmentMakeController());
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    locationController.dispose();
+    zipCodeController.dispose();
+    phoneController.dispose();
+    reasonController.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    if (selectedDate == "Select Date" || selectedTime == "Select Time") {
+      CustomToast.showToast(' Please Select date and time', isError: true);
+      return;
+    }
+
+    if (firstNameController.text.isEmpty ||
+        lastNameController.text.isEmpty ||
+        locationController.text.isEmpty ||
+        zipCodeController.text.isEmpty ||
+        phoneController.text.isEmpty ||
+        reasonController.text.isEmpty) {
+      CustomToast.showToast('Please fill all fields', isError: true);
+      return;
+    }
+
+    final String dateTime = '$selectedDate $selectedTime';
+
+    _appointmentMakeController.addProductToCart(
+      firstName: firstNameController.text.trim(),
+      lastName: lastNameController.text.trim(),
+      treatmentType: selectedTreatment,
+      phoneNumber: phoneController.text.trim(),
+      reason: reasonController.text.trim(),
+      date: dateTime,
+      location: locationController.text.trim(),
+      reminder: reminder,
+      zipCode: zipCodeController.text.trim(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +111,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       children: [
                         Expanded(
                           child: CustomTextField(
+                            controller: firstNameController,
                             fillColor: Color(0xFFE4E4E4),
                             borderColor: Colors.transparent,
                             hintText: "First Name",
@@ -64,6 +121,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                         SizedBox(width: 12),
                         Expanded(
                           child: CustomTextField(
+                            controller: lastNameController,
                             fillColor: Color(0xFFE4E4E4),
                             borderColor: Colors.transparent,
                             hintText: "Last Name",
@@ -116,6 +174,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
+                      controller: locationController,
                       fillColor: Color(0xFFE4E4E4),
                       borderColor: Colors.transparent,
                       hintText: "Enter Location",
@@ -127,6 +186,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       children: [
                         Expanded(
                           child: CustomTextField(
+                            controller: zipCodeController,
                             fillColor: Color(0xFFE4E4E4),
                             borderColor: Colors.transparent,
                             hintText: "Zip Code",
@@ -136,31 +196,61 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                         SizedBox(width: 12),
                         Expanded(
                           child: CustomTextField(
+                            controller: phoneController,
                             fillColor: Color(0xFFE4E4E4),
                             borderColor: Colors.transparent,
                             hintText: "Phone Number",
                             showObscure: false,
+                            keyboardType: TextInputType.phone,
                           ),
                         ),
                       ],
                     ),
                     SizedBox(height: 20),
                     CustomTextField(
+                      controller: reasonController,
                       maxLines: 4,
                       fillColor: Color(0xFFE4E4E4),
                       borderColor: Colors.transparent,
                       hintText: "Reason for appointment",
                       showObscure: false,
                     ),
-                    SizedBox(height: 30),
-                    CustomButtonWidget(
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Checkbox(
+                          activeColor: AppColors.mainColor,
+                          value: reminder,
+                          onChanged: (value) {
+                            setState(() {
+                              reminder = value ?? false;
+                            });
+                          },
+                        ),
+                        SizedBox(width: 8),
+                        CustomText(
+                          text: "Set Reminder",
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Obx(() {
+                      if (_appointmentMakeController.isLoading.value) {
+                        return Center(child: CustomLoader());
+                      }
+                      return CustomButtonWidget(
                         gradient: LinearGradient(
-                            colors: [Color(0xFF0071BC), Color(0xFF003456)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.topRight),
+                          colors: [Color(0xFF0071BC), Color(0xFF003456)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.topRight,
+                        ),
                         btnText: "Submit",
-                        onTap: () {},
-                        iconWant: false),
+                        onTap: _submit,
+                        iconWant: false,
+                      );
+                    }),
                     SizedBox(height: 40),
                   ],
                 ),
