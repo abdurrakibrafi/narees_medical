@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import '../../../../uitilies/api/api_url.dart';
 import '../../../../uitilies/api/base_client.dart';
-import '../model/cart_model.dart'; // Import the correct model
+import '../model/cart_model.dart';
 
 class CartGetController extends GetxController {
   var isLoading = false.obs;
@@ -13,7 +13,6 @@ class CartGetController extends GetxController {
     getCart();
   }
 
-  // Fetches the cart data
   getCart() async {
     try {
       isLoading(true);
