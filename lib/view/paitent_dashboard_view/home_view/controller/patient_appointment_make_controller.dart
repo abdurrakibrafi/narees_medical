@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'package:restaurent_discount_app/common%20widget/success_full_page_view.dart';
 import 'package:restaurent_discount_app/uitilies/api/base_client.dart';
 import 'package:get/get.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/home_view/paitent_home_view.dart';
 import '../../../../uitilies/custom_toast.dart';
 import 'package:restaurent_discount_app/uitilies/api/api_url.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/cart_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/controller/cart_get_controller.dart';
+
+import '../../../bottom_navigation_view/bottom_navigation_bar_for_paitient.dart';
 
 class AppointmentMakeController extends GetxController {
   var isLoading = false.obs;
@@ -24,32 +28,34 @@ class AppointmentMakeController extends GetxController {
   }) async {
     isLoading(true);
 
-    List<Map<String, dynamic>> body = [
-      {
-        "firstName": firstName,
-        "lastName": lastName,
-        "treatmentType": treatmentType,
-        "phoneNumber": phoneNumber,
-        "isRemainder": reminder,
-        "reason": reason,
-        "date": date,
-        "location": location,
-        "zipCode": zipCode
-      }
-    ];
+    Map<String, dynamic> body = {
+      "firstName": firstName,
+      "lastName": lastName,
+      "treatmentType": treatmentType,
+      "phoneNumber": phoneNumber,
+      "isRemainder": reminder,
+      "reason": reason,
+      "date": date,
+      "location": location,
+      "zipCode": zipCode
+    };
 
     try {
       var response = await BaseClient.postRequest(
-        api: ApiUrl.cartAdd,
+        api: ApiUrl.appointmentCreate,
         body: body,
       );
 
       if (response.statusCode == 200) {
-        CustomToast.showToast("Product added to cart successfully",
+        CustomToast.showToast("Appointment Create  successfully",
             isError: false);
 
-        Get.to(() => CartPage());
-        _controller.getCart();
+        Get.to(() => SuccesfullyPageForAll(
+            title: "Successfully",
+            subTitle: "Appointment Create  successfully",
+            onTap: () {
+              Get.offAll(() => BottomNavigationBarForPaitient());
+            }));
       } else {
         throw 'Failed to add product to cart: ${response.body}';
       }

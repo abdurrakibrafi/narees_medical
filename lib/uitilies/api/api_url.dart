@@ -20,6 +20,7 @@ class ApiUrl {
   static const String profile = "$baseUrl/user/profile";
   static const String cartAdd = "$baseUrl/cart/add";
   static const String allNurse = "$baseUrl/user/nurses";
+  static const String appointmentCreate = "$baseUrl/appointment/create";
   static const String changePassword = "$baseUrl/auth/change-password";
   static const String createCartOrder = "$baseUrl/order/create";
   static const String payment = "$baseUrl/order/make-payment";
