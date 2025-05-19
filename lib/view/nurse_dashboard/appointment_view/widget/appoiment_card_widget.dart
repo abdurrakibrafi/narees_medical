@@ -127,13 +127,13 @@ class AppointmentCard extends StatelessWidget {
               SizedBox(height: 10),
               btnShow
                   ? Row(
-                children: [
-                  StatusButton(status: 'PENDING', color: Colors.amber),
-                  SizedBox(width: 10),
-                  StatusButton(status: 'Canceled', color: Colors.red),
-                ],
-              )
-                  : StatusButton(status: gfeStatus, color: statusColor),
+                      children: [
+                        StatusButton(status: 'PENDING', color: Colors.amber),
+                        SizedBox(width: 10),
+                        StatusButton(status: 'Canceled', color: Colors.red),
+                      ],
+                    )
+                  : StatusButton(status: gfeStatus, color: statusColor,),
             ],
           ),
         ),
@@ -159,9 +159,9 @@ class StatusButton extends StatelessWidget {
       child: CustomText(
         text: status,
         color: color,
+        fontWeight: FontWeight.bold,
         fontSize: 16.sp,
       ),
     );
   }
 }
-

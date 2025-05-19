@@ -19,6 +19,7 @@ class TrackMedicalDetailsView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.white,
           title: CustomText(
             text: 'Track Medical Details',
