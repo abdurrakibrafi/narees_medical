@@ -12,7 +12,6 @@ typedef OnFilesChanged = void Function(List<PlatformFile> files);
 class MultiFilePicker extends StatefulWidget {
   final OnFilesChanged? onFilesChanged;
 
-  /// Initial files to display (optional)
   final List<PlatformFile>? initialFiles;
 
   const MultiFilePicker({Key? key, this.onFilesChanged, this.initialFiles})
@@ -62,27 +61,24 @@ class _MultiFilePickerState extends State<MultiFilePicker> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-
         GestureDetector(
           onTap: pickFiles,
-
           child: Container(
-            height: 56,
-            decoration: BoxDecoration(
-                color: Color(0xFFE4E4E4),
-                borderRadius: BorderRadius.circular(5)),
-            width: double.infinity,
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.upload_file),
-                  CustomText(text: 'Select Files / Images'),
-                ],
-              ),
-            )) ,),
-
-
+              height: 56,
+              decoration: BoxDecoration(
+                  color: Color(0xFFE4E4E4),
+                  borderRadius: BorderRadius.circular(5)),
+              width: double.infinity,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.upload_file),
+                    CustomText(text: 'Select Files / Images'),
+                  ],
+                ),
+              )),
+        ),
         SizedBox(height: 12),
         if (selectedFiles.isNotEmpty)
           SizedBox(

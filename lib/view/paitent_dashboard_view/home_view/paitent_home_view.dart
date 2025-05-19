@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +31,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
   String selectedDate = "Select Date";
   String selectedTime = "Select Time";
   bool reminder = false;
+  List<PlatformFile> selectedFiles = [];
 
   // Controllers for text fields
   final TextEditingController firstNameController = TextEditingController();
@@ -70,6 +73,12 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
 
     final String dateTime = '$selectedDate $selectedTime';
 
+    // Convert PlatformFile to File
+    List<File> filesForUpload = selectedFiles
+        .where((pf) => pf.path != null)
+        .map((pf) => File(pf.path!))
+        .toList();
+
     _appointmentMakeController.addProductToCart(
       firstName: firstNameController.text.trim(),
       lastName: lastNameController.text.trim(),
@@ -80,10 +89,9 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
       location: locationController.text.trim(),
       reminder: reminder,
       zipCode: zipCodeController.text.trim(),
+      documents: filesForUpload,
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -220,14 +228,13 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       showObscure: false,
                     ),
                     SizedBox(height: 10),
-
                     MultiFilePicker(
                       onFilesChanged: (files) {
-                        print("Selected files count: ${files.length}");
-                        // Save files for upload or form submission
+                        setState(() {
+                          selectedFiles = files;
+                        });
                       },
                     ),
-
                     Row(
                       children: [
                         Checkbox(
