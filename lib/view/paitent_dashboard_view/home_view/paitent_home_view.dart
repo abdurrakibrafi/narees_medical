@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ import '../../../common widget/custom_dropdown_controller.dart'
     show CustomDropdown;
 import '../../../common widget/custom_text_filed.dart';
 import '../../../common widget/custom_time_picker.dart';
+import '../../../common widget/multiple_image_picker_widget.dart';
 import 'controller/patient_appointment_make_controller.dart';
 
 class HomeViewForPaitinet extends StatefulWidget {
@@ -80,6 +82,8 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
       zipCode: zipCodeController.text.trim(),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -216,6 +220,14 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       showObscure: false,
                     ),
                     SizedBox(height: 10),
+
+                    MultiFilePicker(
+                      onFilesChanged: (files) {
+                        print("Selected files count: ${files.length}");
+                        // Save files for upload or form submission
+                      },
+                    ),
+
                     Row(
                       children: [
                         Checkbox(
