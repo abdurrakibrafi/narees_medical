@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
+import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 
 typedef OnFilesChanged = void Function(List<PlatformFile> files);
 
@@ -12,7 +15,8 @@ class MultiFilePicker extends StatefulWidget {
   /// Initial files to display (optional)
   final List<PlatformFile>? initialFiles;
 
-  const MultiFilePicker({Key? key, this.onFilesChanged, this.initialFiles}) : super(key: key);
+  const MultiFilePicker({Key? key, this.onFilesChanged, this.initialFiles})
+      : super(key: key);
 
   @override
   State<MultiFilePicker> createState() => _MultiFilePickerState();
@@ -56,20 +60,33 @@ class _MultiFilePickerState extends State<MultiFilePicker> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          onPressed: pickFiles,
-          icon: const Icon(Icons.upload_file),
-          label: const Text('Select Files / Images'),
-        ),
-        const SizedBox(height: 12),
+
+        GestureDetector(
+          onTap: pickFiles,
+
+          child: Container(
+            height: 56,
+            decoration: BoxDecoration(
+                color: Color(0xFFE4E4E4),
+                borderRadius: BorderRadius.circular(5)),
+            width: double.infinity,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.upload_file),
+                  CustomText(text: 'Select Files / Images'),
+                ],
+              ),
+            )) ,),
+
+
+        SizedBox(height: 12),
         if (selectedFiles.isNotEmpty)
           SizedBox(
-            height: 80,
+            height: 180,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: selectedFiles.length,
@@ -100,7 +117,8 @@ class _MultiFilePickerState extends State<MultiFilePicker> {
                               shape: BoxShape.circle,
                               color: Colors.black54,
                             ),
-                            child: const Icon(Icons.close, color: Colors.white, size: 18),
+                            child: const Icon(Icons.close,
+                                color: Colors.white, size: 18),
                           ),
                         ),
                       ),
@@ -109,7 +127,8 @@ class _MultiFilePickerState extends State<MultiFilePicker> {
                 } else {
                   return Container(
                     margin: const EdgeInsets.only(right: 8),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(12),
@@ -117,7 +136,9 @@ class _MultiFilePickerState extends State<MultiFilePicker> {
                     child: Row(
                       children: [
                         Icon(
-                          file.extension == 'pdf' ? Icons.picture_as_pdf : Icons.insert_drive_file,
+                          file.extension == 'pdf'
+                              ? Icons.picture_as_pdf
+                              : Icons.insert_drive_file,
                           color: Theme.of(context).primaryColor,
                         ),
                         const SizedBox(width: 8),
@@ -130,7 +151,8 @@ class _MultiFilePickerState extends State<MultiFilePicker> {
                         ),
                         GestureDetector(
                           onTap: () => removeFile(index),
-                          child: const Icon(Icons.close, size: 18, color: Colors.red),
+                          child: const Icon(Icons.close,
+                              size: 18, color: Colors.red),
                         ),
                       ],
                     ),

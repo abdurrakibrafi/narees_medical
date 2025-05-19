@@ -3,14 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart' show Get;
-import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/sign_in_view/controller/sign_in_controller.dart';
-import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/sign_in_view/profile_complete_view.dart';
+import '../../../../common widget/custom text/custom_text_widget.dart';
 import '../../../../uitilies/app_colors.dart';
-
 import '../../../../uitilies/custom_toast.dart';
 import '../forget_password_view/forget_password_view.dart';
 import '../sign_up_view/sign_up_view.dart';
@@ -26,6 +24,7 @@ class SignInView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Container(
@@ -37,19 +36,18 @@ class SignInView extends StatelessWidget {
               ),
             ),
           ),
-
           Positioned.fill(
             child: Image.asset(
               'assets/images/bg.png',
               fit: BoxFit.cover,
             ),
           ),
-
-          // White content overlay with slight transparency
           Positioned.fill(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: SafeArea(
+            child: SafeArea(
+              child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
                     SizedBox(height: 40),
@@ -86,8 +84,6 @@ class SignInView extends StatelessWidget {
                       showObscure: true,
                     ),
 
-                    // Remember Me
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -109,13 +105,11 @@ class SignInView extends StatelessWidget {
                               child: Checkbox(
                                 value: false,
                                 onChanged: (_) {},
-                                side: BorderSide(
-                                    color: AppColors
-                                        .mainColor), // Also directly here
+                                side: BorderSide(color: AppColors.mainColor),
                                 activeColor: AppColors.mainColor,
                               ),
                             ),
-                            SizedBox(width: 4), // optional spacing
+                            SizedBox(width: 4),
                             CustomText(
                               text: "Remember Me",
                               fontSize: 16,
@@ -138,7 +132,6 @@ class SignInView extends StatelessWidget {
                     SizedBox(height: 20),
 
                     // Sign In Button
-
                     Obx(() {
                       return _signInController.isLoading.value == true
                           ? CustomLoader()
@@ -189,7 +182,8 @@ class SignInView extends StatelessWidget {
                           ),
                         )
                       ],
-                    )
+                    ),
+                    SizedBox(height: 40),
                   ],
                 ),
               ),
