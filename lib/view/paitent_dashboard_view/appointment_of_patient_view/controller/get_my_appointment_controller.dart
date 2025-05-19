@@ -1,9 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:get/get.dart';
 import '../../../../uitilies/api/api_url.dart';
 import '../../../../uitilies/api/base_client.dart';
 import '../model/appointment_model.dart';
 
-class AllNurseController extends GetxController {
+class GetMyAppointment extends GetxController {
   var isLoading = false.obs;
   var nurseData = AppointmentModel().obs;
 

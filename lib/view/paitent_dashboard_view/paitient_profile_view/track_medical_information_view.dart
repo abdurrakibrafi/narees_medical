@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/widget/appoiment_card_widget.dart'
     show AppointmentCard;
-import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/track_medical_information_details_view.dart';
-
-import '../../nurse_dashboard/appointment_view/appoinment_details_view.dart';
 
 class TrackMedicalInformationView extends StatefulWidget {
   @override
@@ -242,7 +237,13 @@ class _TrackMedicalInformationViewState
             child: ListView.builder(
               itemCount: 6,
               itemBuilder: (context, index) {
-                return AppointmentCard(false,false);
+                return AppointmentCard(
+                  patientName: '',
+                  treatmentType: '',
+                  gfeStatus: '',
+                  time: '',
+                  location: '',
+                );
               },
             ),
           ),

@@ -1,25 +1,31 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/appoinment_details_view.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/track_medical_information_details_view.dart';
 
 class AppointmentCard extends StatelessWidget {
-  final bool? btnShow;
-  final bool? goToDetails;
-  // final bool? detailsView;
+  final String patientName;
+  final String treatmentType;
+  final String gfeStatus;
+  final String time;
+  final String location;
+  final bool btnShow;
+  final bool goToDetails;
 
-  AppointmentCard(
-    this.btnShow,
-    this.goToDetails,
-  );
+  AppointmentCard({
+    required this.patientName,
+    required this.treatmentType,
+    required this.gfeStatus,
+    required this.time,
+    required this.location,
+    this.btnShow = false,
+    this.goToDetails = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +42,7 @@ class AppointmentCard extends StatelessWidget {
               width: 5.0,
             ),
           ),
-          borderRadius:
-              BorderRadius.circular(12), // Ensure the border is rounded
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -48,13 +53,13 @@ class AppointmentCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: "John Doe",
+                    text: patientName,
                     fontWeight: FontWeight.bold,
                     fontSize: 19.sp,
                   ),
                   GestureDetector(
                     onTap: () {
-                      goToDetails == true
+                      goToDetails
                           ? Get.to(() => ViewAppointmentScreen())
                           : Get.to(() => TrackMedicalDetailsView());
                     },
@@ -67,13 +72,13 @@ class AppointmentCard extends StatelessWidget {
               ),
               SizedBox(height: 5),
               CustomText(
-                text: 'Treatment Type: Hydration Therapy',
+                text: 'Treatment Type: $treatmentType',
                 fontSize: 17.sp,
                 color: Colors.grey,
               ),
               SizedBox(height: 5),
               CustomText(
-                text: 'GFE Status: Pending',
+                text: 'GFE Status: $gfeStatus',
                 fontSize: 14.sp,
                 color: Colors.grey,
               ),
@@ -87,20 +92,20 @@ class AppointmentCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5),
                   CustomText(
-                    text: '3:40 PM',
+                    text: time,
                     fontSize: 14.sp,
                     color: Colors.black,
                   ),
                   Spacer(),
                   CustomText(
-                    text: "Dhaka",
+                    text: location,
                     fontSize: 16.sp,
                     color: Colors.grey,
                   ),
                 ],
               ),
               SizedBox(height: 10),
-              btnShow == true
+              btnShow
                   ? Row(
                       children: [
                         StatusButton(status: 'Accepted', color: Colors.green),

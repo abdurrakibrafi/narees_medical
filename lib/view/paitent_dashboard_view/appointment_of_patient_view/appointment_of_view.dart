@@ -1,17 +1,20 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
-import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/widget/appoiment_card_widget.dart'
     show AppointmentCard;
+import '../../../common widget/custom text/custom_text_widget.dart';
+import '../search_view/controller/all_nurse_controller.dart';
+import 'controller/get_my_appointment_controller.dart'; // adjust path accordingly
 
 class AppoinmentViewOfPatient extends StatefulWidget {
   @override
-  _AppoinmentViewOfPatientState createState() => _AppoinmentViewOfPatientState();
+  _AppoinmentViewOfPatientState createState() =>
+      _AppoinmentViewOfPatientState();
 }
 
 class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
@@ -19,55 +22,26 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
   late DateTime _selectedDay = DateTime.now();
   final ScrollController _scrollController = ScrollController();
 
-  final List<Map<String, dynamic>> appointments = [
-    {
-      'date': DateTime(2025, 12, 28, 10, 0),
-      'name': 'John Doe',
-      'treatment': 'Hydration Therapy',
-      'status': 'Pending',
-      'location': '2/A, Florida, USA',
-    },
-    {
-      'date': DateTime(2024, 12, 28, 11, 0),
-      'name': 'Jane Doe',
-      'treatment': 'Massage Therapy',
-      'status': 'Completed',
-      'location': '3/B, Florida, USA',
-    },
-  ];
-
-  late Map<DateTime, List<Map<String, dynamic>>> _events;
+  final GetMyAppointment _allNurseController = Get.put(GetMyAppointment());
 
   @override
   void initState() {
     super.initState();
-    _focusedDay = DateTime.now();
-    _selectedDay = DateTime.now();
-    _events = _groupAppointmentsByDate(appointments);
-
+    _fetchAppointmentsForDate(_selectedDay);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToToday();
     });
   }
 
-  Map<DateTime, List<Map<String, dynamic>>> _groupAppointmentsByDate(
-      List<Map<String, dynamic>> appointments) {
-    Map<DateTime, List<Map<String, dynamic>>> groupedAppointments = {};
-    for (var appointment in appointments) {
-      DateTime date = DateTime(appointment['date'].year,
-          appointment['date'].month, appointment['date'].day);
-      if (groupedAppointments[date] == null) {
-        groupedAppointments[date] = [];
-      }
-      groupedAppointments[date]!.add(appointment);
-    }
-    return groupedAppointments;
+  void _fetchAppointmentsForDate(DateTime date) {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    _allNurseController.getMyAppointment(date: formattedDate);
   }
 
   void _scrollToToday() {
     if (_scrollController.hasClients) {
-      final todayIndex = _selectedDay.day - 4; // Adjust based on days layout
-      final scrollOffset = todayIndex * 60.0; // Customize based on widget size
+      final todayIndex = _selectedDay.day - 4;
+      final scrollOffset = todayIndex * 60.0;
       _scrollController.animateTo(
         scrollOffset,
         duration: const Duration(milliseconds: 300),
@@ -159,8 +133,8 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
                         onTap: () {
                           setState(() {
                             _selectedDay = day;
-                            DateFormat('yyyy-MM-dd').format(_selectedDay);
                           });
+                          _fetchAppointmentsForDate(day);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -187,8 +161,8 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
                                         color: isSelected
                                             ? Colors.white
                                             : isToday
-                                            ? AppColors.mainColor
-                                            : Colors.transparent,
+                                                ? AppColors.mainColor
+                                                : Colors.transparent,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Text(
@@ -197,8 +171,8 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
                                           color: isSelected
                                               ? AppColors.mainColor
                                               : isToday
-                                              ? Colors.white
-                                              : Colors.black,
+                                                  ? Colors.white
+                                                  : Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: isToday ? 8 : 18,
                                           fontFamily: 'Montserrat',
@@ -212,8 +186,8 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
                                         color: isSelected
                                             ? Colors.white
                                             : isToday
-                                            ? Colors.grey[600]
-                                            : Colors.grey[600],
+                                                ? Colors.grey[600]
+                                                : Colors.grey[600],
                                         fontWeight: FontWeight.bold,
                                         fontSize: 11,
                                       ),
@@ -235,12 +209,38 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
           SizedBox(height: 20),
 
           Expanded(
-            child: ListView.builder(
-              itemCount: 6,
-              itemBuilder: (context, index) {
-                return AppointmentCard(false, false);
-              },
-            ),
+            child: Obx(() {
+              if (_allNurseController.isLoading.value) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              final appointments =
+                  _allNurseController.nurseData.value.data?.data ?? [];
+
+              if (appointments.isEmpty) {
+                return Center(
+                    child: Text("No appointments for selected date."));
+              }
+
+              return ListView.builder(
+                itemCount: appointments.length,
+                itemBuilder: (context, index) {
+                  final appointment = appointments[index];
+                  return AppointmentCard(
+                    patientName:
+                        '${appointment.firstName ?? ''} ${appointment.lastName ?? ''}',
+                    treatmentType: appointment.treatmentType ?? '',
+                    gfeStatus: appointment.status ?? '',
+                    time: appointment.date != null
+                        ? DateFormat.jm().format(appointment.date!)
+                        : '',
+                    location: appointment.location ?? '',
+                    btnShow: false,
+                    goToDetails: false,
+                  );
+                },
+              );
+            }),
           ),
         ],
       ),
