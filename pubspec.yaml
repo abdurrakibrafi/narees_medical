@@ -79,6 +79,7 @@ dependencies:
   file_picker:
   webview_flutter: ^4.10.0
   http_parser:
+  firebase_core: ^3.13.0
 
 
 

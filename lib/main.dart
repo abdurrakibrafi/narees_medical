@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,10 +11,15 @@ import 'package:restaurent_discount_app/common%20widget/language%20widget/contro
 import 'package:restaurent_discount_app/common%20widget/language%20widget/message.dart';
 import 'package:restaurent_discount_app/view/splash_view/splash_view.dart';
 import 'common widget/language widget/dep.dart' as dep;
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   await Get.put(LanguageController()).initStorage();
 
@@ -26,11 +32,6 @@ Future<void> main() async {
 
   runApp(
     MyApp(languages: languages),
-
-    // DevicePreview(
-    //   enabled: !kReleaseMode,
-    //   builder: (context) => MyApp(languages: languages),
-    // ),
   );
 }
 
