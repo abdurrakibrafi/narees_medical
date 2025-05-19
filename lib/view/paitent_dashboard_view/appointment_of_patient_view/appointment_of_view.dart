@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/common%20widget/not_found_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/widget/appoiment_card_widget.dart'
     show AppointmentCard;
 import '../../../common widget/custom text/custom_text_widget.dart';
@@ -211,7 +213,7 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
           Expanded(
             child: Obx(() {
               if (_allNurseController.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CustomLoader());
               }
 
               final appointments =
@@ -219,7 +221,8 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
 
               if (appointments.isEmpty) {
                 return Center(
-                    child: Text("No appointments for selected date."));
+                    child: NotFoundWidget(
+                        message: "No appointments for selected date."));
               }
 
               return ListView.builder(

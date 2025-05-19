@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
@@ -21,7 +23,7 @@ class NotFoundWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 100),
+          SizedBox(height: 60),
           Icon(
             Icons.search_off,
             size: 50.h,
@@ -31,7 +33,7 @@ class NotFoundWidget extends StatelessWidget {
           CustomText(
             text: message,
             textAlign: TextAlign.center,
-            fontSize: 22.sp,
+            fontSize: 20.sp,
             color: Colors.grey,
           ),
         ],

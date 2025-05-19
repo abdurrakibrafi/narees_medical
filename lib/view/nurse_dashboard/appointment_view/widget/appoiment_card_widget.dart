@@ -27,8 +27,27 @@ class AppointmentCard extends StatelessWidget {
     this.goToDetails = false,
   });
 
+  Color _getStatusColor(String status) {
+    switch (status.toUpperCase()) {
+      case "PENDING":
+        return Colors.amber;
+      case "CONFIRMED":
+        return Colors.blue;
+      case "REJECTED":
+        return Colors.redAccent;
+      case "CANCELLED":
+        return Colors.red;
+      case "COMPLETED":
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final statusColor = _getStatusColor(gfeStatus);
+
     return Card(
       color: Colors.white,
       margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
@@ -55,6 +74,7 @@ class AppointmentCard extends StatelessWidget {
                   CustomText(
                     text: patientName,
                     fontWeight: FontWeight.bold,
+                    color: AppColors.mainColor,
                     fontSize: 19.sp,
                   ),
                   GestureDetector(
@@ -74,13 +94,13 @@ class AppointmentCard extends StatelessWidget {
               CustomText(
                 text: 'Treatment Type: $treatmentType',
                 fontSize: 17.sp,
-                color: Colors.grey,
+                color: Colors.black,
               ),
               SizedBox(height: 5),
               CustomText(
-                text: 'GFE Status: $gfeStatus',
+                text: 'Status: $gfeStatus',
                 fontSize: 14.sp,
-                color: Colors.grey,
+                color: Colors.black,
               ),
               SizedBox(height: 10),
               Row(
@@ -107,13 +127,13 @@ class AppointmentCard extends StatelessWidget {
               SizedBox(height: 10),
               btnShow
                   ? Row(
-                      children: [
-                        StatusButton(status: 'Accepted', color: Colors.green),
-                        SizedBox(width: 10),
-                        StatusButton(status: 'Canceled', color: Colors.red),
-                      ],
-                    )
-                  : StatusButton(status: 'Complete', color: Colors.green),
+                children: [
+                  StatusButton(status: 'PENDING', color: Colors.amber),
+                  SizedBox(width: 10),
+                  StatusButton(status: 'Canceled', color: Colors.red),
+                ],
+              )
+                  : StatusButton(status: gfeStatus, color: statusColor),
             ],
           ),
         ),
@@ -144,3 +164,4 @@ class StatusButton extends StatelessWidget {
     );
   }
 }
+
