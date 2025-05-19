@@ -11,6 +11,9 @@ import '../paitent_dashboard_view/paitient_profile_view/paitent_profile_view.dar
 import '../paitent_dashboard_view/search_view/nurse_search_view.dart';
 
 class BottomNavigationBarForPaitient extends StatefulWidget {
+
+  const BottomNavigationBarForPaitient({super.key});
+
   @override
   _BottomNavigationState createState() => _BottomNavigationState();
 }

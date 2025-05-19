@@ -22,6 +22,9 @@ import '../../../common widget/multiple_image_picker_widget.dart';
 import 'controller/patient_appointment_make_controller.dart';
 
 class HomeViewForPaitinet extends StatefulWidget {
+  final String? nurseId;
+
+  const HomeViewForPaitinet({super.key, this.nurseId});
   @override
   State<HomeViewForPaitinet> createState() => _HomeViewForPaitinetState();
 }
@@ -89,6 +92,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
       reminder: reminder,
       zipCode: zipCodeController.text.trim(),
       documents: filesForUpload,
+      nurseId: widget.nurseId.toString(),
     );
   }
 

@@ -82,7 +82,7 @@ class CustomSuccessAlertDialog {
                         btnText ?? "",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16.sp,
+                          fontSize: 12.sp,
                         ),
                       ),
                     );

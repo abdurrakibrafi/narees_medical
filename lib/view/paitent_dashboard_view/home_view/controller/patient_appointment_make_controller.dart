@@ -17,6 +17,7 @@ class AppointmentMakeController extends GetxController {
 
   Future<void> addProductToCart({
     required String firstName,
+    required String nurseId,
     required String lastName,
     required String treatmentType,
     required String phoneNumber,
@@ -56,6 +57,7 @@ class AppointmentMakeController extends GetxController {
         "lastName": lastName,
         "treatmentType": treatmentType,
         "phoneNumber": phoneNumber,
+        "nurseId": nurseId,
         "isRemainder": reminder.toString(),
         "reason": reason,
         "date": date,

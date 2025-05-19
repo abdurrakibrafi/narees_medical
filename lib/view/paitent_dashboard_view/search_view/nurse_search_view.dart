@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,9 @@ import 'package:restaurent_discount_app/common%20widget/not_found_widget.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
+import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_bar_for_paitient.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/home_view/paitent_home_view.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/search_view/controller/all_nurse_controller.dart';
 
 import 'nurse_card_widget/nurse_card_widget.dart';
@@ -43,8 +48,8 @@ class _NurseSearchViewState extends State<NurseSearchView> {
     } else {
       setState(() {
         _filteredNurses = (_allNurseController.nurseData.value.data ?? [])
-            .where((nurse) =>
-            (nurse.fullname ?? "").toLowerCase().contains(query))
+            .where(
+                (nurse) => (nurse.fullname ?? "").toLowerCase().contains(query))
             .toList();
       });
     }
@@ -62,7 +67,7 @@ class _NurseSearchViewState extends State<NurseSearchView> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: "Search",
+        title: "Nurse Search",
         leading: Container(),
       ),
       body: Padding(
@@ -80,7 +85,7 @@ class _NurseSearchViewState extends State<NurseSearchView> {
                   borderSide: BorderSide(color: AppColors.mainColor),
                 ),
                 contentPadding:
-                EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
+                    EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
                 suffixIcon: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -100,13 +105,13 @@ class _NurseSearchViewState extends State<NurseSearchView> {
                 }
 
                 // Use filtered list if search text is not empty, else full list
-                final List<dynamic> displayList =
-                _searchController.text.isEmpty
+                final List<dynamic> displayList = _searchController.text.isEmpty
                     ? (_allNurseController.nurseData.value.data ?? [])
                     : _filteredNurses;
 
                 if (displayList.isEmpty) {
-                  return Center(child: NotFoundWidget(message: "No Nurse Found"));
+                  return Center(
+                      child: NotFoundWidget(message: "No Nurse Found"));
                 }
 
                 return ListView.builder(
@@ -131,10 +136,19 @@ class _NurseSearchViewState extends State<NurseSearchView> {
                       availability: nurse.location.toString(),
                       onTap: () {
                         CustomSuccessAlertDialog.showCustomDialog(
-                            title: "Success",
+                            title: "Great",
                             content:
-                            "You have successfully selected nurse. We will let you know when the nurse approve your request.",
-                            onConfirm: () {}, btnText: 'Go to home');
+                                "Thanks for selecting the nurse,please now fill the appointment",
+                            onConfirm: () {
+                              Get.offAll(() => HomeViewForPaitinet(
+                                    nurseId: nurse.id,
+                                  ));
+
+                              CustomToast.showToast(
+                                  "Now please fill up the below appointment form.",
+                                  isError: false);
+                            },
+                            btnText: 'Appointment');
                       },
                       email: nurse.email.toString(),
                     );

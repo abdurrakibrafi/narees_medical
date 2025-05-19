@@ -53,7 +53,7 @@ class SelectNurseController extends GetxController {
 
           Get.offAll(() => SuccesfullyPageForAll(
               title: "Successful",
-              subTitle: "Your appointment create successful,stay with us!",
+              subTitle: "Your appointment create successful,Stay with us!",
               onTap: () {
                 Get.offAll(() => BottomNavigationBarForPaitient());
               }));
