@@ -23,9 +23,10 @@ class ApiUrl {
   static const String appointmentCreate = "$baseUrl/appointment/create";
   static const String changePassword = "$baseUrl/auth/change-password";
   static const String createCartOrder = "$baseUrl/order/create";
+  static const String deleteNotification = "$baseUrl/notification";
   static const String payment = "$baseUrl/order/make-payment";
 
-  static const String notification = "$baseUrl/notification/notifications";
+  static const String notification = "$baseUrl/notification/notifications?limit=999999";
 
 
   static const String marketingMaterial =

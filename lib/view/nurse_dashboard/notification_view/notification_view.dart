@@ -2,53 +2,76 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/common%20widget/not_found_widget.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import '../nurse_home_view/controller/delete_all_notification_controller.dart';
+import '../nurse_home_view/controller/notification_controller.dart';
+import '../nurse_home_view/model/notification_model.dart';
 
-class NotificationPage extends StatelessWidget {
-  final List<Map<String, String>> notifications = [
-    {
-      'title':
-          'Dear Aria, Your Order is Confirmed by Admin. Once it will available, you can track your delivery status.',
-      'time': 'Fri, 12:30pm',
-      'url': '',
-    },
-    {
-      'title':
-          'Dear Aria, Your Order is Confirmed by Admin. Once it will available, you can track your delivery status.',
-      'time': 'Fri, 12:30pm',
-      'url': '',
-    },
-    {
-      'title': 'Dear Aria, Track your supply order: "https://www.usps.com/"',
-      'time': 'Fri, 12:30pm',
-      'url': 'https://www.usps.com/',
-    },
-    {
-      'title': 'Dear Aria, Track your supply order: "https://www.usps.com/"',
-      'time': 'Fri, 12:30pm',
-      'url': 'https://www.usps.com/',
-    },
-  ];
+class NotificationPage extends StatefulWidget {
+  @override
+  State<NotificationPage> createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage> {
+  final GetNotificationController _notificationController =
+      Get.put(GetNotificationController());
+
+  final DeleteNotificationController _deleteNotificationController =
+      Get.put(DeleteNotificationController());
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationController.getNotify();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Notification"),
-      body: ListView.builder(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          final notification = notifications[index];
-          return NotificationCard(notification: notification);
-        },
-      ),
+      appBar: CustomAppBar(title: "Notification", actions: [
+        IconButton(
+          icon: Icon(
+            Icons.delete_outline,
+            color: Colors.red,
+            size: 30,
+          ),
+          onPressed: () {
+            _deleteNotificationController.deleteNotification();
+          },
+        ),
+        SizedBox(width: 10),
+      ]),
+      body: Obx(() {
+        if (_notificationController.isLoading.value) {
+          return Center(child: CustomLoader());
+        }
+
+        final notifications =
+            _notificationController.nurseData.value.data?.data ?? [];
+
+        if (notifications.isEmpty) {
+          return Center(
+              child: NotFoundWidget(message: "No notifications available."));
+        }
+
+        return ListView.builder(
+          itemCount: notifications.length,
+          itemBuilder: (context, index) {
+            final notification = notifications[index];
+            return NotificationCard(notification: notification);
+          },
+        );
+      }),
     );
   }
 }
 
 class NotificationCard extends StatelessWidget {
-  final Map<String, String> notification;
+  final NotificationData notification;
 
   const NotificationCard({Key? key, required this.notification})
       : super(key: key);
@@ -77,35 +100,36 @@ class NotificationCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(
-                    textAlign: TextAlign.start,
-                    text: notification['title']!,
-                    fontSize: 14.h,
-                    fontWeight: FontWeight.w500,
+                  Text(
+                    notification.title ?? '',
+                    style: TextStyle(
+                      fontSize: 14.h,
+                      fontWeight: FontWeight.w500,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 8),
-                  CustomText(
-                    text: notification['time']!,
-                    fontSize: 14.h,
-                    color: Colors.black54,
+                  Text(
+                    notification.createdAt != null
+                        ? _formatDateTime(notification.createdAt!)
+                        : '',
+                    style: TextStyle(
+                      fontSize: 14.h,
+                      color: Colors.black54,
+                    ),
                   ),
                 ],
               ),
             ),
-            if (notification['url'] != null && notification['url']!.isNotEmpty)
-              IconButton(
-                icon: Icon(Icons.open_in_new, color: Colors.blue),
-                onPressed: () {
-                  // Open the URL in browser
-                  print("Opening URL: ${notification['url']}");
-                  // You can use url_launcher to open the URL
-                },
-              ),
           ],
         ),
       ),
     );
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    // Format the date to your desired string, e.g. "May 19, 2025 14:35"
+    return "${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}";
   }
 }

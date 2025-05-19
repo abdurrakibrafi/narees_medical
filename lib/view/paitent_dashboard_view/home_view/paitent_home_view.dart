@@ -73,7 +73,6 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
 
     final String dateTime = '$selectedDate $selectedTime';
 
-    // Convert PlatformFile to File
     List<File> filesForUpload = selectedFiles
         .where((pf) => pf.path != null)
         .map((pf) => File(pf.path!))
