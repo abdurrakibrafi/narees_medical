@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "956635458417",
+    "project_id": "narresa-eeefb",
+    "storage_bucket": "narresa-eeefb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956635458417:android:8cc2f173c1d00c525624d0",
+        "android_client_info": {
+          "package_name": "com.example.narees_medical"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD6az97E0pwUOqOV960wwPmykFxH-B0eI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
