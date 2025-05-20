@@ -80,6 +80,10 @@ dependencies:
   webview_flutter: ^4.10.0
   http_parser:
   firebase_core: ^3.13.0
+  path_provider: ^2.1.1
+  open_file: ^3.3.2
+  dio: ^5.4.0
+
 
 
 

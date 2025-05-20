@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:restaurent_discount_app/common%20widget/not_found_widget.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/payment_reciet_card_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
@@ -32,7 +36,7 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
         padding: const EdgeInsets.all(16.0),
         child: Obx(() {
           if (_receiptController.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CustomLoader());
           }
 
           final receipts = _receiptController.cartData.value.data ?? [];
@@ -64,16 +68,24 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
                 amount: amount,
                 date: date,
                 onDownloadPressed: () async {
-                  print("=================$receiptUrl");
-
                   if (receiptUrl != null) {
-                    final uri = Uri.parse(receiptUrl);
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri);
-                    } else {
+                    try {
+                      final uri = Uri.parse(receiptUrl);
+                      final filename = uri.pathSegments.last;
+                      final dir = await getApplicationDocumentsDirectory();
+                      final savePath = "${dir.path}/$filename";
+
+                      print("Downloading to: $savePath");
+
+                      final dio = Dio();
+                      await dio.download(receiptUrl, savePath);
+
+                      await OpenFile.open(savePath);
+                    } catch (e) {
+                      print("Download error: $e");
                       Get.snackbar(
                         "Error",
-                        "Could not launch receipt URL",
+                        "Failed to download or open the receipt",
                         snackPosition: SnackPosition.BOTTOM,
                       );
                     }
@@ -85,6 +97,7 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
                     );
                   }
                 },
+
                 showBtn: receipt.payment?.status == "PAID" ? true : false,
               );
             },
