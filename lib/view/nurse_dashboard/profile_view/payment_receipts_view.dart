@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -64,8 +64,19 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
                 amount: amount,
                 date: date,
                 onDownloadPressed: () async {
-                  if (receiptUrl != null && await canLaunch(receiptUrl)) {
-                    await launch(receiptUrl);
+                  print("=================$receiptUrl");
+
+                  if (receiptUrl != null) {
+                    final uri = Uri.parse(receiptUrl);
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri);
+                    } else {
+                      Get.snackbar(
+                        "Error",
+                        "Could not launch receipt URL",
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    }
                   } else {
                     Get.snackbar(
                       "Error",
@@ -74,6 +85,7 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
                     );
                   }
                 },
+                showBtn: receipt.payment?.status == "PAID" ? true : false,
               );
             },
           );
@@ -82,5 +94,3 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
     );
   }
 }
-
-// PaymentReceiptCard remains unchanged, reuse the previous implementation.

@@ -12,6 +12,7 @@ class PaymentReceiptCard extends StatelessWidget {
   final String treatmentType;
   final String amount;
   final String date;
+  final bool showBtn;
   final VoidCallback onDownloadPressed;
 
   const PaymentReceiptCard({
@@ -21,6 +22,7 @@ class PaymentReceiptCard extends StatelessWidget {
     required this.amount,
     required this.date,
     required this.onDownloadPressed,
+    required this.showBtn,
   }) : super(key: key);
 
   @override
@@ -70,19 +72,21 @@ class PaymentReceiptCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16),
-            // Download PDF Button
 
-            CustomButtonWidget(
-              btnTextSize: 13.0,
-              gradient: LinearGradient(
+            // Conditionally show Download button
+            if (showBtn)
+              CustomButtonWidget(
+                btnTextSize: 13.0,
+                gradient: LinearGradient(
                   colors: [Color(0xFF0071BC), Color(0xFF003456)],
                   begin: Alignment.topLeft,
-                  end: Alignment.topRight),
-              btnText: "Download PDF Receipt",
-              onTap: onDownloadPressed,
-              iconWant: true,
-              iconData: Icons.save_alt,
-            )
+                  end: Alignment.topRight,
+                ),
+                btnText: "Download PDF Receipt",
+                onTap: onDownloadPressed,
+                iconWant: true,
+                iconData: Icons.save_alt,
+              ),
           ],
         ),
       ),
