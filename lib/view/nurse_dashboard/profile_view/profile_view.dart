@@ -79,13 +79,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: Icons.person_3_outlined,
                   title: 'Edit Profile',
                   onTap: () {
+                    final profile = _profileGetController.profile.value.data;
+
                     Get.to(() => EditProfile(
-                          firstName: '',
-                          lastame: '',
-                          emailAddress: '',
-                          image: '',
+                          docs: true,
+                          spacilizaion: true,
+                          firstName: profile?.firstName ?? '',
+                          lastame: profile?.lastName ?? '',
+                          emailAddress: profile?.email ?? '',
+                          image: profile?.profilePicture ?? '',
                           location: '',
-                          zipCode: '', phoneNumber: '',
+                          zipCode: '',
+                          phoneNumber: '',
                         ));
                   },
                 ),

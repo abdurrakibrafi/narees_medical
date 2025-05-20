@@ -31,7 +31,6 @@ class UpdateProfileController extends GetxController {
 
       var request = http.MultipartRequest('PATCH', uri);
 
-      // Add authorization header
       if (accessToken != null && accessToken.isNotEmpty) {
         request.headers['Authorization'] = 'Bearer $accessToken';
       }
