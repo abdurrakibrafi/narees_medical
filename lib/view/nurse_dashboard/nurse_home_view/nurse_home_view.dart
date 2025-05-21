@@ -7,8 +7,10 @@ import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/not_found_widget.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/controller/get_nurse_appoitment_controller.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/marketing_material_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/today_appointment_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../common widget/row_wise_widget.dart';
 import 'controller/marketing_material_controller.dart';
@@ -22,10 +24,19 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
   final MarketingMaterialController controller =
       Get.put(MarketingMaterialController());
 
+  final GetNurseAppointment _getNurseAppointment =
+      Get.put(GetNurseAppointment());
+
   @override
   void initState() {
     super.initState();
-    controller.getMaterial(); // Reload data each time this widget is created
+
+    final today = DateTime.now();
+    final formattedDate =
+        "${today.year.toString().padLeft(4, '0')}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
+    controller.getMaterial();
+    _getNurseAppointment.getNurseAppointment(date: formattedDate);
   }
 
   @override
@@ -43,52 +54,27 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
               subTitle: 'See All',
             ),
             SizedBox(height: 10),
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Color(0xFF0071BC),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: "John Date",
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  CustomText(
-                    text: 'Treatment Type: Hydration Therapy',
-                    color: Colors.white,
-                    fontSize: 16.h,
-                  ),
-                  SizedBox(height: 8),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFF519ed1),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.access_time,
-                          ),
-                          SizedBox(width: 8),
-                          CustomText(
-                            text: '10:00 AM, March 6, 2025 / 2/A. Florida, USA',
-                            color: Colors.black,
-                            fontSize: 12.h,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            Obx(() {
+              if (_getNurseAppointment.isLoading.value) {
+                return TodayAppointmentWidget.shimmer();
+              }
+              if (_getNurseAppointment.nurseData.value.data == null ||
+                  _getNurseAppointment.nurseData.value.data!.data.isEmpty) {
+                return NotFoundWidget(message: "No Appointment Today");
+              }
+
+              final appointment =
+                  _getNurseAppointment.nurseData.value.data!.data.first;
+
+              return TodayAppointmentWidget(
+                patientName:
+                    "${appointment.firstName ?? ''} ${appointment.lastName ?? ''}",
+                treatmentType: appointment.treatmentType ?? '',
+                timeAndLocation:
+                    "${_formatDate(appointment.date)} / ${appointment.location ?? ''}",
+                date: appointment.date ?? DateTime.now(),
+              );
+            }),
             SizedBox(height: 24),
             RowWiseWidget(
               title: 'Marketing Material',
@@ -145,5 +131,10 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return '';
+    return "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
 }

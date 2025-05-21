@@ -91,6 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           location: '',
                           zipCode: '',
                           phoneNumber: '',
+                          route: false,
                         ));
                   },
                 ),

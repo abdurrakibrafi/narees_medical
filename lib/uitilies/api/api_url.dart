@@ -26,8 +26,8 @@ class ApiUrl {
   static const String deleteNotification = "$baseUrl/notification";
   static const String payment = "$baseUrl/order/make-payment";
 
-  static const String notification = "$baseUrl/notification/notifications?limit=999999";
-
+  static const String notification =
+      "$baseUrl/notification/notifications?limit=999999";
 
   static const String marketingMaterial =
       "$baseUrl/market-material?&limit=9999";
@@ -39,6 +39,9 @@ class ApiUrl {
 
   static String getMyAppointment({required String date}) =>
       "$baseUrl/appointment/get-as-patient?date=$date&limit=9999";
+
+  static String getNurseAppointment({required String date}) =>
+      "$baseUrl/appointment/get-as-nurse?date=$date&limit=9999";
 
   static String inventoryForPatient({required String role}) =>
       "$baseUrl/product?productFor=$role&limit=9999";

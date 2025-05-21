@@ -89,6 +89,7 @@ class _ProfilePageState extends State<PaitientProfileView> {
                         location: '',
                         zipCode: '',
                         phoneNumber: '',
+                        route: true,
                       ));
                 },
               ),

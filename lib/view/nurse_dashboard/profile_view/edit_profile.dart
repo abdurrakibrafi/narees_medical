@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
@@ -23,22 +21,24 @@ class EditProfile extends StatefulWidget {
   final String image;
   final String location;
   final String phoneNumber;
+  final bool route;
   final String zipCode;
-
   final bool? spacilizaion;
   final bool? docs;
 
-  const EditProfile(
-      {super.key,
-      this.spacilizaion,
-      this.docs,
-      required this.firstName,
-      required this.lastame,
-      required this.emailAddress,
-      required this.image,
-      required this.location,
-      required this.zipCode,
-      required this.phoneNumber});
+  const EditProfile({
+    super.key,
+    this.spacilizaion,
+    this.docs,
+    required this.firstName,
+    required this.lastame,
+    required this.emailAddress,
+    required this.image,
+    required this.location,
+    required this.zipCode,
+    required this.phoneNumber,
+    required this.route,
+  });
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -47,12 +47,11 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final ImagePicker _picker = ImagePicker();
   XFile? _imageFile;
-  String selectedValue = "Specialization";
+  List<XFile> _documentFiles = [];
 
   final UpdateProfileController _updateProfileController =
-      Get.put(UpdateProfileController());
+  Get.put(UpdateProfileController());
 
-  // Controllers
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
@@ -78,6 +77,7 @@ class _EditProfileState extends State<EditProfile> {
     _emailController.dispose();
     _locationController.dispose();
     _zipCodeController.dispose();
+    phoneC.dispose();
     super.dispose();
   }
 
@@ -124,6 +124,19 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
+  Future<void> _pickDocuments() async {
+    try {
+      final picked = await _picker.pickMultiImage();
+      if (picked.isNotEmpty) {
+        setState(() {
+          _documentFiles.addAll(picked);
+        });
+      }
+    } catch (e) {
+      print("Error selecting documents: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +147,6 @@ class _EditProfileState extends State<EditProfile> {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20),
@@ -145,19 +157,19 @@ class _EditProfileState extends State<EditProfile> {
                       borderRadius: BorderRadius.circular(100),
                       child: _imageFile != null
                           ? Image.file(
-                              File(_imageFile!.path),
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            )
+                        File(_imageFile!.path),
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      )
                           : Image.network(
-                              widget.image.isNotEmpty
-                                  ? widget.image
-                                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
+                        widget.image.isNotEmpty
+                            ? widget.image
+                            : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Positioned(
                       bottom: 4,
@@ -190,13 +202,9 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
               SizedBox(height: 40),
-              CustomText(
-                text: "Personal Information",
-                fontSize: 15.h,
-              ),
+              CustomText(text: "Personal Information", fontSize: 15.h),
               SizedBox(height: 10),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: CustomTextField(
@@ -273,35 +281,44 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               SizedBox(height: 20),
               if (widget.docs ?? false) ...[
-                CustomText(
-                  text: "Upload Documents",
-                  fontSize: 15.h,
-                ),
+                CustomText(text: "Upload Documents", fontSize: 15.h),
                 SizedBox(height: 10),
-                Container(
-                  color: Color(0xFFE4E4E4),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(3),
-                        child: CustomText(
-                          text: "Choose file",
+                GestureDetector(
+                  onTap: _pickDocuments,
+                  child: Container(
+                    color: Color(0xFFE4E4E4),
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: CustomText(
+                            text: "Choose file",
+                            fontSize: 14.h,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        CustomText(
+                          text: "Add more images",
+                          color: Colors.grey,
                           fontSize: 14.h,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      CustomText(
-                        text: "Add more image",
-                        color: Colors.grey,
-                        fontSize: 14.h,
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
+                ..._documentFiles.map((file) => Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    file.name,
+                    style: TextStyle(fontSize: 12.sp, color: Colors.black54),
+                  ),
+                )),
               ],
               SizedBox(height: 20),
               SizedBox(
@@ -319,14 +336,17 @@ class _EditProfileState extends State<EditProfile> {
                     btnText: "Update",
                     onTap: () async {
                       await _updateProfileController.updateProfile(
+                        docs:
+                        _documentFiles.map((xfile) => File(xfile.path)).toList(),
                         firstName: _firstNameController.text.trim(),
                         lastName: _lastNameController.text.trim(),
                         location: _locationController.text.trim(),
                         zipCode: _zipCodeController.text.trim(),
                         email: _emailController.text.trim(),
-                        phoneNumber: phoneC.text,
+                        phoneNumber: phoneC.text.trim(),
                         profilePicture:
-                            _imageFile != null ? File(_imageFile!.path) : null,
+                        _imageFile != null ? File(_imageFile!.path) : null,
+                        route: widget.route,
                       );
                     },
                     iconWant: false,
