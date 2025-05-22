@@ -3,10 +3,10 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
+import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_bar_for_paitient.dart';
+import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
 
 import '../../paitent_dashboard_view/auth_view/sign_in_view/get_started_view.dart';
-
-
 
 class SplashController extends GetxController {
   Timer? timer;
@@ -24,7 +24,20 @@ class SplashController extends GetxController {
     });
 
     Future.delayed(const Duration(seconds: 3), () async {
-      Get.to(() => GetStartedView());
+      String? accessToken = await _storageService.read('accessToken');
+      String? role = await _storageService.read('role');
+
+      if (accessToken != null && accessToken.isNotEmpty) {
+        if (role == "NURSE") {
+          Get.off(() => DashboardForNurse());
+        } else if (role == "PATIENT") {
+          Get.off(() => BottomNavigationBarForPaitient());
+        } else {
+          Get.off(() => GetStartedView());
+        }
+      } else {
+        Get.off(() => GetStartedView());
+      }
     });
   }
 

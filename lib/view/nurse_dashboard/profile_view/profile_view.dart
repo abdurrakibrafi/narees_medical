@@ -13,6 +13,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 import '../../../common controller/custom alert dialog/custom_alert_dialog.dart';
+import '../../../uitilies/api/local_storage.dart';
 import '../../paitent_dashboard_view/auth_view/sign_in_view/sign_in_view.dart';
 import '../message_view/message_view_of_nurse.dart';
 import 'change_password_view.dart';
@@ -149,15 +150,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: 'Log Out',
                   onTap: () {
                     CustomAlertDialog.showCustomDialog(
-                        title: "Logout",
-                        content:
-                            "If you want to logout your account click on yes",
-                        cancelName: "No",
-                        actionName: "Yes",
-                        confirmText: "Yes",
-                        onConfirm: () {
-                          Get.offAll(() => SignInView());
-                        });
+                      title: "Logout",
+                      content:
+                          "If you want to logout your account click on yes",
+                      cancelName: "No",
+                      actionName: "Yes",
+                      confirmText: "Yes",
+                      onConfirm: () async {
+                        final StorageService storageService =
+                            Get.put(StorageService());
+                        await storageService.remove('accessToken');
+                        await storageService.remove('role');
+                        await storageService.remove('id');
+
+                        Get.offAll(() => SignInView());
+                      },
+                    );
                   },
                 ),
               ],

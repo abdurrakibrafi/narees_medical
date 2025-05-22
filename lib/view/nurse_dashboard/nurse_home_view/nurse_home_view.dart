@@ -11,6 +11,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/co
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/marketing_material_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/today_appointment_widget.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../common widget/row_wise_widget.dart';
 import 'controller/marketing_material_controller.dart';
@@ -95,6 +96,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                         desc: ' ',
                         tag: ' ',
                         image: '',
+                        onTap: () {},
                       ),
                     );
                   },
@@ -123,6 +125,26 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                     image: marketItem.marketingMaterialDocument.isNotEmpty
                         ? marketItem.marketingMaterialDocument[0].url ?? ''
                         : '',
+                    onTap: () async {
+                      final title = marketItem.tags.isNotEmpty
+                          ? marketItem.tags.map((tag) => '#$tag').join(' ')
+                          : 'Check this out';
+
+                      final content = marketItem.content ?? '';
+
+                      final imageUrl = marketItem
+                              .marketingMaterialDocument.isNotEmpty
+                          ? marketItem.marketingMaterialDocument[0].url ?? ''
+                          : '';
+
+                      String shareText = "$title\n\n$content";
+
+                      if (imageUrl.isNotEmpty) {
+                        shareText += "\n\n$imageUrl";
+                      }
+
+                      await Share.share(shareText);
+                    },
                   );
                 },
               );

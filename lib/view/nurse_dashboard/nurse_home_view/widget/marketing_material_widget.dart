@@ -12,6 +12,7 @@ class MarketingMaterialCard extends StatelessWidget {
   final String desc;
   final String tag;
   final String image;
+  final VoidCallback onTap;
   final DateTime? createdAt;
 
   const MarketingMaterialCard({
@@ -19,7 +20,7 @@ class MarketingMaterialCard extends StatelessWidget {
     required this.desc,
     required this.tag,
     required this.image,
-    this.createdAt,
+    this.createdAt, required this.onTap,
   }) : super(key: key);
 
   String getTimeAgo(DateTime? date) {
@@ -109,15 +110,19 @@ class MarketingMaterialCard extends StatelessWidget {
                           ),
                         ),
                         // Share button
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Colors.white),
-                            child: Image.asset(
-                              "assets/images/Vector.png",
-                              width: 28,
+
+                        GestureDetector(
+                          onTap: onTap,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Colors.white),
+                              child: Image.asset(
+                                "assets/images/Vector.png",
+                                width: 28,
+                              ),
                             ),
                           ),
                         )
