@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import '../../../common widget/html_view.dart';
 import 'controller/privacy_policy_controller.dart';
 
 class SettingsView extends StatelessWidget {
@@ -65,11 +66,9 @@ class SettingsView extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                       SizedBox(height: 16),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: controller.profile.value.data?.privacy ??
+                      HTMLView(
+                        htmlData: controller.profile.value.data?.privacy ??
                             'Privacy policy is not available',
-                        fontSize: 16,
                       ),
                     ],
                   ),
@@ -88,11 +87,9 @@ class SettingsView extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                       SizedBox(height: 16),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: controller.profile.value.data?.terms ??
+                      HTMLView(
+                        htmlData: controller.profile.value.data?.terms ??
                             'Terms of use are not available',
-                        fontSize: 16,
                       ),
                     ],
                   ),

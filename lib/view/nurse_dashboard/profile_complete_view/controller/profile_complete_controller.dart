@@ -4,12 +4,9 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:restaurent_discount_app/uitilies/api/api_url.dart';
 import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
-import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/sign_up_view/otp_submit_for_registration_view.dart';
-
 import '../../../../../uitilies/api/local_storage.dart';
 import '../../../../common controller/custom alert dialog/custom_alert_dialog.dart';
 import '../../../bottom_navigation_view/bottom_navigation_view.dart';
-import '../../../tranning_module/tranning_module_view.dart';
 
 class ProfileCompleteController extends GetxController {
   var isLoading = false.obs;

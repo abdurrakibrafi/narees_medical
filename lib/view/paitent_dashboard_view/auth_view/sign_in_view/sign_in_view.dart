@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart' show Get;
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_text_filed.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
@@ -13,13 +12,20 @@ import '../../../../uitilies/custom_toast.dart';
 import '../forget_password_view/forget_password_view.dart';
 import '../sign_up_view/sign_up_view.dart';
 
-class SignInView extends StatelessWidget {
-  SignInView({super.key});
+class SignInView extends StatefulWidget {
+  SignInView({Key? key}) : super(key: key);
 
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
   final SignInController _signInController = Get.put(SignInController());
 
   final TextEditingController _emailC = TextEditingController();
   final TextEditingController _passwordC = TextEditingController();
+
+  bool _rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +90,8 @@ class SignInView extends StatelessWidget {
                       showObscure: true,
                     ),
 
+                    SizedBox(height: 12),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -103,8 +111,12 @@ class SignInView extends StatelessWidget {
                                 ),
                               ),
                               child: Checkbox(
-                                value: false,
-                                onChanged: (_) {},
+                                value: _rememberMe,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _rememberMe = value ?? false;
+                                  });
+                                },
                                 side: BorderSide(color: AppColors.mainColor),
                                 activeColor: AppColors.mainColor,
                               ),
@@ -133,19 +145,20 @@ class SignInView extends StatelessWidget {
 
                     // Sign In Button
                     Obx(() {
-                      return _signInController.isLoading.value == true
+                      return _signInController.isLoading.value
                           ? CustomLoader()
                           : SizedBox(
                               height: 55,
                               width: double.infinity,
                               child: CustomButtonWidget(
                                 gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xFF0071BC),
-                                      Color(0xFF003456)
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.topRight),
+                                  colors: [
+                                    Color(0xFF0071BC),
+                                    Color(0xFF003456)
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.topRight,
+                                ),
                                 btnText: "Sign In",
                                 onTap: () {
                                   if (_emailC.text.isEmpty ||
@@ -155,8 +168,9 @@ class SignInView extends StatelessWidget {
                                         isError: true);
                                   } else {
                                     _signInController.login(
-                                        email: _emailC.text,
-                                        password: _passwordC.text);
+                                      email: _emailC.text,
+                                      password: _passwordC.text,
+                                    );
                                   }
                                 },
                                 iconWant: false,

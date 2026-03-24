@@ -65,7 +65,7 @@ class _ProfileCompleteViewState extends State<ProfileCompleteView> {
                         begin: Alignment.topLeft,
                         end: Alignment.topRight),
 
-                      btnText: "Profile Complete",
+                      btnText: "Complete Profile",
                       onTap: () {
                         Get.to(() => ProfileFillUpView());
                       },

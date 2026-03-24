@@ -19,7 +19,6 @@ class ForgetPasswordController extends GetxController {
     try {
       isLoading(true);
 
-      // Trim the email to avoid issues with spaces
       email = email.trim();
 
       // Validate email format
@@ -59,7 +58,6 @@ class ForgetPasswordController extends GetxController {
           CustomToast.showToast(errorMessage, isError: true);
         }
       } else {
-        // Handle other status codes
         String errorMessage = 'Failed to send OTP request';
         if (response.statusCode == 404) {
           errorMessage =

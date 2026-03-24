@@ -1,5 +1,5 @@
 class ApiUrl {
-  static const String baseUrl = "http://192.168.40.246:4000/api/v1";
+  static const String baseUrl = "http://10.10.10.3:4000/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
   static String imageUrl({String? url}) {
     return "http://192.168.10.5:5005/$url";
