@@ -85,6 +85,7 @@ dependencies:
   open_file: ^3.3.2
   dio: ^5.4.0
   share_plus:
+  chewie: ^1.8.5
 
 
 

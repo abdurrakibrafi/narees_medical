@@ -10,7 +10,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/contro
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/payment_receipts_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_and_certification_view.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_module/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 import '../../../common controller/custom alert dialog/custom_alert_dialog.dart';
 import '../../../uitilies/api/local_storage.dart';
