@@ -125,13 +125,14 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget> {
                   Icon(
                     Icons.access_time,
                     color: Colors.white,
+                    size: 18,
                   ),
                   SizedBox(width: 8),
                   CustomText(
                     text:
                         '${_formatTime(widget.date)}, ${widget.timeAndLocation}',
                     color: Colors.white,
-                    fontSize: 12.h,
+                    fontSize: 10.h,
                   ),
                 ],
               ),

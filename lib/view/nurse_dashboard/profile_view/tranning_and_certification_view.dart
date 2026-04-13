@@ -19,7 +19,7 @@ class TrainingAndCertificationPage extends StatelessWidget {
           backgroundColor: Colors.white,
           title: CustomText(
             text: 'Training & Certification',
-            fontSize: 16.h,
+            fontSize: 14.h,
           ),
           leading: IconButton(
             icon: Icon(Icons.arrow_circle_left_rounded),
@@ -28,9 +28,8 @@ class TrainingAndCertificationPage extends StatelessWidget {
             },
           ),
           bottom: TabBar(
-
             indicatorColor: AppColors.mainColor,
-            labelStyle: GoogleFonts.abhayaLibre(fontSize: 15.h),
+            labelStyle: GoogleFonts.abhayaLibre(fontSize: 11.h),
             tabs: [
               Tab(
                 text: 'Completed Modules',
@@ -49,8 +48,7 @@ class TrainingAndCertificationPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return ModuleCard(
                     moduleName: 'Hydration Therapy Basics',
-                    progress: '100%',
-                    totalLessons: '21/24 Lesson',
+                    totalLessons: '24 Lesson',
                   );
                 },
               ),
@@ -74,8 +72,3 @@ class TrainingAndCertificationPage extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

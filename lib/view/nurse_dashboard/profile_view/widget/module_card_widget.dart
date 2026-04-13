@@ -1,17 +1,18 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 
 import '../../../../common widget/custom text/custom_text_widget.dart';
 
 class ModuleCard extends StatelessWidget {
   final String moduleName;
-  final String progress;
   final String totalLessons;
 
   const ModuleCard({
     Key? key,
     required this.moduleName,
-    required this.progress,
     required this.totalLessons,
   }) : super(key: key);
 
@@ -28,36 +29,35 @@ class ModuleCard extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: Row(
           children: [
-            // Progress Circle
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.blue, width: 3),
-              ),
-              child: Center(
-                child: CustomText(
-                  text: progress,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             SizedBox(width: 16),
             // Module Details
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.menu_book_sharp,
+                        size: 15,
+                        color: AppColors.mainColor,
+                      ),
+                      SizedBox(width: 4),
+                      CustomText(
+                        text: "Course Name:",
+                        fontSize: 10.h,
+                      )
+                    ],
+                  ),
                   CustomText(
                     text: moduleName,
                     fontWeight: FontWeight.bold,
-                    fontSize: 17.h,
+                    fontSize: 12.h,
                   ),
                   SizedBox(height: 4),
                   CustomText(
-                    text: totalLessons,
-                    fontSize: 15.h,
+                    text: "Total Lesson: $totalLessons",
+                    fontSize: 12.h,
                     color: Colors.grey,
                   ),
                 ],
