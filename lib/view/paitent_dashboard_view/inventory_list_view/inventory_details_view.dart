@@ -89,7 +89,7 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
                           height: 260,
                           child: PageView.builder(
                             itemCount:
-                                widget.images.length, // Use passed images list
+                                widget.images.length,
                             onPageChanged: (index) {
                               setState(() {
                                 currentIndex = index;
