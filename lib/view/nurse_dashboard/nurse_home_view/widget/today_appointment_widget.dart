@@ -102,15 +102,15 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            text: widget.patientName,
+            text: 'Patient: ${widget.patientName}',
             color: Colors.white,
-            fontSize: 22,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
           CustomText(
             text: 'Treatment Type: ${widget.treatmentType}',
             color: Colors.white,
-            fontSize: 16.h,
+            fontSize: 11.h,
           ),
           SizedBox(height: 8),
           Container(
