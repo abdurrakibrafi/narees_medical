@@ -50,7 +50,6 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
             itemCount: receipts.length,
             itemBuilder: (context, index) {
               final receipt = receipts[index];
-              final patientName = receipt.userId ?? "Unknown";
               final treatmentType = receipt.orderItems.isNotEmpty
                   ? receipt.orderItems[0].product?.name ?? "N/A"
                   : "N/A";
@@ -63,7 +62,6 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
               final receiptUrl = receipt.payment?.receptUrl;
 
               return PaymentReceiptCard(
-                patientName: patientName,
                 treatmentType: treatmentType,
                 amount: amount,
                 date: date,
@@ -97,8 +95,11 @@ class _PaymentReceiptsPageState extends State<PaymentReceiptsPage> {
                     );
                   }
                 },
-
-                showBtn: receipt.payment?.status == "PAID" ? true : false,
+                showBtn: true,
+                status: receipt.payment?.status == "PAID"
+                    ? PaymentStatus.paid
+                    : PaymentStatus.pending,
+                transactionId: receipt.transId.toString(),
               );
             },
           );
