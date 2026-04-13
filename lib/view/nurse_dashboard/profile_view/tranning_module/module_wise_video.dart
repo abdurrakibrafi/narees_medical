@@ -7,6 +7,7 @@ import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_module/widget/lessonCard_widget.dart';
 import '../../../../common widget/custom text/custom_text_widget.dart';
 import 'controller/all_modules_controller_get.dart';
+import 'controller/module_marks_as_a_complete_controller.dart';
 import 'model/modules_model.dart';
 
 class ModuleWiseVideo extends StatefulWidget {
@@ -22,6 +23,8 @@ class _ModuleWiseVideoState extends State<ModuleWiseVideo> {
   final AllModulesControllerGet _controller =
       Get.put(AllModulesControllerGet());
 
+  final MarkAsAController _markAsAController = Get.put(MarkAsAController());
+
   // ✅ Progress %
   int get _progressPercent {
     final data = _controller.module.value.data;
@@ -31,7 +34,6 @@ class _ModuleWiseVideoState extends State<ModuleWiseVideo> {
     return 0;
   }
 
-  // ✅ 🔥 FIXED: ALL modules (not only first)
   List<Module> get _modules {
     final data = _controller.module.value.data;
 
@@ -172,6 +174,12 @@ class _ModuleWiseVideoState extends State<ModuleWiseVideo> {
                       : index == 0;
 
                   return LessonCard(
+                    markOnTap: () {
+                      _markAsAController.addToMarkAsAComplete(
+                          moduleId: courseData.id.toString());
+
+                      print("dgdgfdg");
+                    },
                     module: module,
                     isExpanded: isExpanded,
                     isUnlocked: isUnlocked,

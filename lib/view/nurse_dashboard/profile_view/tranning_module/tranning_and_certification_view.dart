@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -16,6 +17,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget
 
 import 'controller/course_list_controller.dart';
 import 'model/course_list_model.dart';
+import 'module_wise_video.dart';
 
 class TrainingAndCertificationPage extends StatelessWidget {
   final CourseListController _controller = Get.put(CourseListController());
@@ -27,7 +29,7 @@ class TrainingAndCertificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Number of tabs
+      length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -74,11 +76,18 @@ class TrainingAndCertificationPage extends StatelessWidget {
                     final course = _courses[index];
 
                     return ModuleCard(
-                      onTap: () => showEnrollDialog(
-                        context,
-                        moduleName: course.courseName ?? 'not available',
-                        totalLessons: '${course.count?.modules ?? 0} Lessons',
-                      ),
+                      onTap: () {
+                        if (course.isEnrolled == true) {
+                          Get.to(() => ModuleWiseVideo());
+                        } else {
+                          showEnrollDialog(
+                            context,
+                            moduleName: course.courseName ?? 'not available',
+                            totalLessons:
+                                '${course.count?.modules ?? 0} Lessons',
+                          );
+                        }
+                      },
                       moduleName: course.courseName ?? 'not available',
                       totalLessons: '${course.count?.modules ?? 0} Lessons',
                     );

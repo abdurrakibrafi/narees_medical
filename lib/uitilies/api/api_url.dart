@@ -29,6 +29,11 @@ class ApiUrl {
   static const String allModules = "$baseUrl/training-module/my-modules";
   static const String allCourse = "$baseUrl/training-module";
 
+
+
+  static String markAsAComplete({required String moduleId}) =>
+      "$baseUrl/training-module/move-to-next-module/$moduleId";
+
   static const String notification =
       "$baseUrl/notification/notifications?limit=999999";
 

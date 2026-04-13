@@ -31,6 +31,7 @@ class CourseList {
     required this.createdAt,
     required this.updatedAt,
     required this.count,
+    required this.isEnrolled,
   });
 
   final String? id;
@@ -41,6 +42,7 @@ class CourseList {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final Count? count;
+  final bool? isEnrolled;
 
   factory CourseList.fromJson(Map<String, dynamic> json) {
     return CourseList(
@@ -52,6 +54,7 @@ class CourseList {
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       count: json["_count"] == null ? null : Count.fromJson(json["_count"]),
+      isEnrolled: json["isEnrolled"],
     );
   }
 }
@@ -59,13 +62,16 @@ class CourseList {
 class Count {
   Count({
     required this.modules,
+    required this.enrollments,
   });
 
   final int? modules;
+  final int? enrollments;
 
   factory Count.fromJson(Map<String, dynamic> json) {
     return Count(
       modules: json["modules"],
+      enrollments: json["enrollments"],
     );
   }
 }

@@ -14,6 +14,7 @@ class LessonCard extends StatelessWidget {
   final bool isUnlocked;
   final VoidCallback onTap;
   final VoidCallback? onComplete;
+  final VoidCallback? markOnTap;
 
   const LessonCard({
     super.key,
@@ -22,6 +23,7 @@ class LessonCard extends StatelessWidget {
     required this.isUnlocked,
     required this.onTap,
     this.onComplete,
+    this.markOnTap,
   });
 
   @override
@@ -148,7 +150,7 @@ class LessonCard extends StatelessWidget {
                           btnTextSize: 14.0,
                           btnColor: AppColors.mainColor,
                           btnText: "Mark as Complete",
-                          onTap: onTap,
+                          onTap: markOnTap!,
                           iconWant: false)
                     ],
                   )
