@@ -1,9 +1,10 @@
-// lesson_card_widget.dart
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:video_player/video_player.dart';
 import '../model/modules_model.dart';
 
@@ -11,16 +12,16 @@ class LessonCard extends StatelessWidget {
   final Module module;
   final bool isExpanded;
   final bool isUnlocked;
-  final bool isCompleted;
   final VoidCallback onTap;
+  final VoidCallback? onComplete;
 
   const LessonCard({
     super.key,
     required this.module,
     required this.isExpanded,
     required this.isUnlocked,
-    required this.isCompleted,
     required this.onTap,
+    this.onComplete,
   });
 
   @override
@@ -53,35 +54,30 @@ class LessonCard extends StatelessWidget {
               padding: const EdgeInsets.all(14),
               child: Row(
                 children: [
-                  // Serial / status badge
+                  // Status circle
                   Container(
                     width: 38,
                     height: 38,
                     decoration: BoxDecoration(
-                      color: isCompleted
-                          ? Colors.green.shade50
-                          : isExpanded
-                          ? const Color(0xFF185FA5)
+                      color: isExpanded
+                          ? Colors.black
                           : const Color(0xFF185FA5).withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
-                      child: isCompleted
-                          ? Icon(Icons.check_rounded,
-                          size: 18, color: Colors.green.shade600)
-                          : !isUnlocked
+                      child: !isUnlocked
                           ? Icon(Icons.lock_outline_rounded,
-                          size: 16, color: Colors.grey.shade400)
+                              size: 16, color: Colors.grey.shade400)
                           : Text(
-                        '${module.serial}',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: isExpanded
-                              ? Colors.white
-                              : const Color(0xFF185FA5),
-                        ),
-                      ),
+                              '${module.serial}',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: isExpanded
+                                    ? Colors.white
+                                    : const Color(0xFF185FA5),
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -91,12 +87,6 @@ class LessonCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
-
-
-
-
-
                         Text(
                           module.name ?? '',
                           style: TextStyle(
@@ -123,7 +113,6 @@ class LessonCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
 
-                  // Expand arrow (only if unlocked)
                   if (isUnlocked)
                     AnimatedRotation(
                       turns: isExpanded ? 0.5 : 0,
@@ -138,20 +127,31 @@ class LessonCard extends StatelessWidget {
             ),
           ),
 
-          // ── Video ──
+          // ── Video + Complete ──
           AnimatedCrossFade(
             duration: const Duration(milliseconds: 300),
             crossFadeState: isExpanded
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
             firstChild: const SizedBox.shrink(),
-            secondChild: isExpanded && module.videoUrl != null
+            secondChild: isExpanded &&
+                    module.videoUrl != null &&
+                    module.videoUrl!.isNotEmpty
                 ? Column(
-              children: [
-                Divider(height: 1, color: Colors.grey.shade100),
-                _VideoPlayerWidget(videoUrl: module.videoUrl!),
-              ],
-            )
+                    children: [
+                      Divider(height: 1, color: Colors.grey.shade100),
+
+                      // 🎥 Video
+                      _VideoPlayerWidget(videoUrl: module.videoUrl!),
+                      SizedBox(height: 10),
+                      CustomButtonWidget(
+                          btnTextSize: 14.0,
+                          btnColor: AppColors.mainColor,
+                          btnText: "Mark as Complete",
+                          onTap: onTap,
+                          iconWant: false)
+                    ],
+                  )
                 : const SizedBox.shrink(),
           ),
         ],
@@ -160,7 +160,6 @@ class LessonCard extends StatelessWidget {
   }
 }
 
-// ─── Video Player ─────────────────────────────────────────
 class _VideoPlayerWidget extends StatefulWidget {
   final String videoUrl;
   const _VideoPlayerWidget({required this.videoUrl});
@@ -185,29 +184,25 @@ class _VideoPlayerWidgetState extends State<_VideoPlayerWidget> {
     try {
       _videoController = VideoPlayerController.networkUrl(
         Uri.parse(widget.videoUrl),
-        httpHeaders: {'Accept': '*/*'},
-        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
       );
+
       await _videoController.initialize();
+
       _chewieController = ChewieController(
         videoPlayerController: _videoController,
         autoPlay: false,
         looping: false,
         aspectRatio: 16 / 9,
-        placeholder: Container(color: Colors.black),
-        materialProgressColors: ChewieProgressColors(
-          playedColor: const Color(0xFF185FA5),
-          handleColor: const Color(0xFF185FA5),
-          bufferedColor: Colors.white38,
-          backgroundColor: Colors.white24,
-        ),
       );
+
       if (mounted) setState(() => _isLoading = false);
     } catch (e) {
-      if (mounted) setState(() {
-        _isLoading = false;
-        _hasError = true;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _hasError = true;
+        });
+      }
     }
   }
 
@@ -220,41 +215,32 @@ class _VideoPlayerWidgetState extends State<_VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(14),
-        bottomRight: Radius.circular(14),
-      ),
-      child: AspectRatio(
-        aspectRatio: 16 / 9,
-        child: _isLoading
-            ? Container(
-          color: Colors.black,
-          child: const Center(
-            child: CircularProgressIndicator(color: Color(0xFF185FA5)),
+    if (_isLoading) {
+      return Container(
+        height: 200,
+        color: Colors.black,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (_hasError) {
+      return Container(
+        height: 200,
+        color: Colors.black,
+        child: const Center(
+          child: Text(
+            "Video load failed",
+            style: TextStyle(color: Colors.white),
           ),
-        )
-            : _hasError
-            ? Container(
-          color: Colors.black,
-          child: const Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.error_outline,
-                    color: Colors.white54, size: 36),
-                SizedBox(height: 8),
-                Text(
-                  'Video could not be loaded',
-                  style: TextStyle(
-                      color: Colors.white54, fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-        )
-            : Chewie(controller: _chewieController!),
-      ),
+        ),
+      );
+    }
+
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: Chewie(controller: _chewieController!),
     );
   }
 }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_module/widget/lessonCard_widget.dart';
 import '../../../../common widget/custom text/custom_text_widget.dart';
 import 'controller/all_modules_controller_get.dart';
@@ -112,11 +113,7 @@ class _ModuleWiseVideoState extends State<ModuleWiseVideo> {
       // ───────────── BODY ─────────────
       body: Obx(() {
         if (_controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Color(0xFF185FA5),
-            ),
-          );
+          return Center(child: CustomLoader());
         }
 
         if (_modules.isEmpty) {
@@ -174,15 +171,10 @@ class _ModuleWiseVideoState extends State<ModuleWiseVideo> {
                       ? (module.progresses.first.isUnlocked ?? false)
                       : index == 0;
 
-                  final isCompleted = module.progresses.isNotEmpty
-                      ? module.progresses.first.status == 'completed'
-                      : false;
-
                   return LessonCard(
                     module: module,
                     isExpanded: isExpanded,
                     isUnlocked: isUnlocked,
-                    isCompleted: isCompleted,
                     onTap: () {
                       if (!isUnlocked) {
                         Get.snackbar(
