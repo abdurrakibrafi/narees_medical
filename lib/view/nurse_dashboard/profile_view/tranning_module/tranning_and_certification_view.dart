@@ -16,11 +16,15 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/module_card_widget.dart';
 
 import 'controller/course_list_controller.dart';
+import 'controller/enroll_course_controller.dart';
 import 'model/course_list_model.dart';
 import 'module_wise_video.dart';
 
 class TrainingAndCertificationPage extends StatelessWidget {
   final CourseListController _controller = Get.put(CourseListController());
+
+  final EnrollCourseController _enrollCourseController =
+      Get.put(EnrollCourseController());
 
   List<CourseList> get _courses {
     return _controller.course.value.data ?? [];
@@ -85,6 +89,12 @@ class TrainingAndCertificationPage extends StatelessWidget {
                             moduleName: course.courseName ?? 'not available',
                             totalLessons:
                                 '${course.count?.modules ?? 0} Lessons',
+                            onTap: () {
+                              _enrollCourseController.addCourseEnroll(
+                                  courseId: course.id.toString());
+
+                              Get.back();
+                            },
                           );
                         }
                       },

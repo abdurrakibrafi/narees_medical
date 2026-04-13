@@ -3,16 +3,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 
-import '../module_wise_video.dart';
+
 
 void showEnrollDialog(
   BuildContext context, {
   required String moduleName,
   required String totalLessons,
+  required VoidCallback onTap,
 }) {
   showDialog(
     context: context,
@@ -87,11 +86,7 @@ void showEnrollDialog(
                   ),
                   elevation: 0,
                 ),
-                onPressed: () {
-                  Navigator.pop(context);
-
-                  Get.to(() => ModuleWiseVideo());
-                },
+                onPressed: onTap,
                 child: const Text(
                   'Enrol Now',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
