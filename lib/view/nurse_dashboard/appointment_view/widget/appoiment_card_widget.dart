@@ -75,7 +75,7 @@ class AppointmentCard extends StatelessWidget {
                     text: patientName,
                     fontWeight: FontWeight.bold,
                     color: AppColors.mainColor,
-                    fontSize: 19.sp,
+                    fontSize: 16.sp,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -92,14 +92,15 @@ class AppointmentCard extends StatelessWidget {
               ),
               SizedBox(height: 5),
               CustomText(
+                textAlign: TextAlign.left,
                 text: 'Treatment Type: $treatmentType',
-                fontSize: 17.sp,
+                fontSize: 13.sp,
                 color: Colors.black,
               ),
               SizedBox(height: 5),
               CustomText(
                 text: 'Status: $gfeStatus',
-                fontSize: 14.sp,
+                fontSize: 13.sp,
                 color: Colors.black,
               ),
               SizedBox(height: 10),
@@ -113,7 +114,7 @@ class AppointmentCard extends StatelessWidget {
                   SizedBox(width: 5),
                   CustomText(
                     text: time,
-                    fontSize: 14.sp,
+                    fontSize: 13.sp,
                     color: Colors.black,
                   ),
                   Spacer(),
@@ -133,7 +134,10 @@ class AppointmentCard extends StatelessWidget {
                         StatusButton(status: 'Canceled', color: Colors.red),
                       ],
                     )
-                  : StatusButton(status: gfeStatus, color: statusColor,),
+                  : StatusButton(
+                      status: gfeStatus,
+                      color: statusColor,
+                    ),
             ],
           ),
         ),
@@ -160,7 +164,7 @@ class StatusButton extends StatelessWidget {
         text: status,
         color: color,
         fontWeight: FontWeight.bold,
-        fontSize: 16.sp,
+        fontSize: 13.sp,
       ),
     );
   }

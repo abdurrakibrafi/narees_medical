@@ -51,12 +51,12 @@ class InventoryItemCard extends StatelessWidget {
                     children: [
                       CustomText(
                         text: item.name ?? 'Unknown Name',
-                        fontSize: 16.h,
+                        fontSize: 13.h,
                         fontWeight: FontWeight.bold,
                       ),
                       CustomText(
                         text: item.supplierName ?? 'Unknown Supplier',
-                        fontSize: 17,
+                        fontSize: 12,
                         color: Colors.black54,
                       ),
                       SizedBox(height: 8),
@@ -69,7 +69,7 @@ class InventoryItemCard extends StatelessWidget {
                       CustomText(
                         text: item.stockStatus ?? 'Stock Unknown',
                         fontSize: 16,
-                        color: item.stockStatus == 'In Stock'
+                        color: item.stockStatus == 'In_Stock'
                             ? Colors.green
                             : Colors.red,
                       ),
