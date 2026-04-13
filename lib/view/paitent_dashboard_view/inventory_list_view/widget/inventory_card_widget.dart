@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import '../../../../common widget/custom_elipse_text.dart';
 import '../inventory_details_view.dart';
 import '../model/inventory_product_model.dart';
 
@@ -50,7 +51,10 @@ class InventoryItemCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: item.name ?? 'Unknown Name',
+                        text: customEllipsisText(
+                          wordLimit: 2,
+                          item.name ?? 'Unknown Name',
+                        ),
                         fontSize: 13.h,
                         fontWeight: FontWeight.bold,
                       ),
@@ -69,7 +73,7 @@ class InventoryItemCard extends StatelessWidget {
                       CustomText(
                         text: item.stockStatus ?? 'Stock Unknown',
                         fontSize: 16,
-                        color: item.stockStatus == 'In_Stock'
+                        color: item.stockStatus == 'IN_STOCK'
                             ? Colors.green
                             : Colors.red,
                       ),
@@ -126,7 +130,7 @@ class InventoryItemCard extends StatelessWidget {
                   color: Color(0xFFE8F4FA),
                   borderRadius: BorderRadius.circular(10)),
               child: CustomText(
-                text: item.quantity?.toString() ?? "0", // Display quantity
+                text: item.quantity?.toString() ?? "0",
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: AppColors.mainColor,

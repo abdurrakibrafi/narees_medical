@@ -12,6 +12,8 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/cart_view
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/controller/add_to_cart_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../nurse_dashboard/cart_view/controller/cart_get_controller.dart';
+
 class ViewInventoryPage extends StatefulWidget {
   final String proName;
   final String proId;
@@ -41,6 +43,8 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
 
   final AddToCartController _addToCartController =
       Get.put(AddToCartController());
+
+  final CartGetController _controller = Get.put(CartGetController());
 
   @override
   void initState() {
@@ -195,7 +199,10 @@ class _ViewInventoryPageState extends State<ViewInventoryPage> {
                           btnText: "Add to Cart",
                           onTap: () {
                             _addToCartController.addProductToCart(
-                                productId: widget.proId, quantity: int.tryParse(quantity.toString()));
+                                productId: widget.proId,
+                                quantity: int.tryParse(quantity.toString()));
+
+                            _controller.getCart();
                           },
                           iconWant: false);
                 }),
