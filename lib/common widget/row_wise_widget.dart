@@ -17,7 +17,7 @@ class RowWiseWidget extends StatelessWidget {
         CustomText(
           text: title,
           fontWeight: FontWeight.bold,
-          fontSize: 16.h,
+          fontSize: 13.h,
         ),
         CustomText(
           text: subTitle,

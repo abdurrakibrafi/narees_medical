@@ -33,7 +33,7 @@ class NotFoundWidget extends StatelessWidget {
           CustomText(
             text: message,
             textAlign: TextAlign.center,
-            fontSize: 20.sp,
+            fontSize: 14.sp,
             color: Colors.grey,
           ),
         ],
