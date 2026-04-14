@@ -52,8 +52,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             ClipOval(
                               child: CustomCachedImage(
-                                height: 140.0,
-                                width: 140.0,
+                                height: 120.0,
+                                width: 120.0,
                                 imageUrl: _profileGetController
                                         .profile.value.data?.profilePicture
                                         .toString() ??
@@ -68,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         .profile.value.data?.fullname
                                         .toString() ??
                                     "n/a",
-                                fontSize: 24,
+                                fontSize: 21,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

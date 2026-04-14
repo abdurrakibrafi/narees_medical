@@ -27,14 +27,12 @@ class CertificateCard extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: Row(
           children: [
-            // Certificate Icon
             Icon(
               Icons.picture_as_pdf,
               color: Colors.blue,
-              size: 30,
+              size: 25,
             ),
             SizedBox(width: 16),
-            // Certificate Details
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,24 +41,18 @@ class CertificateCard extends StatelessWidget {
                     textAlign: TextAlign.start,
                     text: certificateName,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                   SizedBox(height: 4),
                   CustomText(
-                  text:   fileSize,
-                  color: Colors.grey,fontSize: 15,
+                    text: fileSize,
+                    color: Colors.grey,
+                    fontSize: 13,
                   ),
                 ],
               ),
             ),
             // Download Button
-            IconButton(
-              icon: Icon(Icons.download, color: Colors.blue),
-              onPressed: () {
-                // Implement the download functionality
-                print("Download clicked");
-              },
-            ),
           ],
         ),
       ),

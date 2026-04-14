@@ -28,14 +28,14 @@ class ProfileOption extends StatelessWidget {
             Icon(
               icon,
               color: color ?? Colors.black.withOpacity(0.6),
-              size: 28,
+              size: 23,
             ),
             SizedBox(width: 16),
             Expanded(
               child: CustomText(
                 textAlign: TextAlign.start,
                 text: title,
-                fontSize: 18,
+                fontSize: 14,
                 color: color ?? Colors.black,
               ),
             ),

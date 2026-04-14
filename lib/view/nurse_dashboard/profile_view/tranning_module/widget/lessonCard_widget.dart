@@ -146,6 +146,14 @@ class LessonCard extends StatelessWidget {
                       // 🎥 Video
                       _VideoPlayerWidget(videoUrl: module.videoUrl!),
                       SizedBox(height: 10),
+
+
+
+
+
+
+
+
                       CustomButtonWidget(
                           btnTextSize: 14.0,
                           btnColor: AppColors.mainColor,
