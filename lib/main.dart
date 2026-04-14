@@ -20,6 +20,8 @@ Future<void> main() async {
 
   final SocketController socketController = Get.put(SocketController());
 
+  socketController.listenMessages();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

@@ -52,8 +52,16 @@ class SocketController extends GetxController {
         log("✅ Socket Connected");
         isConnected.value = true;
 
+
+        // ✅ এটা দিয়ে server কে trigger করুন যাতে সে history পাঠায়
+        socket.emit("send-message", {
+          "content": "",  // empty content
+        });
         listenMessages();
       });
+
+
+
 
       // ❌ DISCONNECTED
       socket.onDisconnect((_) {
@@ -101,10 +109,20 @@ class SocketController extends GetxController {
   void sendMessage(String text) {
     if (!isConnected.value) return;
 
-    socket.emitWithAck("sendMessage", {
-      "message": text,
+    socket.emitWithAck("send-message", {
+      "content": text,
     }, ack: (response) {
       log("✅ Server ACK: $response");
+
+      // ✅ ACK পাওয়ার পর তাৎক্ষণিক UI update
+      messages.insert(0, {
+        "content": text,
+        "senderId": id,
+        "createdAt": DateTime.now().toIso8601String(),
+      });
+
+      // ✅ Server থেকে latest messages আনো
+      listenMessages();
     });
   }
 

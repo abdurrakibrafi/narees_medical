@@ -24,6 +24,25 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    // ✅ already connected থাকলে সাথে সাথে
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_socketController.isConnected.value) {
+        _socketController.listenMessages();
+      }
+    });
+
+    // ✅ connect হওয়ার পর automatically call হবে
+    ever(_socketController.isConnected, (connected) {
+      if (connected) {
+        _socketController.listenMessages();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
       final messages = _socketController.messages;
@@ -73,13 +92,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 if (text.isEmpty) return;
 
                 _socketController.sendMessage(text);
-
-                // 🔥 instant UI
-                _socketController.messages.insert(0, {
-                  "content": text,
-                  "senderId": _socketController.id,
-                  "createdAt": DateTime.now().toIso8601String(),
-                });
 
                 _messageController.clear();
               },
