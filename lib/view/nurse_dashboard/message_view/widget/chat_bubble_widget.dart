@@ -19,10 +19,10 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft, // ✅ ঠিক করো
       child: Column(
         crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Container(
             margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
@@ -32,14 +32,14 @@ class ChatBubble extends StatelessWidget {
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
-                bottomLeft: isMe ? Radius.circular(12) : Radius.circular(0),
-                bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
+                bottomLeft: isMe ? Radius.circular(0) : Radius.circular(12),  // ✅ swap
+                bottomRight: isMe ? Radius.circular(12) : Radius.circular(0), // ✅ swap
               ),
             ),
             child: Text(
               message,
               style: TextStyle(
-                color: isMe ? Colors.white : Colors.black87,
+                color: isMe ? Colors.white : Colors.black,
                 fontSize: 14.sp,
               ),
             ),

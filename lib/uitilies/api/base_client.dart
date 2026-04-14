@@ -17,6 +17,7 @@ class BaseClient {
     final StorageService _storageService = Get.put(StorageService());
     String? accessToken = _storageService.read<String>('accessToken');
 
+
     var headers = {
       'Content-type': 'application/json',
       "Authorization": "Bearer $accessToken"

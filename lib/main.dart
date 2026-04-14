@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/controller/language_controller.dart';
 import 'package:restaurent_discount_app/common%20widget/language%20widget/message.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/controller/socket_controller.dart';
 import 'package:restaurent_discount_app/view/splash_view/splash_view.dart';
 import 'common widget/language widget/dep.dart' as dep;
 import 'firebase_options.dart';
@@ -16,6 +17,8 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+
+  final SocketController socketController = Get.put(SocketController());
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
