@@ -52,6 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          forceMaterialTransparency: true,
           backgroundColor: Colors.white,
           centerTitle: true,
           title: CustomText(
