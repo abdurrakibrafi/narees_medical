@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,15 +25,18 @@ class ChatInputField extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.7),
+                color: AppColors.mainColor, // 🔥 background black
                 borderRadius: BorderRadius.circular(30),
               ),
               child: TextField(
                 controller: controller,
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(color: Colors.white), // 🔥 text white
+                cursorColor: Colors.white, // optional (cursor visible)
                 decoration: InputDecoration(
                   hintText: "Type a message",
-                  hintStyle: GoogleFonts.poppins(color: Colors.white70),
+                  hintStyle: GoogleFonts.poppins(
+                    color: Colors.white54, // 🔥 hint light white
+                  ),
                   border: InputBorder.none,
                 ),
               ),

@@ -42,7 +42,7 @@ class PatientChartingCard extends StatelessWidget {
                   CustomText(
                     text: "John Doe",
                     fontWeight: FontWeight.bold,
-                    fontSize: 19.sp,
+                    fontSize: 13.sp,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -58,7 +58,7 @@ class PatientChartingCard extends StatelessWidget {
               SizedBox(height: 5),
               CustomText(
                 text: 'Treatment Type: Hydration Therapy',
-                fontSize: 17.sp,
+                fontSize: 12.sp,
                 color: Colors.grey,
               ),
               SizedBox(height: 5),
@@ -73,13 +73,13 @@ class PatientChartingCard extends StatelessWidget {
                   SizedBox(width: 5),
                   CustomText(
                     text: '3:40 PM',
-                    fontSize: 14.sp,
+                    fontSize: 12.sp,
                     color: Colors.black,
                   ),
                   Spacer(),
                   CustomText(
                     text: "Dhaka",
-                    fontSize: 16.sp,
+                    fontSize: 12.sp,
                     color: Colors.grey,
                   ),
                 ],
@@ -120,7 +120,7 @@ class StatusButton extends StatelessWidget {
             CustomText(
               text: status,
               color: color,
-              fontSize: 16.sp,
+              fontSize: 12.sp,
             ),
           ],
         ));

@@ -25,7 +25,7 @@ class PatientChartingView extends StatelessWidget {
               SizedBox(height: 20),
               CustomButtonWidget(
                 btnColor: Color(0xFFE8F4FA),
-                btnTextSize: 13.h,
+                btnTextSize: 12.h,
                 btnTextColor: AppColors.mainColor,
                 btnText: "Add Patient Chart",
                 onTap: () {
