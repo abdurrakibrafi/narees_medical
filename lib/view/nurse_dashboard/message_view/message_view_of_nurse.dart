@@ -24,52 +24,19 @@ class _ChatScreenState extends State<ChatScreen> {
     return Obx(() {
       final isLoading = _controller.isLoading.value;
 
-      String title = "Loading...";
-      String? profileImageUrl;
-
-      if (!isLoading &&
-          _controller.nurseData.value.data != null &&
-          _controller.nurseData.value.data!.isNotEmpty) {
-        final participant =
-            _controller.nurseData.value.data![0].participants[0];
-        title = participant.fullname ?? "Unknown";
-        profileImageUrl = participant.profilePicture;
-      }
-
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           forceMaterialTransparency: true,
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (profileImageUrl != null && profileImageUrl.isNotEmpty)
-                CircleAvatar(
-                  radius: 18.r,
-                  backgroundImage: NetworkImage(profileImageUrl),
-                  backgroundColor: Colors.grey[200],
-                )
-              else
-                CircleAvatar(
-                  radius: 18.r,
-                  backgroundColor: Colors.grey[200],
-                  child: Icon(Icons.person, color: Colors.grey),
-                ),
-              SizedBox(width: 10.w),
-              Flexible(
-                child: CustomText(
-                  text: title,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
+          title: CustomText(
+            text: "Chat with Admin",
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            overflow: TextOverflow.ellipsis,
           ),
-
         ),
         body: Container(
           width: double.infinity,
