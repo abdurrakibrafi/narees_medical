@@ -18,32 +18,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final GetChatListController _controller = Get.put(GetChatListController());
 
   TextEditingController _messageController = TextEditingController();
-  List<Map<String, dynamic>> messages = [
-    {"text": "What's up, dude?", "time": "12:01", "isMe": false},
-    {
-      "text":
-          "Good, I finally finished this work, starting to work on the next one",
-      "time": "12:01",
-      "isMe": true
-    },
-    {"text": "Hey, guys, all is good 😏", "time": "12:01", "isMe": false},
-    {"text": "Nice👌", "time": "12:01", "isMe": true},
-    {"text": "Hey, all is good 😏", "time": "12:01", "isMe": false},
-    {"text": "Hey, guys, all is good 😏", "time": "12:01", "isMe": false},
-  ];
-
-  void _sendMessage() {
-    if (_messageController.text.isNotEmpty) {
-      setState(() {
-        messages.add({
-          "text": _messageController.text,
-          "time": "12:01",
-          "isMe": true,
-        });
-      });
-      _messageController.clear();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ],
           ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {},
-            ),
-          ],
+
         ),
         body: Container(
           width: double.infinity,
@@ -110,19 +79,19 @@ class _ChatScreenState extends State<ChatScreen> {
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.only(top: 10.h),
-                  itemCount: messages.length,
+                  itemCount: 5,
                   itemBuilder: (context, index) {
                     return ChatBubble(
-                      message: messages[index]["text"],
-                      time: messages[index]["time"],
-                      isMe: messages[index]["isMe"],
+                      message: "dgdg",
+                      time: "dfgf",
+                      isMe: true,
                     );
                   },
                 ),
               ),
               ChatInputField(
                 controller: _messageController,
-                onSend: _sendMessage,
+                onSend: () {},
               ),
               SizedBox(height: 30.h),
             ],
