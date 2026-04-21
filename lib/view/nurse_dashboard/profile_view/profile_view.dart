@@ -114,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Divider(),
                 ProfileOption(
-                  icon: Icons.receipt,
+                  icon: Icons.info_outline,
                   title: 'Payment Receipts',
                   onTap: () {
                     Get.to(() => PaymentReceiptsPage());
