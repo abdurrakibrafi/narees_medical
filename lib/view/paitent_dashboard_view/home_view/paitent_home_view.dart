@@ -3,9 +3,13 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_date_picker.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
@@ -35,6 +39,8 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
   String selectedTime = "Select Time";
   bool reminder = false;
   List<PlatformFile> selectedFiles = [];
+  final RxDouble locationLat = 0.0.obs;
+  final RxDouble locationLng = 0.0.obs;
 
   // Controllers for text fields
   final TextEditingController firstNameController = TextEditingController();
@@ -46,6 +52,17 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
 
   final AppointmentMakeController _appointmentMakeController =
       Get.put(AppointmentMakeController());
+
+  GoogleMapController? _mapController;
+  LatLng _selectedLatLng = const LatLng(33.93911, 67.709953);
+
+  void onMapTapped(LatLng latLng) {
+    setState(() {
+      _selectedLatLng = latLng;
+      locationLat.value = latLng.latitude;
+      locationLng.value = latLng.longitude;
+    });
+  }
 
   @override
   void dispose() {
@@ -102,22 +119,25 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
       backgroundColor: Colors.white,
       appBar: CustomAppBarForHome(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(5.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 15),
             Card(
               color: Colors.white,
               elevation: 2,
               child: Padding(
                 padding: AppPadding.bodyPadding,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
                     CustomText(
+                      textAlign: TextAlign.center,
                       text: "Add Your Appointment",
-                      fontSize: 15.h,
+                      fontSize: 14.h,
                       fontWeight: FontWeight.bold,
                     ),
                     SizedBox(height: 10),
@@ -188,14 +208,38 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    CustomTextField(
-                      controller: locationController,
-                      fillColor: Color(0xFFE4E4E4),
-                      borderColor: Colors.transparent,
-                      hintText: "Enter Location",
-                      showObscure: false,
+                    CustomText(
+                      fontSize: 13.h,
+                      fontWeight: FontWeight.w600,
+                      text: "Select appointment location:",
+                      textAlign: TextAlign.start,
                     ),
                     SizedBox(height: 20),
+                    SizedBox(height: 400,child:  GoogleMap(
+                      onMapCreated: (controller) {
+                        _mapController = controller;
+                      },
+                      initialCameraPosition: CameraPosition(
+                        target: _selectedLatLng,
+                        zoom: 4.0,
+                      ),
+                      onTap: onMapTapped,
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId("selected-location"),
+                          position: _selectedLatLng,
+                        ),
+                      },
+                      gestureRecognizers: <Factory<
+                          OneSequenceGestureRecognizer>>{
+                        Factory<PanGestureRecognizer>(
+                                () => PanGestureRecognizer()),
+                      },
+                      scrollGesturesEnabled: true,
+                      zoomGesturesEnabled: true,
+                      tiltGesturesEnabled: true,
+                      rotateGesturesEnabled: true,
+                    )),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

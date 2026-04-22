@@ -25,7 +25,7 @@ class CustomDropdown extends StatelessWidget {
       children: [
         CustomText(
           text: label,
-          fontSize: 18,
+          fontSize: 14,
           fontWeight: FontWeight.w500,
           color: Colors.black,
         ),
@@ -54,7 +54,7 @@ class CustomDropdown extends StatelessWidget {
                   child: CustomText(
                     text: item,
                     color: Colors.black,
-                    fontSize: 15.h,
+                    fontSize: 12.h,
                   ),
                 ),
               )

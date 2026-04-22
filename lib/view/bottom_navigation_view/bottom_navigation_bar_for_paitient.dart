@@ -23,9 +23,9 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
 
   List<Widget> _pages = [
     HomeViewForPaitinet(),
-    InventoryList(),
+    //InventoryList(),
     AppoinmentViewOfPatient(),
-    NurseSearchView(),
+   // NurseSearchView(),
     PaitientProfileView(),
   ];
 
@@ -71,21 +71,21 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
                   "assets/images/Home.png", _selectedIndex == 0),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
-              icon: _buildImageIcon(
-                  "assets/images/layer.png", _selectedIndex == 1),
-              label: 'Inventory',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: _buildImageIcon(
+            //       "assets/images/layer.png", _selectedIndex == 1),
+            //   label: 'Inventory',
+            // ),
             BottomNavigationBarItem(
               icon: _buildImageIcon(
                   "assets/images/stickynote.png", _selectedIndex == 2),
               label: 'Appointment',
             ),
-            BottomNavigationBarItem(
-              icon: _buildImageIcon(
-                  "assets/images/search.png", _selectedIndex == 3),
-              label: 'Search',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: _buildImageIcon(
+            //       "assets/images/search.png", _selectedIndex == 3),
+            //   label: 'Search',
+            // ),
             BottomNavigationBarItem(
               icon: _buildImageIcon(
                   "assets/images/profile-add.png", _selectedIndex == 4),
