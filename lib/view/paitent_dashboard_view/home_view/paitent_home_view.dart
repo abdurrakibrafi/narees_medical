@@ -3,13 +3,14 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_date_picker.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
@@ -20,6 +21,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/wid
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_dropdown_controller.dart'
     show CustomDropdown;
+import '../../../common widget/custom_location_picker_widget.dart';
 import '../../../common widget/custom_text_filed.dart';
 import '../../../common widget/custom_time_picker.dart';
 import '../../../common widget/multiple_image_picker_widget.dart';
@@ -29,6 +31,7 @@ class HomeViewForPaitinet extends StatefulWidget {
   final String? nurseId;
 
   const HomeViewForPaitinet({super.key, this.nurseId});
+
   @override
   State<HomeViewForPaitinet> createState() => _HomeViewForPaitinetState();
 }
@@ -39,10 +42,22 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
   String selectedTime = "Select Time";
   bool reminder = false;
   List<PlatformFile> selectedFiles = [];
+
   final RxDouble locationLat = 0.0.obs;
   final RxDouble locationLng = 0.0.obs;
 
-  // Controllers for text fields
+  // Map controller (scroll to location programmatically)
+  final MapController _mapController = MapController();
+
+  // Search controller
+  final TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
+
+  // Selected position on map
+  LatLng _selectedLatLng = const LatLng(51.509364, -0.128928);
+  bool _isLoadingLocation = false;
+
+  // Form controllers
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
@@ -53,15 +68,113 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
   final AppointmentMakeController _appointmentMakeController =
       Get.put(AppointmentMakeController());
 
-  GoogleMapController? _mapController;
-  LatLng _selectedLatLng = const LatLng(33.93911, 67.709953);
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation(); // App open হলেই current location নেবে
+  }
 
-  void onMapTapped(LatLng latLng) {
+  // ─── Current Location ───────────────────────────────────────────────────────
+  Future<void> _getCurrentLocation() async {
+    setState(() => _isLoadingLocation = true);
+
+    try {
+      // Permission check
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          CustomToast.showToast('Location permission denied', isError: true);
+          setState(() => _isLoadingLocation = false);
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        CustomToast.showToast(
+            'Location permission permanently denied. Please enable from settings.',
+            isError: true);
+        setState(() => _isLoadingLocation = false);
+        return;
+      }
+
+      // Get position
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      final LatLng currentLatLng =
+          LatLng(position.latitude, position.longitude);
+
+      setState(() {
+        _selectedLatLng = currentLatLng;
+        locationLat.value = position.latitude;
+        locationLng.value = position.longitude;
+        _isLoadingLocation = false;
+      });
+
+      // Map এ animate করে যাবে
+      _mapController.move(currentLatLng, 14.0);
+
+      // Reverse geocode — address বের করে location field এ বসাবে
+      _reverseGeocode(position.latitude, position.longitude);
+    } catch (e) {
+      setState(() => _isLoadingLocation = false);
+      CustomToast.showToast('Could not get location: $e', isError: true);
+    }
+  }
+
+  // ─── Reverse Geocode (lat,lng → address) ────────────────────────────────────
+  Future<void> _reverseGeocode(double lat, double lng) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+      if (placemarks.isNotEmpty) {
+        final Placemark place = placemarks.first;
+        final String address =
+            '${place.street ?? ''}, ${place.locality ?? ''}, ${place.country ?? ''}';
+        locationController.text = address;
+      }
+    } catch (_) {}
+  }
+
+  // ─── Search (address → lat,lng) ─────────────────────────────────────────────
+  Future<void> _searchLocation(String query) async {
+    if (query.trim().isEmpty) return;
+    setState(() => _isSearching = true);
+
+    try {
+      List<Location> locations = await locationFromAddress(query);
+      if (locations.isNotEmpty) {
+        final loc = locations.first;
+        final LatLng newLatLng = LatLng(loc.latitude, loc.longitude);
+
+        setState(() {
+          _selectedLatLng = newLatLng;
+          locationLat.value = loc.latitude;
+          locationLng.value = loc.longitude;
+        });
+
+        _mapController.move(newLatLng, 14.0);
+        _reverseGeocode(loc.latitude, loc.longitude);
+        FocusScope.of(context).unfocus();
+      } else {
+        CustomToast.showToast('Location not found', isError: true);
+      }
+    } catch (e) {
+      CustomToast.showToast('Search failed: $e', isError: true);
+    } finally {
+      setState(() => _isSearching = false);
+    }
+  }
+
+  // ─── Map Tap ─────────────────────────────────────────────────────────────────
+  void onMapTapped(TapPosition tapPosition, LatLng latLng) {
     setState(() {
       _selectedLatLng = latLng;
       locationLat.value = latLng.latitude;
       locationLng.value = latLng.longitude;
     });
+    _reverseGeocode(latLng.latitude, latLng.longitude);
   }
 
   @override
@@ -72,15 +185,15 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
     zipCodeController.dispose();
     phoneController.dispose();
     reasonController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   void _submit() {
     if (selectedDate == "Select Date" || selectedTime == "Select Time") {
-      CustomToast.showToast(' Please Select date and time', isError: true);
+      CustomToast.showToast('Please Select date and time', isError: true);
       return;
     }
-
     if (firstNameController.text.isEmpty ||
         lastNameController.text.isEmpty ||
         locationController.text.isEmpty ||
@@ -92,7 +205,6 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
     }
 
     final String dateTime = '$selectedDate $selectedTime';
-
     List<File> filesForUpload = selectedFiles
         .where((pf) => pf.path != null)
         .map((pf) => File(pf.path!))
@@ -121,7 +233,6 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
       body: SingleChildScrollView(
         padding: EdgeInsets.all(5.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Card(
@@ -130,7 +241,6 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
               child: Padding(
                 padding: AppPadding.bodyPadding,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 15),
@@ -141,8 +251,9 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       fontWeight: FontWeight.bold,
                     ),
                     SizedBox(height: 10),
+
+                    // ── First / Last Name ──────────────────────────────────
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           child: CustomTextField(
@@ -166,6 +277,8 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       ],
                     ),
                     SizedBox(height: 10),
+
+                    // ── Treatment Type ─────────────────────────────────────
                     SizedBox(
                       width: double.infinity,
                       child: CustomDropdown(
@@ -178,70 +291,53 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                           'Pain Management',
                           'Surgeon'
                         ],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedTreatment = value!;
-                          });
-                        },
+                        onChanged: (value) =>
+                            setState(() => selectedTreatment = value!),
                       ),
                     ),
                     SizedBox(height: 20),
+
+                    // ── Date / Time ────────────────────────────────────────
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomDatePicker(
-                          onDateSelected: (date) {
-                            setState(() {
-                              selectedDate = date;
-                            });
-                          },
+                          onDateSelected: (date) =>
+                              setState(() => selectedDate = date),
                           color: Color(0xFFE4E4E4),
                         ),
                         CustomTimePicker(
-                          onTimeSelected: (time) {
-                            setState(() {
-                              selectedTime = time;
-                            });
-                          },
+                          onTimeSelected: (time) =>
+                              setState(() => selectedTime = time),
                           color: Color(0xFFE4E4E4),
                         ),
                       ],
                     ),
                     SizedBox(height: 20),
+
                     CustomText(
                       fontSize: 13.h,
                       fontWeight: FontWeight.w600,
                       text: "Select appointment location:",
                       textAlign: TextAlign.start,
                     ),
-                    SizedBox(height: 20),
-                    SizedBox(height: 400,child:  GoogleMap(
-                      onMapCreated: (controller) {
-                        _mapController = controller;
+                    SizedBox(height: 10),
+
+                    // ── Search Bar ─────────────────────────────────────────
+                    LocationPickerMap(
+                      height: 280,
+                      userAgentPackageName: 'com.restaurent_discount_app',
+                      onLocationSelected: (lat, lng, address) {
+                        locationLat.value = lat;
+                        locationLng.value = lng;
+                        locationController.text = address;
                       },
-                      initialCameraPosition: CameraPosition(
-                        target: _selectedLatLng,
-                        zoom: 4.0,
-                      ),
-                      onTap: onMapTapped,
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId("selected-location"),
-                          position: _selectedLatLng,
-                        ),
-                      },
-                      gestureRecognizers: <Factory<
-                          OneSequenceGestureRecognizer>>{
-                        Factory<PanGestureRecognizer>(
-                                () => PanGestureRecognizer()),
-                      },
-                      scrollGesturesEnabled: true,
-                      zoomGesturesEnabled: true,
-                      tiltGesturesEnabled: true,
-                      rotateGesturesEnabled: true,
-                    )),
+                    ),
+
+                    SizedBox(height: 14),
+
+                    // ── Zip / Phone ────────────────────────────────────────
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           child: CustomTextField(
@@ -266,6 +362,8 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       ],
                     ),
                     SizedBox(height: 20),
+
+                    // ── Reason ─────────────────────────────────────────────
                     CustomTextField(
                       controller: reasonController,
                       maxLines: 4,
@@ -275,33 +373,33 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                       showObscure: false,
                     ),
                     SizedBox(height: 10),
+
+                    // ── File Picker ────────────────────────────────────────
                     MultiFilePicker(
-                      onFilesChanged: (files) {
-                        setState(() {
-                          selectedFiles = files;
-                        });
-                      },
+                      onFilesChanged: (files) =>
+                          setState(() => selectedFiles = files),
                     ),
+
+                    // ── Reminder ───────────────────────────────────────────
                     Row(
                       children: [
                         Checkbox(
                           activeColor: AppColors.mainColor,
                           value: reminder,
-                          onChanged: (value) {
-                            setState(() {
-                              reminder = value ?? false;
-                            });
-                          },
+                          onChanged: (value) =>
+                              setState(() => reminder = value ?? false),
                         ),
                         SizedBox(width: 8),
                         CustomText(
                           text: "Set Reminder",
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
-                        )
+                        ),
                       ],
                     ),
                     SizedBox(height: 10),
+
+                    // ── Submit Button ──────────────────────────────────────
                     Obx(() {
                       if (_appointmentMakeController.isLoading.value) {
                         return Center(child: CustomLoader());
@@ -321,7 +419,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
