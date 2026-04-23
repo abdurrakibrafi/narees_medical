@@ -43,6 +43,12 @@ class ApiUrl {
   static const String notification =
       "$baseUrl/notification/notifications?limit=999999";
 
+
+
+  static const String stripeConnect =
+      "$baseUrl/notification/notifications?limit=999999";
+
+
   static const String marketingMaterial =
       "$baseUrl/market-material?&limit=9999";
 

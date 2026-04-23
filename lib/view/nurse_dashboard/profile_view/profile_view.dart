@@ -106,6 +106,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Divider(),
                 ProfileOption(
+                  icon: Icons.payment,
+                  title: 'Stripe Connect',
+                  onTap: () {
+
+
+                    
+
+
+
+
+                  },
+                ),
+                Divider(),
+                ProfileOption(
                   icon: Icons.history,
                   title: 'Supply Order History',
                   onTap: () {

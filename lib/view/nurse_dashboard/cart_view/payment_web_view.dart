@@ -10,8 +10,9 @@ import 'controller/payment_controller.dart';
 
 class PaymentWebView extends StatefulWidget {
   final String paymentUrl;
+  final String? title;
 
-  const PaymentWebView({super.key, required this.paymentUrl});
+  const PaymentWebView({super.key, required this.paymentUrl, this.title});
 
   @override
   _PaymentWebViewState createState() => _PaymentWebViewState();
@@ -66,7 +67,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
         ),
         backgroundColor: AppColors.mainColor,
         title: CustomText(
-          text: "Payment",
+          text: widget.title ?? "Payment",
           fontSize: 15,
           color: Colors.white,
         ),
