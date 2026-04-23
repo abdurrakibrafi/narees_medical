@@ -6,6 +6,7 @@ import 'package:restaurent_discount_app/common%20widget/chached_network_image.da
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/controller/get_profile_controller.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/payment_receipts_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
@@ -17,6 +18,7 @@ import '../../../uitilies/api/local_storage.dart';
 import '../../paitent_dashboard_view/auth_view/sign_in_view/sign_in_view.dart';
 import '../message_view/message_view_of_nurse.dart';
 import 'change_password_view.dart';
+import 'controller/stripe_connect_controller.dart';
 import 'edit_profile.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -26,6 +28,9 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late final ProfileGetController _profileGetController;
+
+  final StripeConnectController _stripeConnectController =
+      Get.put(StripeConnectController());
 
   @override
   void initState() {
@@ -110,12 +115,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: 'Stripe Connect',
                   onTap: () {
 
-
-                    
-
+                    CustomToast.showToast("Connecting...",isError: false);
 
 
-
+                    _stripeConnectController.getStripeConnect();
                   },
                 ),
                 Divider(),

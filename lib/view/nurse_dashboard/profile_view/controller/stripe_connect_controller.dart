@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/payment_web_view.dart';
 import '../../../../uitilies/api/api_url.dart';
 import '../../../../uitilies/api/base_client.dart';
+import '../connect_with_stripe_web_view.dart';
 
 class StripeConnectController extends GetxController {
   var isLoading = false.obs;
@@ -23,9 +24,8 @@ class StripeConnectController extends GetxController {
       if (responseBody != null && responseBody['success'] == true) {
         final String url = responseBody['data'];
         // ✅ WebView screen এ navigate করবে
-        Get.to(() => PaymentWebView(
-              paymentUrl: url,
-              title: "Stripe Connect",
+        Get.to(() => StripeWebViewScreen(
+              url: url,
             ));
       } else {
         throw 'Failed to fetch Stripe connect URL!';

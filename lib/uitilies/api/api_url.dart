@@ -29,25 +29,16 @@ class ApiUrl {
   static const String allModules = "$baseUrl/training-module/my-modules";
   static const String allCourse = "$baseUrl/training-module";
 
-
-
   static String markAsAComplete({required String moduleId}) =>
       "$baseUrl/training-module/move-to-next-module/$moduleId";
-
 
   static String addEnrollCourse({required String courseId}) =>
       "$baseUrl/training-module/enroll/$courseId";
 
-
-
   static const String notification =
       "$baseUrl/notification/notifications?limit=999999";
 
-
-
-  static const String stripeConnect =
-      "$baseUrl/notification/notifications?limit=999999";
-
+  static const String stripeConnect = "$baseUrl/connect-account/connect";
 
   static const String marketingMaterial =
       "$baseUrl/market-material?&limit=9999";

@@ -51,7 +51,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RowWiseWidget(
-              title: 'Appointment Today',
+              title: 'Appointment',
               subTitle: 'See All',
             ),
             SizedBox(height: 10),
