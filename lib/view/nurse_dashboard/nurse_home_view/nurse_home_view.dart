@@ -55,28 +55,13 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
               subTitle: 'See All',
             ),
             SizedBox(height: 10),
-            Obx(() {
-              if (_getNurseAppointment.isLoading.value) {
-                return TodayAppointmentWidget.shimmer();
-              }
-              if (_getNurseAppointment.nurseData.value.data == null ||
-                  _getNurseAppointment.nurseData.value.data!.data.isEmpty) {
-                return NotFoundWidget(message: "No Appointment Today");
-              }
-
-              final appointment =
-                  _getNurseAppointment.nurseData.value.data!.data.first;
-
-              return TodayAppointmentWidget(
-                patientName:
-                    "${appointment.firstName ?? ''} ${appointment.lastName ?? ''}",
-                treatmentType: appointment.treatmentType ?? '',
-                timeAndLocation:
-                    "${_formatDate(appointment.date)} / ${appointment.location ?? ''}",
-                date: appointment.date ?? DateTime.now(),
-              );
-            }),
-            SizedBox(height: 24),
+            TodayAppointmentWidget(
+              patientName: "Hello",
+              treatmentType: 'fhf',
+              timeAndLocation: "sdfsfsfssf",
+              date: DateTime.now(),
+            ),
+            SizedBox(height: 34),
             RowWiseWidget(
               title: 'Marketing Material',
               subTitle: 'See All',
