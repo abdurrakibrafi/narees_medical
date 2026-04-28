@@ -9,6 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../common widget/custom text/custom_text_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../action_button_of_appointment.dart';
+
 class TodayAppointmentWidget extends StatefulWidget {
   final String patientName;
   final String treatmentType;
@@ -190,13 +192,6 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFF0071BC).withOpacity(0.45),
-            blurRadius: 18,
-            offset: Offset(0, 8),
-          ),
-        ],
       ),
       child: Stack(
         children: [
@@ -271,7 +266,6 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
 
                 SizedBox(height: 12),
 
-                // Time & Location row
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
@@ -298,9 +292,8 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
                 // Accept / Reject buttons
                 Row(
                   children: [
-                    // Reject button
                     Expanded(
-                      child: _ActionButton(
+                      child: ActionButton(
                         label: 'Reject',
                         icon: Icons.close_rounded,
                         backgroundColor: Colors.white.withOpacity(0.15),
@@ -312,7 +305,7 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
                     SizedBox(width: 10),
                     // Accept button
                     Expanded(
-                      child: _ActionButton(
+                      child: ActionButton(
                         label: 'Accept',
                         icon: Icons.check_rounded,
                         backgroundColor: Colors.white,
@@ -347,83 +340,5 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
     final ampm = date.hour >= 12 ? 'PM' : 'AM';
     final minute = date.minute.toString().padLeft(2, '0');
     return '$hour:$minute $ampm';
-  }
-}
-
-/// A reusable styled action button used inside the card.
-class _ActionButton extends StatefulWidget {
-  final String label;
-  final IconData icon;
-  final Color backgroundColor;
-  final Color borderColor;
-  final Color textColor;
-  final VoidCallback? onTap;
-
-  const _ActionButton({
-    required this.label,
-    required this.icon,
-    required this.backgroundColor,
-    required this.borderColor,
-    required this.textColor,
-    this.onTap,
-  });
-
-  @override
-  State<_ActionButton> createState() => _ActionButtonState();
-}
-
-class _ActionButtonState extends State<_ActionButton> {
-  bool _pressed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _pressed = true),
-      onTapUp: (_) {
-        setState(() => _pressed = false);
-        widget.onTap?.call();
-      },
-      onTapCancel: () => setState(() => _pressed = false),
-      child: AnimatedScale(
-        scale: _pressed ? 0.95 : 1.0,
-        duration: const Duration(milliseconds: 120),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
-          padding: EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: _pressed
-                ? widget.backgroundColor.withOpacity(0.8)
-                : widget.backgroundColor,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: widget.borderColor, width: 1.2),
-            boxShadow: widget.backgroundColor == Colors.white
-                ? [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
-                    )
-                  ]
-                : [],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(widget.icon, color: widget.textColor, size: 16),
-              SizedBox(width: 6),
-              Text(
-                widget.label,
-                style: TextStyle(
-                  color: widget.textColor,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13,
-                  letterSpacing: 0.3,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

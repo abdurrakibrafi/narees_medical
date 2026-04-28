@@ -50,7 +50,7 @@ class _DashboardForNurseState extends State<DashboardForNurse> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _pages[_selectedIndex], // Display the selected page
+      body: _pages[_selectedIndex],
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.circular(45),
         child: BottomNavigationBar(
