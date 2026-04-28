@@ -67,9 +67,8 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBarForHome(),
-      body: CustomScrollView(
+      body:  Padding(padding: EdgeInsets.all(10), child: CustomScrollView(
         slivers: [
-          /// 🔹 Appointment Section
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(16),
@@ -82,7 +81,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
 
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) {
+                  (context, index) {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: TodayAppointmentWidget(
@@ -128,7 +127,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
 
             return SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
+                    (context, index) {
                   final item = data[index];
 
                   return MarketingMaterialCard(
@@ -164,7 +163,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
             );
           }),
         ],
-      ),
+      ),)
     );
   }
 }
