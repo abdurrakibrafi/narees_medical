@@ -65,105 +65,109 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: CustomAppBarForHome(),
-      body:  Padding(padding: EdgeInsets.all(10), child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: RowWiseWidget(
-                title: 'Appointment',
-                subTitle: 'See All',
+        backgroundColor: Colors.white,
+        appBar: CustomAppBarForHome(),
+        body: Padding(
+          padding: EdgeInsets.all(10),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: RowWiseWidget(
+                    title: 'Appointment',
+                    subTitle: 'See All',
+                  ),
+                ),
               ),
-            ),
-          ),
 
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: TodayAppointmentWidget(
-                    patientName: "Demo Patient",
-                    treatmentType: "Treatment",
-                    timeAndLocation: "Location",
-                    date: DateTime.now(),
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      child: TodayAppointmentWidget(
+                        patientName: "Demo Patient",
+                        treatmentType: "Treatment",
+                        timeAndLocation: "Location",
+                        date: DateTime.now(),
+                      ),
+                    );
+                  },
+                  childCount: 5,
+                ),
+              ),
+
+              /// 🔹 Marketing Material Title
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: RowWiseWidget(
+                    title: 'Marketing Material',
+                    subTitle: 'See All',
+                  ),
+                ),
+              ),
+
+              /// 🔹 Marketing Material List
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return SliverToBoxAdapter(
+                    child: Column(
+                      children: List.generate(3, (_) => _buildShimmerItem()),
+                    ),
+                  );
+                }
+
+                final data = controller.cartData.value.data?.data ?? [];
+
+                if (data.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child:
+                        NotFoundWidget(message: "No Marketing Material Found"),
+                  );
+                }
+
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final item = data[index];
+
+                      return MarketingMaterialCard(
+                        createdAt: item.createdAt,
+                        desc: item.content ?? '',
+                        tag: item.tags.isNotEmpty
+                            ? item.tags.map((e) => '#$e').join(' ')
+                            : '',
+                        image: item.marketingMaterialDocument.isNotEmpty
+                            ? item.marketingMaterialDocument[0].url ?? ''
+                            : '',
+                        onTap: () async {
+                          final title = item.tags.isNotEmpty
+                              ? item.tags.map((e) => '#$e').join(' ')
+                              : 'Check this out';
+
+                          String shareText = "$title\n\n${item.content ?? ''}";
+
+                          if (item.marketingMaterialDocument.isNotEmpty) {
+                            final imageUrl =
+                                item.marketingMaterialDocument[0].url ?? '';
+                            if (imageUrl.isNotEmpty) {
+                              shareText += "\n\n$imageUrl";
+                            }
+                          }
+
+                          await Share.share(shareText);
+                        },
+                      );
+                    },
+                    childCount: data.length,
                   ),
                 );
-              },
-              childCount: 5,
-            ),
+              }),
+            ],
           ),
-
-          /// 🔹 Marketing Material Title
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: RowWiseWidget(
-                title: 'Marketing Material',
-                subTitle: 'See All',
-              ),
-            ),
-          ),
-
-          /// 🔹 Marketing Material List
-          Obx(() {
-            if (controller.isLoading.value) {
-              return SliverToBoxAdapter(
-                child: Column(
-                  children: List.generate(3, (_) => _buildShimmerItem()),
-                ),
-              );
-            }
-
-            final data = controller.cartData.value.data?.data ?? [];
-
-            if (data.isEmpty) {
-              return SliverToBoxAdapter(
-                child: NotFoundWidget(message: "No Marketing Material Found"),
-              );
-            }
-
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                  final item = data[index];
-
-                  return MarketingMaterialCard(
-                    createdAt: item.createdAt,
-                    desc: item.content ?? '',
-                    tag: item.tags.isNotEmpty
-                        ? item.tags.map((e) => '#$e').join(' ')
-                        : '',
-                    image: item.marketingMaterialDocument.isNotEmpty
-                        ? item.marketingMaterialDocument[0].url ?? ''
-                        : '',
-                    onTap: () async {
-                      final title = item.tags.isNotEmpty
-                          ? item.tags.map((e) => '#$e').join(' ')
-                          : 'Check this out';
-
-                      String shareText = "$title\n\n${item.content ?? ''}";
-
-                      if (item.marketingMaterialDocument.isNotEmpty) {
-                        final imageUrl =
-                            item.marketingMaterialDocument[0].url ?? '';
-                        if (imageUrl.isNotEmpty) {
-                          shareText += "\n\n$imageUrl";
-                        }
-                      }
-
-                      await Share.share(shareText);
-                    },
-                  );
-                },
-                childCount: data.length,
-              ),
-            );
-          }),
-        ],
-      ),)
-    );
+        ));
   }
 }
