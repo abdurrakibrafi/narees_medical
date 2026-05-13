@@ -17,14 +17,14 @@ class AppointmentMakeController extends GetxController {
 
   Future<void> addProductToCart({
     required String firstName,
-    required String nurseId,
     required String lastName,
     required String treatmentType,
     required String phoneNumber,
     required bool reminder,
     required String reason,
     required String date,
-    required String location,
+    required String city,
+    required dynamic stateId,
     required String zipCode,
     List<File>? documents,
   }) async {
@@ -57,12 +57,12 @@ class AppointmentMakeController extends GetxController {
         "lastName": lastName,
         "treatmentType": treatmentType,
         "phoneNumber": phoneNumber,
-        "nurseId": nurseId,
         "isRemainder": reminder.toString(),
         "reason": reason,
         "date": date,
-        "location": location,
+        "city": city,
         "zipCode": zipCode,
+        "stateId": "69f82c9623ac52e5749dfe0a"
       });
 
       print("Request headers: ${request.headers}");

@@ -6,9 +6,9 @@ import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 class CustomDropdown extends StatelessWidget {
   final String label;
   final String hint;
-  final String value;
+  final dynamic value; // ← String? করো
   final List<String> items;
-  final Function(String?) onChanged;
+  final Function(String?)? onChanged; // ← nullable করো
 
   const CustomDropdown({
     required this.label,

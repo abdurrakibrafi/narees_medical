@@ -94,6 +94,20 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 },
               ),
               Divider(),
+
+
+              ProfileOption(
+                icon: Icons.sd_card_outlined,
+                title: 'Card Saved Option',
+                onTap: () {
+                  Get.to(() => SupplyOrderHistoryPage());
+                },
+              ),
+              Divider(),
+
+
+
+
               ProfileOption(
                 icon: Icons.history,
                 title: 'Supply Order History',
@@ -102,6 +116,11 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 },
               ),
               Divider(),
+
+
+
+
+
               ProfileOption(
                 icon: Icons.medical_information_outlined,
                 title: 'Track Medical Information',

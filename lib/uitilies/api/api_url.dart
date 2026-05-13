@@ -28,6 +28,7 @@ class ApiUrl {
   static const String payment = "$baseUrl/order/make-payment";
   static const String allModules = "$baseUrl/training-module/my-modules";
   static const String allCourse = "$baseUrl/training-module";
+  static const String stateCity = "$baseUrl/state";
 
   static String markAsAComplete({required String moduleId}) =>
       "$baseUrl/training-module/move-to-next-module/$moduleId";

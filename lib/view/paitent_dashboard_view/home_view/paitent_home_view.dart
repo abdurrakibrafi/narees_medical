@@ -1,16 +1,11 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_date_picker.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
@@ -21,10 +16,10 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/wid
 import '../../../common widget/custom text/custom_text_widget.dart';
 import '../../../common widget/custom_dropdown_controller.dart'
     show CustomDropdown;
-import '../../../common widget/custom_location_picker_widget.dart';
 import '../../../common widget/custom_text_filed.dart';
 import '../../../common widget/custom_time_picker.dart';
 import '../../../common widget/multiple_image_picker_widget.dart';
+import 'controller/get_state_and_city_controller.dart';
 import 'controller/patient_appointment_make_controller.dart';
 
 class HomeViewForPaitinet extends StatefulWidget {
@@ -46,18 +41,14 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
   final RxDouble locationLat = 0.0.obs;
   final RxDouble locationLng = 0.0.obs;
 
-  // Map controller (scroll to location programmatically)
-  final MapController _mapController = MapController();
+  String? selectedStateId;
+  String? selectedCityId;
+  String? selectedStateName;
+  String? selectedCityName;
 
   // Search controller
   final TextEditingController _searchController = TextEditingController();
-  bool _isSearching = false;
 
-  // Selected position on map
-  LatLng _selectedLatLng = const LatLng(51.509364, -0.128928);
-  bool _isLoadingLocation = false;
-
-  // Form controllers
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
@@ -68,113 +59,12 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
   final AppointmentMakeController _appointmentMakeController =
       Get.put(AppointmentMakeController());
 
+  final GetCityAndStateController _getCityAndStateController =
+      Get.put(GetCityAndStateController());
+
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation(); // App open হলেই current location নেবে
-  }
-
-  // ─── Current Location ───────────────────────────────────────────────────────
-  Future<void> _getCurrentLocation() async {
-    setState(() => _isLoadingLocation = true);
-
-    try {
-      // Permission check
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          CustomToast.showToast('Location permission denied', isError: true);
-          setState(() => _isLoadingLocation = false);
-          return;
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        CustomToast.showToast(
-            'Location permission permanently denied. Please enable from settings.',
-            isError: true);
-        setState(() => _isLoadingLocation = false);
-        return;
-      }
-
-      // Get position
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      final LatLng currentLatLng =
-          LatLng(position.latitude, position.longitude);
-
-      setState(() {
-        _selectedLatLng = currentLatLng;
-        locationLat.value = position.latitude;
-        locationLng.value = position.longitude;
-        _isLoadingLocation = false;
-      });
-
-      // Map এ animate করে যাবে
-      _mapController.move(currentLatLng, 14.0);
-
-      // Reverse geocode — address বের করে location field এ বসাবে
-      _reverseGeocode(position.latitude, position.longitude);
-    } catch (e) {
-      setState(() => _isLoadingLocation = false);
-      CustomToast.showToast('Could not get location: $e', isError: true);
-    }
-  }
-
-  // ─── Reverse Geocode (lat,lng → address) ────────────────────────────────────
-  Future<void> _reverseGeocode(double lat, double lng) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
-      if (placemarks.isNotEmpty) {
-        final Placemark place = placemarks.first;
-        final String address =
-            '${place.street ?? ''}, ${place.locality ?? ''}, ${place.country ?? ''}';
-        locationController.text = address;
-      }
-    } catch (_) {}
-  }
-
-  // ─── Search (address → lat,lng) ─────────────────────────────────────────────
-  Future<void> _searchLocation(String query) async {
-    if (query.trim().isEmpty) return;
-    setState(() => _isSearching = true);
-
-    try {
-      List<Location> locations = await locationFromAddress(query);
-      if (locations.isNotEmpty) {
-        final loc = locations.first;
-        final LatLng newLatLng = LatLng(loc.latitude, loc.longitude);
-
-        setState(() {
-          _selectedLatLng = newLatLng;
-          locationLat.value = loc.latitude;
-          locationLng.value = loc.longitude;
-        });
-
-        _mapController.move(newLatLng, 14.0);
-        _reverseGeocode(loc.latitude, loc.longitude);
-        FocusScope.of(context).unfocus();
-      } else {
-        CustomToast.showToast('Location not found', isError: true);
-      }
-    } catch (e) {
-      CustomToast.showToast('Search failed: $e', isError: true);
-    } finally {
-      setState(() => _isSearching = false);
-    }
-  }
-
-  // ─── Map Tap ─────────────────────────────────────────────────────────────────
-  void onMapTapped(TapPosition tapPosition, LatLng latLng) {
-    setState(() {
-      _selectedLatLng = latLng;
-      locationLat.value = latLng.latitude;
-      locationLng.value = latLng.longitude;
-    });
-    _reverseGeocode(latLng.latitude, latLng.longitude);
   }
 
   @override
@@ -196,7 +86,8 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
     }
     if (firstNameController.text.isEmpty ||
         lastNameController.text.isEmpty ||
-        locationController.text.isEmpty ||
+        selectedStateId == null ||
+        selectedCityName == null ||
         zipCodeController.text.isEmpty ||
         phoneController.text.isEmpty ||
         reasonController.text.isEmpty) {
@@ -217,11 +108,11 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
       phoneNumber: phoneController.text.trim(),
       reason: reasonController.text.trim(),
       date: dateTime,
-      location: locationController.text.trim(),
       reminder: reminder,
       zipCode: zipCodeController.text.trim(),
       documents: filesForUpload,
-      nurseId: widget.nurseId.toString(),
+      city: locationController.text.trim(),
+      stateId: selectedStateId,
     );
   }
 
@@ -323,20 +214,88 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                     ),
                     SizedBox(height: 10),
 
-                    // ── Search Bar ─────────────────────────────────────────
-                    LocationPickerMap(
-                      height: 280,
-                      userAgentPackageName: 'com.restaurent_discount_app',
-                      onLocationSelected: (lat, lng, address) {
-                        locationLat.value = lat;
-                        locationLng.value = lng;
-                        locationController.text = address;
-                      },
-                    ),
+                    // STATE DROPDOWN
+                    Obx(() {
+                      if (_getCityAndStateController.isLoading.value) {
+                        return const CircularProgressIndicator();
+                      }
 
-                    SizedBox(height: 14),
+                      final states =
+                          _getCityAndStateController.cartData.value.data ?? [];
+                      final stateNames =
+                          states.map((s) => s.name ?? '').toList();
 
-                    // ── Zip / Phone ────────────────────────────────────────
+                      return SizedBox(
+                        width: double.infinity,
+                        child: CustomDropdown(
+                          label: 'State',
+                          hint: 'Select a state',
+                          value: selectedStateName, // ← ID এর বদলে name use করো
+                          items: stateNames, // ← List<String>
+                          onChanged: (value) {
+                            setState(() {
+                              selectedStateName = value;
+                              selectedCityId = null;
+                              selectedCityName = null;
+
+                              final selected =
+                                  states.firstWhere((s) => s.name == value);
+                              selectedStateId = selected.id;
+
+                              print(
+                                  'Selected State: ${selected.name} (ID: ${selected.id})');
+                            });
+                          },
+                        ),
+                      );
+                    }),
+
+                    const SizedBox(height: 16),
+
+                    Obx(() {
+                      final states =
+                          _getCityAndStateController.cartData.value.data ?? [];
+
+                      final selectedState = selectedStateId != null
+                          ? states
+                              .firstWhereOrNull((s) => s.id == selectedStateId)
+                          : null;
+
+                      final cities = selectedState?.cities ?? [];
+                      final cityNames =
+                          cities.map((c) => c.name ?? '').toList();
+
+                      return SizedBox(
+                        width: double.infinity,
+                        child: CustomDropdown(
+                          label: 'City',
+                          hint: selectedStateId == null
+                              ? 'First select a state'
+                              : 'Select a city',
+                          value: selectedCityName,
+                          items: cityNames,
+                          onChanged: selectedStateId == null
+                              ? null
+                              : (value) {
+                                  setState(() {
+                                    selectedCityName = value;
+
+                                    final selected = cities
+                                        .firstWhere((c) => c.name == value);
+                                    selectedCityId = selected.id;
+
+                                    print(
+                                        'Selected City: ${selected.name} (ID: ${selected.id})');
+                                    print(
+                                        'Full → State: $selectedStateName, City: $selectedCityName');
+                                  });
+                                },
+                        ),
+                      );
+                    }),
+
+                    SizedBox(height: 20),
+
                     Row(
                       children: [
                         Expanded(
