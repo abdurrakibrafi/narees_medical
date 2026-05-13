@@ -68,7 +68,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
         backgroundColor: Colors.white,
         appBar: CustomAppBarForHome(),
         body: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(6),
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
@@ -81,23 +81,42 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                 ),
               ),
 
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      child: TodayAppointmentWidget(
-                        patientName: "Demo Patient",
-                        treatmentType: "Treatment",
-                        timeAndLocation: "Location",
-                        date: DateTime.now(),
-                      ),
-                    );
-                  },
-                  childCount: 5,
-                ),
-              ),
+              Obx(() {
+                if (appointmentController.isLoading.value) {
+                  return SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                final appointments =
+                    appointmentController.nurseData.value.data ?? [];
+
+                if (appointments.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: Center(child: Text('No appointments found')),
+                  );
+                }
+
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final appointment = appointments[index];
+                      return Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        child: TodayAppointmentWidget(
+                          patientName:
+                              '${appointment.firstName ?? ''} ${appointment.lastName ?? ''}',
+                          treatmentType: appointment.treatmentType ?? '',
+                          timeAndLocation: appointment.zipCode ?? '',
+                          date: appointment.date ?? DateTime.now(),
+                        ),
+                      );
+                    },
+                    childCount: appointments.length,
+                  ),
+                );
+              }),
 
               /// 🔹 Marketing Material Title
               SliverToBoxAdapter(

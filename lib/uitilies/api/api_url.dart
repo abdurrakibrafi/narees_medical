@@ -53,8 +53,15 @@ class ApiUrl {
   static String getMyAppointment({required String date}) =>
       "$baseUrl/appointment/get-as-patient?date=$date&limit=9999";
 
-  static String getNurseAppointment({required String date}) =>
-      "$baseUrl/appointment/get-as-nurse?date=$date&limit=9999";
+  static String getNurseAppointment({String? date}) {
+    String url = "$baseUrl/appointment?limit=9999";
+
+    // if (date != null && date.isNotEmpty) {
+    //   url += "&date=$date";
+    // }
+
+    return url;
+  }
 
   static String inventoryForPatient({required String role}) =>
       "$baseUrl/product?productFor=$role&limit=9999";
