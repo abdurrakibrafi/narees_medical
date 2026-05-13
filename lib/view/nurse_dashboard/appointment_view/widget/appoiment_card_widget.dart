@@ -11,20 +11,22 @@ import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_pro
 class AppointmentCard extends StatelessWidget {
   final String patientName;
   final String treatmentType;
-  final String gfeStatus;
+  final String city;
   final String time;
   final String location;
+  final String staus;
   final bool btnShow;
   final bool goToDetails;
 
   AppointmentCard({
     required this.patientName,
     required this.treatmentType,
-    required this.gfeStatus,
+    required this.city,
     required this.time,
     required this.location,
     this.btnShow = false,
     this.goToDetails = false,
+    required this.staus,
   });
 
   Color _getStatusColor(String status) {
@@ -46,7 +48,7 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statusColor = _getStatusColor(gfeStatus);
+    final statusColor = _getStatusColor(staus);
 
     return Card(
       color: Colors.white,
@@ -99,7 +101,7 @@ class AppointmentCard extends StatelessWidget {
               ),
               SizedBox(height: 5),
               CustomText(
-                text: 'Status: $gfeStatus',
+                text: 'City: $city',
                 fontSize: 13.sp,
                 color: Colors.black,
               ),
@@ -135,7 +137,7 @@ class AppointmentCard extends StatelessWidget {
                       ],
                     )
                   : StatusButton(
-                      status: gfeStatus,
+                      status: staus,
                       color: statusColor,
                     ),
             ],

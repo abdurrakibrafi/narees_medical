@@ -111,7 +111,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
       reminder: reminder,
       zipCode: zipCodeController.text.trim(),
       documents: filesForUpload,
-      city: locationController.text.trim(),
+      city: selectedCityName.toString(),
       stateId: selectedStateId,
     );
   }

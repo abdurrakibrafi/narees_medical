@@ -240,9 +240,10 @@ class _TrackMedicalInformationViewState
                 return AppointmentCard(
                   patientName: '',
                   treatmentType: '',
-                  gfeStatus: '',
                   time: '',
                   location: '',
+                  city: '',
+                  staus: '',
                 );
               },
             ),

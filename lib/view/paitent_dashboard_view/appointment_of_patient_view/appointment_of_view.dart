@@ -233,13 +233,15 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
                     patientName:
                         '${appointment.firstName ?? ''} ${appointment.lastName ?? ''}',
                     treatmentType: appointment.treatmentType ?? '',
-                    gfeStatus: appointment.status ?? '',
+                    city:
+                        appointment.cityRef?.name.toString() ?? 'not available',
                     time: appointment.date != null
                         ? DateFormat.jm().format(appointment.date!)
                         : '',
                     location: appointment.location ?? '',
                     btnShow: false,
                     goToDetails: false,
+                    staus: appointment.status.toString(),
                   );
                 },
               );

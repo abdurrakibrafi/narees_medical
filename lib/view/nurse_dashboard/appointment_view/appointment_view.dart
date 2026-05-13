@@ -12,11 +12,9 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/wi
     show AppointmentCard;
 import '../../../common widget/custom text/custom_text_widget.dart';
 
-
 class AppoinmentView extends StatefulWidget {
   @override
-  _AppoinmentViewState createState() =>
-      _AppoinmentViewState();
+  _AppoinmentViewState createState() => _AppoinmentViewState();
 }
 
 class _AppoinmentViewState extends State<AppoinmentView> {
@@ -24,7 +22,8 @@ class _AppoinmentViewState extends State<AppoinmentView> {
   late DateTime _selectedDay = DateTime.now();
   final ScrollController _scrollController = ScrollController();
 
-  final GetNurseAppointment _allNurseController = Get.put(GetNurseAppointment());
+  final GetNurseAppointment _allNurseController =
+      Get.put(GetNurseAppointment());
 
   @override
   void initState() {
@@ -163,8 +162,8 @@ class _AppoinmentViewState extends State<AppoinmentView> {
                                         color: isSelected
                                             ? Colors.white
                                             : isToday
-                                            ? AppColors.mainColor
-                                            : Colors.transparent,
+                                                ? AppColors.mainColor
+                                                : Colors.transparent,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Text(
@@ -173,8 +172,8 @@ class _AppoinmentViewState extends State<AppoinmentView> {
                                           color: isSelected
                                               ? AppColors.mainColor
                                               : isToday
-                                              ? Colors.white
-                                              : Colors.black,
+                                                  ? Colors.white
+                                                  : Colors.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: isToday ? 8 : 18,
                                           fontFamily: 'Montserrat',
@@ -188,8 +187,8 @@ class _AppoinmentViewState extends State<AppoinmentView> {
                                         color: isSelected
                                             ? Colors.white
                                             : isToday
-                                            ? Colors.grey[600]
-                                            : Colors.grey[600],
+                                                ? Colors.grey[600]
+                                                : Colors.grey[600],
                                         fontWeight: FontWeight.bold,
                                         fontSize: 11,
                                       ),
@@ -231,15 +230,16 @@ class _AppoinmentViewState extends State<AppoinmentView> {
                   final appointment = appointments[index];
                   return AppointmentCard(
                     patientName:
-                    '${appointment.firstName ?? ''} ${appointment.lastName ?? ''}',
+                        '${appointment.firstName ?? ''} ${appointment.lastName ?? ''}',
                     treatmentType: appointment.treatmentType ?? '',
-                    gfeStatus: appointment.status ?? '',
+                    city: appointment.cityRef?.name.toString() ?? '',
                     time: appointment.date != null
                         ? DateFormat.jm().format(appointment.date!)
                         : '',
                     location: appointment.location ?? '',
                     btnShow: false,
                     goToDetails: false,
+                    staus: '',
                   );
                 },
               );
