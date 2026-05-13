@@ -40,6 +40,7 @@ class ApiUrl {
       "$baseUrl/notification/notifications?limit=999999";
 
   static const String stripeConnect = "$baseUrl/connect-account/connect";
+  static const String cardSaved = "$baseUrl/save-card/create-session";
 
   static const String marketingMaterial =
       "$baseUrl/market-material?&limit=9999";

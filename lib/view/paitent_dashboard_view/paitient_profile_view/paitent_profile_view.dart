@@ -12,10 +12,12 @@ import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_pro
 
 import '../../../common widget/chached_network_image.dart';
 import '../../../uitilies/custom_loader.dart';
+import '../../../uitilies/custom_toast.dart';
 import '../../nurse_dashboard/profile_view/change_password_view.dart';
 import '../../nurse_dashboard/profile_view/controller/get_profile_controller.dart';
 import '../../nurse_dashboard/profile_view/edit_profile.dart';
 import '../auth_view/sign_in_view/sign_in_view.dart';
+import 'controller/card_saved_controller.dart';
 
 class PaitientProfileView extends StatefulWidget {
   @override
@@ -24,6 +26,9 @@ class PaitientProfileView extends StatefulWidget {
 
 class _ProfilePageState extends State<PaitientProfileView> {
   late final ProfileGetController _profileGetController;
+
+  final CardSavedController _cardSavedController =
+      Get.put(CardSavedController());
 
   @override
   void initState() {
@@ -94,20 +99,16 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 },
               ),
               Divider(),
-
-
               ProfileOption(
                 icon: Icons.sd_card_outlined,
                 title: 'Card Saved Option',
                 onTap: () {
-                  Get.to(() => SupplyOrderHistoryPage());
+                  CustomToast.showToast("Connecting...", isError: false);
+
+                  _cardSavedController.getCardSaved();
                 },
               ),
               Divider(),
-
-
-
-
               ProfileOption(
                 icon: Icons.history,
                 title: 'Supply Order History',
@@ -116,11 +117,6 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 },
               ),
               Divider(),
-
-
-
-
-
               ProfileOption(
                 icon: Icons.medical_information_outlined,
                 title: 'Track Medical Information',
