@@ -7,7 +7,7 @@ import '../../../../uitilies/api/base_client.dart';
 
 class ProfileGetController extends GetxController {
   var isLoading = false.obs;
-  var profile = ProfileModel().obs;
+  var profile = PatientProfileModel().obs;
 
   @override
   void onInit() {
@@ -24,7 +24,7 @@ class ProfileGetController extends GetxController {
       );
 
       if (responseBody['success'] == true) {
-        profile.value = ProfileModel.fromJson(responseBody);
+        profile.value = PatientProfileModel.fromJson(responseBody);
         print("Profile fetched: ${profile.value}");
       } else {
         throw 'Failed to load profile data: ${responseBody['message']}';

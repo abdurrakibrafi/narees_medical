@@ -1,5 +1,5 @@
-class ProfileModel {
-  ProfileModel({
+class PatientProfileModel {
+  PatientProfileModel({
      this.success,
      this.message,
      this.data,
@@ -9,8 +9,8 @@ class ProfileModel {
   final String? message;
   final Data? data;
 
-  factory ProfileModel.fromJson(Map<String, dynamic> json){
-    return ProfileModel(
+  factory PatientProfileModel.fromJson(Map<String, dynamic> json){
+    return PatientProfileModel(
       success: json["success"],
       message: json["message"],
       data: json["data"] == null ? null : Data.fromJson(json["data"]),
@@ -33,7 +33,11 @@ class Data {
     required this.createdAt,
     required this.updatedAt,
     required this.specialty,
-    required this.nurseInfo,
+    required this.location,
+    required this.phoneNumber,
+    required this.stripeAccountId,
+    required this.savedPaymentMethod,
+    required this.isSaveCard,
   });
 
   final String? id;
@@ -42,13 +46,17 @@ class Data {
   final String? fullname;
   final String? email;
   final String? role;
-  final String? profilePicture;
+  final dynamic profilePicture;
   final bool? isDelete;
   final bool? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  final String? specialty;
-  final NurseInfo? nurseInfo;
+  final dynamic specialty;
+  final dynamic location;
+  final String? phoneNumber;
+  final dynamic stripeAccountId;
+  final dynamic savedPaymentMethod;
+  final bool? isSaveCard;
 
   factory Data.fromJson(Map<String, dynamic> json){
     return Data(
@@ -64,94 +72,11 @@ class Data {
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
       specialty: json["specialty"],
-      nurseInfo: json["nurseInfo"] == null ? null : NurseInfo.fromJson(json["nurseInfo"]),
-    );
-  }
-
-}
-
-class NurseInfo {
-  NurseInfo({
-    required this.id,
-    required this.userId,
-    required this.registeredId,
-    required this.signature,
-    required this.signaturePath,
-    required this.saturday,
-    required this.sunday,
-    required this.monday,
-    required this.tuesday,
-    required this.wednesday,
-    required this.thursday,
-    required this.friday,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.nurseDocuments,
-  });
-
-  final String? id;
-  final String? userId;
-  final String? registeredId;
-  final String? signature;
-  final String? signaturePath;
-  final dynamic saturday;
-  final dynamic sunday;
-  final dynamic monday;
-  final dynamic tuesday;
-  final dynamic wednesday;
-  final dynamic thursday;
-  final dynamic friday;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final List<NurseDocument> nurseDocuments;
-
-  factory NurseInfo.fromJson(Map<String, dynamic> json){
-    return NurseInfo(
-      id: json["id"],
-      userId: json["userId"],
-      registeredId: json["registeredId"],
-      signature: json["signature"],
-      signaturePath: json["signaturePath"],
-      saturday: json["saturday"],
-      sunday: json["sunday"],
-      monday: json["monday"],
-      tuesday: json["tuesday"],
-      wednesday: json["wednesday"],
-      thursday: json["thursday"],
-      friday: json["friday"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
-      nurseDocuments: json["nurseDocuments"] == null ? [] : List<NurseDocument>.from(json["nurseDocuments"]!.map((x) => NurseDocument.fromJson(x))),
-    );
-  }
-
-}
-
-class NurseDocument {
-  NurseDocument({
-    required this.id,
-    required this.nurseId,
-    required this.url,
-    required this.path,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  final String? id;
-  final String? nurseId;
-  final String? url;
-  final String? path;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-
-  factory NurseDocument.fromJson(Map<String, dynamic> json){
-    return NurseDocument(
-      id: json["id"],
-      nurseId: json["nurseId"],
-      url: json["url"],
-      path: json["path"],
-      createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      location: json["location"],
+      phoneNumber: json["phoneNumber"],
+      stripeAccountId: json["stripeAccountId"],
+      savedPaymentMethod: json["savedPaymentMethod"],
+      isSaveCard: json["isSaveCard"],
     );
   }
 

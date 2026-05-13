@@ -114,9 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: Icons.payment,
                   title: 'Stripe Connect',
                   onTap: () {
-
-                    CustomToast.showToast("Connecting...",isError: false);
-
+                    CustomToast.showToast("Connecting...", isError: false);
 
                     _stripeConnectController.getStripeConnect();
                   },

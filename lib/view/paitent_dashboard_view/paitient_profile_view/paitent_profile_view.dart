@@ -103,9 +103,15 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 icon: Icons.sd_card_outlined,
                 title: 'Card Saved Option',
                 onTap: () {
-                  CustomToast.showToast("Connecting...", isError: false);
+                  if (_profileGetController.profile.value.data?.isSaveCard ==
+                      false) {
+                    CustomToast.showToast("Connecting...", isError: false);
 
-                  _cardSavedController.getCardSaved();
+                    _cardSavedController.getCardSaved();
+                  } else {
+                    CustomToast.showToast("Your Card is already saved",
+                        isError: true);
+                  }
                 },
               ),
               Divider(),
