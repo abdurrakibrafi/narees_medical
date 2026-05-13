@@ -11,7 +11,6 @@ import '../paitent_dashboard_view/paitient_profile_view/paitent_profile_view.dar
 import '../paitent_dashboard_view/search_view/nurse_search_view.dart';
 
 class BottomNavigationBarForPaitient extends StatefulWidget {
-
   const BottomNavigationBarForPaitient({super.key});
 
   @override
@@ -25,7 +24,7 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
     HomeViewForPaitinet(),
     //InventoryList(),
     AppoinmentViewOfPatient(),
-   // NurseSearchView(),
+    // NurseSearchView(),
     PaitientProfileView(),
   ];
 
@@ -78,7 +77,7 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
             // ),
             BottomNavigationBarItem(
               icon: _buildImageIcon(
-                  "assets/images/stickynote.png", _selectedIndex == 2),
+                  "assets/images/stickynote.png", _selectedIndex == 1),
               label: 'Appointment',
             ),
             // BottomNavigationBarItem(
@@ -88,7 +87,7 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
             // ),
             BottomNavigationBarItem(
               icon: _buildImageIcon(
-                  "assets/images/profile-add.png", _selectedIndex == 4),
+                  "assets/images/profile-add.png", _selectedIndex == 2),
               label: 'Profile',
             ),
           ],

@@ -217,7 +217,7 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
               }
 
               final appointments =
-                  _allNurseController.nurseData.value.data?.data ?? [];
+                  _allNurseController.nurseData.value.data ?? [];
 
               if (appointments.isEmpty) {
                 return Center(
