@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/marketing_material_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/nurse_interested_dialog_box.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/today_appointment_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,6 +14,7 @@ import '../appointment_view/controller/get_nurse_appoitment_controller.dart';
 import 'controller/marketing_material_controller.dart';
 import '../../../common widget/row_wise_widget.dart';
 import '../../../common widget/not_found_widget.dart';
+import 'controller/nurse_interest_controller.dart';
 
 class HomeViewForNurse extends StatefulWidget {
   @override
@@ -24,6 +27,9 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
 
   final GetNurseAppointment appointmentController =
       Get.put(GetNurseAppointment());
+
+  final AppointmentInterestController _appointmentInterestController =
+      Get.put(AppointmentInterestController());
 
   @override
   void initState() {
@@ -84,7 +90,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
               Obx(() {
                 if (appointmentController.isLoading.value) {
                   return SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(child: CustomLoader()),
                   );
                 }
 
@@ -105,11 +111,23 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         child: TodayAppointmentWidget(
+                          onInterested: () => showInterestConfirmationDialog(
+                            context: context,
+                            onConfirmed: () async {
+                              _appointmentInterestController
+                                  .appointmentInterest(
+                                appointmentId: appointment.id.toString(),
+                              );
+
+                              Get.back();
+                            },
+                          ),
                           patientName:
                               '${appointment.firstName ?? ''} ${appointment.lastName ?? ''}',
                           treatmentType: appointment.treatmentType ?? '',
                           timeAndLocation: appointment.zipCode ?? '',
                           date: appointment.date ?? DateTime.now(),
+                          city: "City : ${appointment.cityRef?.name ?? 'n/a'}",
                         ),
                       );
                     },

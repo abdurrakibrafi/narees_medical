@@ -25,6 +25,7 @@ class _AppoinmentViewState extends State<AppoinmentView> {
   final GetNurseAppointment _allNurseController =
       Get.put(GetNurseAppointment());
 
+
   @override
   void initState() {
     super.initState();

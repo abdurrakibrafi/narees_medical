@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_date_format.dart';
 
 import '../../../../common widget/custom text/custom_text_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -13,11 +14,11 @@ import '../action_button_of_appointment.dart';
 
 class TodayAppointmentWidget extends StatefulWidget {
   final String patientName;
+  final String city;
   final String treatmentType;
   final String timeAndLocation;
   final DateTime date;
-  final VoidCallback? onAccept;
-  final VoidCallback? onReject;
+  final VoidCallback? onInterested;
 
   const TodayAppointmentWidget({
     super.key,
@@ -25,22 +26,9 @@ class TodayAppointmentWidget extends StatefulWidget {
     required this.treatmentType,
     required this.timeAndLocation,
     required this.date,
-    this.onAccept,
-    this.onReject,
+    this.onInterested,
+    required this.city,
   });
-
-  factory TodayAppointmentWidget.shimmer() {
-    return TodayAppointmentWidget._shimmer();
-  }
-
-  TodayAppointmentWidget._shimmer()
-      : patientName = '',
-        treatmentType = '',
-        timeAndLocation = '',
-        date = DateTime.now(),
-        onAccept = null,
-        onReject = null,
-        super(key: UniqueKey());
 
   @override
   State<TodayAppointmentWidget> createState() => _TodayAppointmentWidgetState();
@@ -278,8 +266,9 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
                           color: Colors.white, size: 16),
                       SizedBox(width: 8),
                       CustomText(
-                        text:
-                            '${_formatTime(widget.date)}  •  ${widget.timeAndLocation}',
+                        fontWeight: FontWeight.bold,
+                        text: CustomDateFormatter.formatDateTime(
+                            widget.date.toString()),
                         color: Colors.white,
                         fontSize: 11.sp,
                       ),
@@ -287,34 +276,37 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
                   ),
                 ),
 
+                SizedBox(height: 10),
+
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white.withOpacity(0.12),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.location_on_outlined,
+                          color: Colors.white, size: 16),
+                      SizedBox(width: 8),
+                      CustomText(
+                        fontWeight: FontWeight.bold,
+                        text: widget.city,
+                        color: Colors.white,
+                        fontSize: 11.sp,
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 14),
 
-                // Accept / Reject buttons
-                Row(
-                  children: [
-                    Expanded(
-                      child: ActionButton(
-                        label: 'Reject',
-                        icon: Icons.close_rounded,
-                        backgroundColor: Colors.white.withOpacity(0.15),
-                        borderColor: Colors.white.withOpacity(0.3),
-                        textColor: Colors.white,
-                        onTap: widget.onReject,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    // Accept button
-                    Expanded(
-                      child: ActionButton(
-                        label: 'Accept',
-                        icon: Icons.check_rounded,
-                        backgroundColor: Colors.white,
-                        borderColor: Colors.transparent,
-                        textColor: Color(0xFF0071BC),
-                        onTap: widget.onAccept,
-                      ),
-                    ),
-                  ],
+                ActionButton(
+                  label: 'Interested',
+                  icon: Icons.check_rounded,
+                  backgroundColor: Colors.white.withOpacity(0.15),
+                  borderColor: Colors.white.withOpacity(0.3),
+                  textColor: Colors.white,
+                  onTap: widget.onInterested,
                 ),
               ],
             ),

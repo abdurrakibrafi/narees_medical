@@ -36,6 +36,13 @@ class ApiUrl {
   static String addEnrollCourse({required String courseId}) =>
       "$baseUrl/training-module/enroll/$courseId";
 
+
+
+
+  static String appointmentInterest({required String appointmentId}) =>
+      "$baseUrl/appointment-application/create/$appointmentId";
+
+
   static const String notification =
       "$baseUrl/notification/notifications?limit=999999";
 
