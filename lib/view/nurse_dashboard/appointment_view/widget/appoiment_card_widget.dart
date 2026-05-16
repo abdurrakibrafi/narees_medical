@@ -11,6 +11,7 @@ import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_pro
 class AppointmentCard extends StatelessWidget {
   final String patientName;
   final String treatmentType;
+  final String appointmentReason;
   final String city;
   final String time;
   final String location;
@@ -26,7 +27,7 @@ class AppointmentCard extends StatelessWidget {
     required this.location,
     this.btnShow = false,
     this.goToDetails = false,
-    required this.staus,
+    required this.staus, required this.appointmentReason,
   });
 
   Color _getStatusColor(String status) {
@@ -79,17 +80,17 @@ class AppointmentCard extends StatelessWidget {
                     color: AppColors.mainColor,
                     fontSize: 16.sp,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      goToDetails
-                          ? Get.to(() => ViewAppointmentScreen())
-                          : Get.to(() => TrackMedicalDetailsView());
-                    },
-                    child: Icon(
-                      Icons.remove_red_eye_outlined,
-                      color: Colors.grey,
-                    ),
-                  )
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     goToDetails
+                  //         ? Get.to(() => ViewAppointmentScreen())
+                  //         : Get.to(() => TrackMedicalDetailsView());
+                  //   },
+                  //   child: Icon(
+                  //     Icons.remove_red_eye_outlined,
+                  //     color: Colors.grey,
+                  //   ),
+                  // )
                 ],
               ),
               SizedBox(height: 5),
@@ -101,6 +102,14 @@ class AppointmentCard extends StatelessWidget {
               ),
               SizedBox(height: 5),
               CustomText(
+                textAlign: TextAlign.left,
+                text: 'Appointment Reason: $appointmentReason',
+                fontSize: 11.sp,
+                color: Colors.black,
+              ),
+              SizedBox(height: 5),
+              CustomText(
+                fontWeight: FontWeight.bold,
                 text: 'City: $city',
                 fontSize: 13.sp,
                 color: Colors.black,

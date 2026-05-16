@@ -254,25 +254,85 @@ class StatusButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.check_circle_outline, color: color),
-          SizedBox(width: 5),
-          CustomText(
-            text: status,
-            color: color,
-            fontSize: 12.sp,
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle_outline, color: color),
+              SizedBox(width: 5),
+              CustomText(
+                text: status,
+                color: color,
+                fontSize: 12.sp,
+              ),
+            ],
+          ),
+        ),
+
+        // ✅ status note
+        if (status.toLowerCase() == 'accepted') ...[
+          SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              color: Colors.green.withOpacity(0.07),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.green.withOpacity(0.3)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.info_outline, color: Colors.green, size: 16.sp),
+                SizedBox(width: 6),
+                Expanded(
+                  child: CustomText(
+                    text:
+                        "Your patient has approved the appointment. Please add the patient charting now.",
+                    color: Colors.green.shade700,
+                    fontSize: 9.sp,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ] else if (status.toLowerCase() == 'pending') ...[
+          SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              color: Colors.orange.withOpacity(0.07),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.orange.withOpacity(0.3)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.hourglass_top_outlined,
+                    color: Colors.orange, size: 16.sp),
+                SizedBox(width: 6),
+                Expanded(
+                  child: CustomText(
+                    text:
+                        "Your appointment will be created once the patient approves your application. Please wait.",
+                    color: Colors.orange.shade700,
+                    fontSize: 9.sp,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
-      ),
+      ],
     );
   }
 }

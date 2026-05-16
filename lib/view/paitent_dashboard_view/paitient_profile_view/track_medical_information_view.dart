@@ -244,6 +244,7 @@ class _TrackMedicalInformationViewState
                   location: '',
                   city: '',
                   staus: '',
+                  appointmentReason: '',
                 );
               },
             ),

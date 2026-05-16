@@ -1,16 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
-import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:restaurent_discount_app/uitilies/api/api_url.dart';
 import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
 import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_bar_for_paitient.dart';
 import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
-
 import '../../../../../uitilies/api/local_storage.dart';
-
 import 'dart:io';
 
 class UpdateProfileController extends GetxController {
@@ -20,10 +17,13 @@ class UpdateProfileController extends GetxController {
     required String firstName,
     required String lastName,
     required String location,
-    required String zipCode,
     required bool route,
     required String email,
     required String phoneNumber,
+    String? cityName,
+    String? stateId,
+    String? cityId,
+    String? specialty,
     List<File>? docs,
     File? profilePicture,
   }) async {
@@ -32,7 +32,6 @@ class UpdateProfileController extends GetxController {
 
       var uri = Uri.parse(ApiUrl.profileUpdate);
       final StorageService _storageService = StorageService();
-
       String? accessToken = _storageService.read<String>('accessToken');
 
       var request = http.MultipartRequest('PATCH', uri);
@@ -41,6 +40,7 @@ class UpdateProfileController extends GetxController {
         request.headers['Authorization'] = 'Bearer $accessToken';
       }
 
+      // ✅ Documents
       if (docs != null && docs.isNotEmpty) {
         for (var doc in docs) {
           request.files.add(await http.MultipartFile.fromPath(
@@ -51,6 +51,7 @@ class UpdateProfileController extends GetxController {
         }
       }
 
+      // ✅ Profile picture
       if (profilePicture != null) {
         request.files.add(await http.MultipartFile.fromPath(
           'profilePicture',
@@ -59,21 +60,25 @@ class UpdateProfileController extends GetxController {
         ));
       }
 
-      // Add fields
-      request.fields.addAll({
-        'email': email,
-        'phoneNumber': phoneNumber,
-        'firstName': firstName,
-        'lastName': lastName,
-        'location': location,
-        'zipCode': zipCode,
-      });
+      request.fields['firstName'] = firstName;
+      request.fields['lastName'] = lastName;
+      request.fields['phoneNumber'] = phoneNumber;
+      request.fields['location'] = location;
+
+      if (specialty != null && specialty.isNotEmpty) {
+        request.fields['specialty'] = specialty!;
+      }
+
+      // ✅ cityName pathao cityId er sathe
+      if (stateId != null && cityName != null) {
+        request.fields['serviceAreas[0][stateId]'] = stateId!;
+        request.fields['serviceAreas[0][cityName]'] = cityName!;
+      }
 
       print("Request headers: ${request.headers}");
       print("Request fields: ${request.fields}");
 
       var response = await request.send();
-
       String responseBody = await response.stream.bytesToString();
 
       print('Response status: ${response.statusCode}');

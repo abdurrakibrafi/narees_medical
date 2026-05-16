@@ -230,7 +230,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                         child: CustomDropdown(
                           label: 'State',
                           hint: 'Select a state',
-                          value: selectedStateName, // ← ID এর বদলে name use করো
+                          value: selectedStateName,
                           items: stateNames, // ← List<String>
                           onChanged: (value) {
                             setState(() {

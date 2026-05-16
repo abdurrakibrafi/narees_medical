@@ -25,7 +25,6 @@ class _AppoinmentViewState extends State<AppoinmentView> {
   final GetNurseAppointment _allNurseController =
       Get.put(GetNurseAppointment());
 
-
   @override
   void initState() {
     super.initState();
@@ -240,7 +239,8 @@ class _AppoinmentViewState extends State<AppoinmentView> {
                     location: appointment.location ?? '',
                     btnShow: false,
                     goToDetails: false,
-                    staus: '',
+                    staus: appointment.status.toString(),
+                    appointmentReason: appointment.reason.toString(),
                   );
                 },
               );

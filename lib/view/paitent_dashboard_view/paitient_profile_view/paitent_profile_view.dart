@@ -92,8 +92,7 @@ class _ProfilePageState extends State<PaitientProfileView> {
                         emailAddress: data?.email ?? '',
                         image: data?.profilePicture ?? '',
                         location: '',
-                        zipCode: '',
-                        phoneNumber: '',
+                        phoneNumber: data?.phoneNumber.toString() ?? '',
                         route: true,
                       ));
                 },
@@ -123,14 +122,13 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 },
               ),
               Divider(),
-              ProfileOption(
-                icon: Icons.medical_information_outlined,
-                title: 'Track Medical Information',
-                onTap: () {
-                  Get.to(() => TrackMedicalInformationView());
-                },
-              ),
-              Divider(),
+              // ProfileOption(
+              //   icon: Icons.medical_information_outlined,
+              //   title: 'Track Medical Information',
+              //   onTap: () {
+              //     Get.to(() => TrackMedicalInformationView());
+              //   },
+              // ),
               ProfileOption(
                 icon: Icons.lock,
                 title: 'Change Password',

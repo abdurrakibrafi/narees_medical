@@ -132,16 +132,23 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                                   .appointmentInterest(
                                 appointmentId: appointment.id.toString(),
                               );
-
                               Get.back();
                             },
                           ),
                           patientName:
-                              '${appointment.firstName ?? ''} ${appointment.lastName ?? ''}',
+                              '${appointment.firstName ?? ''} ${appointment.lastName ?? ''}'
+                                  .trim(),
                           treatmentType: appointment.treatmentType ?? '',
                           timeAndLocation: appointment.zipCode ?? '',
                           date: appointment.date ?? DateTime.now(),
                           city: "City : ${appointment.cityRef?.name ?? 'n/a'}",
+
+                          // ✅ patient info
+                          patientPhone: appointment.phoneNumber ?? '',
+                          patientEmail: '',
+                          patientImageUrl:
+                              appointment.patient?.profilePicture.toString() ??
+                                  '',
                         ),
                       );
                     },

@@ -20,6 +20,11 @@ class TodayAppointmentWidget extends StatefulWidget {
   final DateTime date;
   final VoidCallback? onInterested;
 
+  // ✅ new patient info fields
+  final String patientPhone;
+  final String patientEmail;
+  final String patientImageUrl;
+
   const TodayAppointmentWidget({
     super.key,
     required this.patientName,
@@ -28,6 +33,9 @@ class TodayAppointmentWidget extends StatefulWidget {
     required this.date,
     this.onInterested,
     required this.city,
+    this.patientPhone = '',
+    this.patientEmail = '',
+    this.patientImageUrl = '',
   });
 
   @override
@@ -115,8 +123,8 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
             Row(
               children: [
                 Container(
-                  height: 44,
-                  width: 44,
+                  height: 52,
+                  width: 52,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -128,7 +136,9 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
                   children: [
                     Container(height: 16, width: 130, color: Colors.white),
                     SizedBox(height: 6),
-                    Container(height: 12, width: 90, color: Colors.white),
+                    Container(height: 12, width: 160, color: Colors.white),
+                    SizedBox(height: 6),
+                    Container(height: 12, width: 120, color: Colors.white),
                   ],
                 ),
               ],
@@ -183,7 +193,7 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
       ),
       child: Stack(
         children: [
-          // Decorative circle top-right
+          // Decorative circles
           Positioned(
             top: -20,
             right: -20,
@@ -214,38 +224,74 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header: avatar + name/treatment
+                // ── Patient Info Header ──
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // Profile Picture / Avatar
+                    _buildProfileAvatar(),
                     SizedBox(width: 12),
+
+                    // Name + treatment + email + phone
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Name + treatment badge
                           CustomText(
                             text: widget.patientName,
                             color: Colors.white,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(height: 2),
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.18),
-                                  borderRadius: BorderRadius.circular(20),
+                          SizedBox(height: 4),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.18),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: CustomText(
+                              text: widget.treatmentType,
+                              color: Colors.white.withOpacity(0.95),
+                              fontSize: 10.sp,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+
+                          // Email
+                          if (widget.patientEmail.isNotEmpty)
+                            Row(
+                              children: [
+                                Icon(Icons.email_outlined,
+                                    color: Colors.white70, size: 12.sp),
+                                SizedBox(width: 4),
+                                Expanded(
+                                  child: CustomText(
+                                    text: widget.patientEmail,
+                                    color: Colors.white70,
+                                    fontSize: 10.sp,
+                                  ),
                                 ),
-                                child: CustomText(
-                                  text: widget.treatmentType,
-                                  color: Colors.white.withOpacity(0.95),
+                              ],
+                            ),
+                          SizedBox(height: 3),
+
+                          // Phone
+                          if (widget.patientPhone.isNotEmpty)
+                            Row(
+                              children: [
+                                Icon(Icons.phone_outlined,
+                                    color: Colors.white70, size: 12.sp),
+                                SizedBox(width: 4),
+                                CustomText(
+                                  text: widget.patientPhone,
+                                  color: Colors.white70,
                                   fontSize: 10.sp,
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
@@ -254,8 +300,10 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
 
                 SizedBox(height: 12),
 
+                // ── Date ──
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.white.withOpacity(0.12),
@@ -278,8 +326,10 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
 
                 SizedBox(height: 10),
 
+                // ── City ──
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.white.withOpacity(0.12),
@@ -298,6 +348,7 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
                     ],
                   ),
                 ),
+
                 SizedBox(height: 14),
 
                 ActionButton(
@@ -316,6 +367,61 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
     );
   }
 
+  // ✅ Profile avatar — image thakle show korbe, na thakle initials avatar
+  Widget _buildProfileAvatar() {
+    final hasImage = widget.patientImageUrl.isNotEmpty;
+    final initials = _getInitials(widget.patientName);
+
+    return CircleAvatar(
+      radius: 26.r,
+      backgroundColor: Colors.white.withOpacity(0.2),
+      child: ClipOval(
+        child: hasImage
+            ? Image.network(
+          widget.patientImageUrl,
+          width: 52.r,
+          height: 52.r,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) =>
+              _buildInitialsAvatar(initials),
+        )
+            : _buildInitialsAvatar(initials),
+      ),
+    );
+  }
+
+  // ✅ Initials avatar — image na thakle name er first letter show korbe
+  Widget _buildInitialsAvatar(String initials) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.white.withOpacity(0.2),
+      child: Center(
+        child: Text(
+          initials,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
   String _getInitials(String name) {
     final parts = name.trim().split(' ');
     if (parts.isEmpty) return '?';
@@ -327,8 +433,8 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
     final hour = date.hour > 12
         ? date.hour - 12
         : date.hour == 0
-            ? 12
-            : date.hour;
+        ? 12
+        : date.hour;
     final ampm = date.hour >= 12 ? 'PM' : 'AM';
     final minute = date.minute.toString().padLeft(2, '0');
     return '$hour:$minute $ampm';

@@ -242,6 +242,7 @@ class _AppoinmentViewOfPatientState extends State<AppoinmentViewOfPatient> {
                     btnShow: false,
                     goToDetails: false,
                     staus: appointment.status.toString(),
+                    appointmentReason: appointment.reason.toString(),
                   );
                 },
               );

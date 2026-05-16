@@ -29,8 +29,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late final ProfileGetController _profileGetController;
 
-  final StripeConnectController _stripeConnectController =
-      Get.put(StripeConnectController());
+  //final StripeConnectController _stripeConnectController =
+    //  Get.put(StripeConnectController());
 
   @override
   void initState() {
@@ -88,17 +88,28 @@ class _ProfilePageState extends State<ProfilePage> {
                     final profile = _profileGetController.profile.value.data;
 
                     Get.to(() => EditProfile(
-                          docs: true,
-                          spacilizaion: true,
-                          firstName: profile?.firstName ?? '',
-                          lastame: profile?.lastName ?? '',
-                          emailAddress: profile?.email ?? '',
-                          image: profile?.profilePicture ?? '',
-                          location: '',
-                          zipCode: '',
-                          phoneNumber: '',
-                          route: false,
-                        ));
+                      // ✅ nurseServiceAreas theke first city er data
+                      initialStateId: profile?.nurseInfo?.nurseServiceAreas.isNotEmpty == true
+                          ? profile?.nurseInfo!.nurseServiceAreas.first.city?.stateId
+                          : null,
+                      initialStateName: null, // model e stateName nai, dropdown e id diye match hobe
+                      initialCityId: profile?.nurseInfo?.nurseServiceAreas.isNotEmpty == true
+                          ? profile?.nurseInfo!.nurseServiceAreas.first.city?.id
+                          : null,
+                      initialCityName: profile?.nurseInfo?.nurseServiceAreas.isNotEmpty == true
+                          ? profile?.nurseInfo!.nurseServiceAreas.first.city?.name
+                          : null,
+                      initialSpecialty: profile?.specialty,
+                      docs: true,
+                      spacilizaion: true,
+                      firstName: profile?.firstName ?? '',
+                      lastame: profile?.lastName ?? '',
+                      emailAddress: profile?.email ?? '',
+                      image: profile?.profilePicture?.toString() ?? '',
+                      location: profile?.location ?? '',
+                      phoneNumber: profile?.phoneNumber?.toString() ?? '',
+                      route: false,
+                    ));
                   },
                 ),
                 Divider(),
@@ -116,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () {
                     CustomToast.showToast("Connecting...", isError: false);
 
-                    _stripeConnectController.getStripeConnect();
+                    // _stripeConnectController.getStripeConnect();
                   },
                 ),
                 Divider(),
