@@ -18,6 +18,8 @@ class PatientChartingCard extends StatelessWidget {
   final String time;
   final bool accepted;
 
+  final VoidCallback onTap;
+
   // ✅ Patient info fields
   final String patientPhone;
   final String patientEmail;
@@ -35,6 +37,7 @@ class PatientChartingCard extends StatelessWidget {
     this.patientPhone = '',
     this.patientEmail = '',
     this.patientImageUrl = '',
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -200,7 +203,7 @@ class PatientChartingCard extends StatelessWidget {
                   btnTextSize: 12.h,
                   btnTextColor: AppColors.mainColor,
                   btnText: "Add Patient Chart",
-                  onTap: () {},
+                  onTap: onTap,
                   iconWant: true,
                   suffixIconColor: AppColors.mainColor.withOpacity(0.4),
                   iconData: Icons.add,

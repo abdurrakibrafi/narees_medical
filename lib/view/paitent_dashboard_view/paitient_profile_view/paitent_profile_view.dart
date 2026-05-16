@@ -27,7 +27,7 @@ class PaitientProfileView extends StatefulWidget {
 class _ProfilePageState extends State<PaitientProfileView> {
   late final ProfileGetController _profileGetController;
 
-  final CardSavedController _cardSavedController =
+  late CardSavedController _cardSavedController =
       Get.put(CardSavedController());
 
   @override
@@ -35,6 +35,17 @@ class _ProfilePageState extends State<PaitientProfileView> {
     super.initState();
     _profileGetController = Get.put(ProfileGetController());
     _profileGetController.getProfile();
+
+    // ✅ Already registered থাকলে find করবে
+    // ✅ না থাকলে একবার put করবে
+    if (Get.isRegistered<CardSavedController>()) {
+      _cardSavedController = Get.find<CardSavedController>();
+    } else {
+      _cardSavedController = Get.put(
+        CardSavedController(),
+        permanent: true,
+      );
+    }
   }
 
   @override

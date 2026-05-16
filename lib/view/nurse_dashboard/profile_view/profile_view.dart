@@ -13,6 +13,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settin
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_module/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
+import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/controller/card_saved_controller.dart';
 import '../../../common controller/custom alert dialog/custom_alert_dialog.dart';
 import '../../../uitilies/api/local_storage.dart';
 import '../../paitent_dashboard_view/auth_view/sign_in_view/sign_in_view.dart';
@@ -29,14 +30,29 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late final ProfileGetController _profileGetController;
 
-  //final StripeConnectController _stripeConnectController =
-    //  Get.put(StripeConnectController());
+  late final StripeConnectController _stripeConnectController;
+
+
+
+
 
   @override
   void initState() {
     super.initState();
+
     _profileGetController = Get.put(ProfileGetController());
     _profileGetController.getProfile();
+
+    // ✅ Already registered থাকলে find করবে
+    // ✅ না থাকলে একবার put করবে
+    if (Get.isRegistered<StripeConnectController>()) {
+      _stripeConnectController = Get.find<StripeConnectController>();
+    } else {
+      _stripeConnectController = Get.put(
+        StripeConnectController(),
+        permanent: true,
+      );
+    }
   }
 
   @override
@@ -88,28 +104,36 @@ class _ProfilePageState extends State<ProfilePage> {
                     final profile = _profileGetController.profile.value.data;
 
                     Get.to(() => EditProfile(
-                      // ✅ nurseServiceAreas theke first city er data
-                      initialStateId: profile?.nurseInfo?.nurseServiceAreas.isNotEmpty == true
-                          ? profile?.nurseInfo!.nurseServiceAreas.first.city?.stateId
-                          : null,
-                      initialStateName: null, // model e stateName nai, dropdown e id diye match hobe
-                      initialCityId: profile?.nurseInfo?.nurseServiceAreas.isNotEmpty == true
-                          ? profile?.nurseInfo!.nurseServiceAreas.first.city?.id
-                          : null,
-                      initialCityName: profile?.nurseInfo?.nurseServiceAreas.isNotEmpty == true
-                          ? profile?.nurseInfo!.nurseServiceAreas.first.city?.name
-                          : null,
-                      initialSpecialty: profile?.specialty,
-                      docs: true,
-                      spacilizaion: true,
-                      firstName: profile?.firstName ?? '',
-                      lastame: profile?.lastName ?? '',
-                      emailAddress: profile?.email ?? '',
-                      image: profile?.profilePicture?.toString() ?? '',
-                      location: profile?.location ?? '',
-                      phoneNumber: profile?.phoneNumber?.toString() ?? '',
-                      route: false,
-                    ));
+                          initialStateId: profile?.nurseInfo?.nurseServiceAreas
+                                      .isNotEmpty ==
+                                  true
+                              ? profile?.nurseInfo!.nurseServiceAreas.first.city
+                                  ?.stateId
+                              : null,
+                          initialStateName: null,
+                          initialCityId: profile?.nurseInfo?.nurseServiceAreas
+                                      .isNotEmpty ==
+                                  true
+                              ? profile
+                                  ?.nurseInfo!.nurseServiceAreas.first.city?.id
+                              : null,
+                          initialCityName: profile?.nurseInfo?.nurseServiceAreas
+                                      .isNotEmpty ==
+                                  true
+                              ? profile?.nurseInfo!.nurseServiceAreas.first.city
+                                  ?.name
+                              : null,
+                          initialSpecialty: profile?.specialty,
+                          docs: true,
+                          spacilizaion: true,
+                          firstName: profile?.firstName ?? '',
+                          lastame: profile?.lastName ?? '',
+                          emailAddress: profile?.email ?? '',
+                          image: profile?.profilePicture?.toString() ?? '',
+                          location: profile?.location ?? '',
+                          phoneNumber: profile?.phoneNumber?.toString() ?? '',
+                          route: false,
+                        ));
                   },
                 ),
                 Divider(),
@@ -127,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () {
                     CustomToast.showToast("Connecting...", isError: false);
 
-                    // _stripeConnectController.getStripeConnect();
+                    _stripeConnectController.getStripeConnect();
                   },
                 ),
                 Divider(),

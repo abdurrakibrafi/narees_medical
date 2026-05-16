@@ -360,6 +360,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 );
               }),
+              SizedBox(height: 10),
 
               // ── Specialization (optional) ──
               if (widget.spacilizaion ?? false) ...[

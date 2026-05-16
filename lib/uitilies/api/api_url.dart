@@ -59,6 +59,11 @@ class ApiUrl {
   static String getChatId({required String hireId}) =>
       "$baseUrl/chat/customer/$hireId";
 
+  static String getChartingForm({required String appointmentId}) =>
+      "$baseUrl/patient-charting/form/$appointmentId";
+
+
+
   static String getMyAppointment({required String date}) =>
       "$baseUrl/appointment/get-as-patient?date=$date&limit=9999";
 

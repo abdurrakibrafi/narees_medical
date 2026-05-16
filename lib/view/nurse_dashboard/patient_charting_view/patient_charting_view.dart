@@ -10,6 +10,7 @@ import 'package:restaurent_discount_app/uitilies/constant.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/patient_charting_card_view.dart';
 import '../../../common widget/custom text/custom_text_widget.dart';
+import 'controller/add_patient_charting_via_webview.dart';
 import 'controller/patient_charting_controller.dart';
 
 class PatientChartingView extends StatefulWidget {
@@ -21,6 +22,9 @@ class PatientChartingView extends StatefulWidget {
 
 class _PatientChartingViewState extends State<PatientChartingView> {
   late final PatientChartingController _controller;
+
+  final AddPatientChartingViaWebview _addPatientChartingViaWebview =
+      AddPatientChartingViaWebview();
 
   @override
   void initState() {
@@ -104,6 +108,10 @@ class _PatientChartingViewState extends State<PatientChartingView> {
                             appointment?.patient?.email.toString() ?? '',
                         patientImageUrl:
                             appointment?.patient?.profilePicture ?? '',
+                        onTap: () {
+                          _addPatientChartingViaWebview.addPatientCharting(
+                              appointmentId: appointment?.id ?? '');
+                        },
                       );
                     },
                   ),
