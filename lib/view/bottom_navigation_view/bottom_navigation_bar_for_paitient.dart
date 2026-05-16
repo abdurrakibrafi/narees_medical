@@ -7,6 +7,7 @@ import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import '../paitent_dashboard_view/appointment_of_patient_view/appointment_of_view.dart';
 import '../paitent_dashboard_view/home_view/paitent_home_view.dart';
 import '../paitent_dashboard_view/inventory_list_view/inventory_list_view.dart';
+import '../paitent_dashboard_view/nusrse_application_list/nurse_application_list.dart';
 import '../paitent_dashboard_view/paitient_profile_view/paitent_profile_view.dart';
 import '../paitent_dashboard_view/search_view/nurse_search_view.dart';
 
@@ -22,7 +23,7 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
 
   List<Widget> _pages = [
     HomeViewForPaitinet(),
-    //InventoryList(),
+    NurseRequestView(),
     AppoinmentViewOfPatient(),
     // NurseSearchView(),
     PaitientProfileView(),
@@ -70,14 +71,14 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
                   "assets/images/Home.png", _selectedIndex == 0),
               label: 'Home',
             ),
-            // BottomNavigationBarItem(
-            //   icon: _buildImageIcon(
-            //       "assets/images/layer.png", _selectedIndex == 1),
-            //   label: 'Inventory',
-            // ),
             BottomNavigationBarItem(
               icon: _buildImageIcon(
-                  "assets/images/stickynote.png", _selectedIndex == 1),
+                  "assets/images/layer.png", _selectedIndex == 1),
+              label: 'Nurse Request',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildImageIcon(
+                  "assets/images/stickynote.png", _selectedIndex == 2),
               label: 'Appointment',
             ),
             // BottomNavigationBarItem(
@@ -87,7 +88,7 @@ class _BottomNavigationState extends State<BottomNavigationBarForPaitient> {
             // ),
             BottomNavigationBarItem(
               icon: _buildImageIcon(
-                  "assets/images/profile-add.png", _selectedIndex == 2),
+                  "assets/images/profile-add.png", _selectedIndex == 3),
               label: 'Profile',
             ),
           ],

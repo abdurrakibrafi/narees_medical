@@ -54,6 +54,11 @@ class ApiUrl {
 
   static String deleteCart({required String cartId}) => "$baseUrl/cart/$cartId";
 
+
+  static String patientChartingGet() => "$baseUrl/appointment-application?limit=9999";
+
+
+
   static String getChatId({required String hireId}) =>
       "$baseUrl/chat/customer/$hireId";
 

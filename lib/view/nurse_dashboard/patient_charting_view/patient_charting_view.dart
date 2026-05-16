@@ -1,47 +1,84 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
-import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
-import 'package:restaurent_discount_app/uitilies/app_colors.dart';
-import 'package:restaurent_discount_app/uitilies/constant.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/patient_charting_card_view.dart';
+// patient_charting_view.dart
 
-import 'add_patient_chart_view.dart';
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/uitilies/constant.dart';
+import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/patient_charting_card_view.dart';
+import '../../../common widget/custom text/custom_text_widget.dart';
+import 'controller/patient_charting_controller.dart';
 
 class PatientChartingView extends StatelessWidget {
-  const PatientChartingView({super.key});
+  PatientChartingView({super.key});
+
+  final PatientChartingController _controller =
+      Get.put(PatientChartingController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: CustomAppBar(leading: Container(), title: "Patient Charting"),
-        body: Padding(
-          padding: AppPadding.bodyPadding,
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              CustomButtonWidget(
-                btnColor: Color(0xFFE8F4FA),
-                btnTextSize: 12.h,
-                btnTextColor: AppColors.mainColor,
-                btnText: "Add Patient Chart",
-                onTap: () {
-                  Get.to(() => AddPatientChartView());
-                },
-                iconWant: true,
-                suffixIconColor: AppColors.mainColor.withOpacity(0.4),
-                iconData: Icons.add,
-              ),
-              SizedBox(height: 20),
-              Expanded(child:
-                  ListView.builder(itemBuilder: (BuildContext context, index) {
-                return PatientChartingCard();
-              }))
-            ],
-          ),
-        ));
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar(leading: Container(), title: "Patient Charting"),
+      body: Padding(
+        padding: AppPadding.bodyPadding,
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Expanded(
+              child: Obx(() {
+                if (_controller.isLoading.value) {
+                  return Center(child: CustomLoader());
+                }
+
+                final list = _controller.patientChartingData.value.data ?? [];
+
+                if (list.isEmpty) {
+                  return Center(
+                      child: Column(
+                    children: [
+                      Image(
+                        image: AssetImage(
+                            "assets/images/no-date-calendar_78370-7221.avif"),
+                        width: 120,
+                      ),
+                      CustomText(
+                        text: "No patient charting found.",
+                      )
+                    ],
+                  ));
+                }
+
+                return ListView.builder(
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    final item = list[index];
+                    final appointment = item.appointment;
+
+                    return PatientChartingCard(
+                      patientName:
+                          '${appointment?.firstName ?? ''} ${appointment?.lastName ?? ''}',
+                      treatmentType: appointment?.treatmentType ?? '',
+                      city: appointment?.cityRef?.name.toString() ?? 'n/a',
+                      date: appointment?.date != null
+                          ? '${appointment!.date!.day}/${appointment.date!.month}/${appointment.date!.year}'
+                          : '',
+                      time: appointment?.date != null
+                          ? TimeOfDay.fromDateTime(appointment!.date!)
+                              .format(context)
+                          : '',
+                      status: item.status ?? '',
+                      accepted: item.status?.toLowerCase() == 'accepted',
+                    );
+                  },
+                );
+              }),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
