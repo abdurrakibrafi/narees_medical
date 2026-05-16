@@ -18,8 +18,10 @@ class NurseRequestCard extends StatelessWidget {
   final String nurseName;
   final String nurseEmail;
   final String nurseSpecialist;
+  final bool isLoading;
+
   final String nurseImageUrl;
-  final String? chartPdfUrl; // ✅ new
+  final String? chartPdfUrl;
 
   const NurseRequestCard({
     Key? key,
@@ -36,6 +38,7 @@ class NurseRequestCard extends StatelessWidget {
     required this.nurseSpecialist,
     required this.nurseImageUrl,
     this.chartPdfUrl,
+    this.isLoading = false,
   }) : super(key: key);
 
   // ✅ URL launcher function
@@ -149,13 +152,35 @@ class NurseRequestCard extends StatelessWidget {
                   CircleAvatar(
                     radius: 28.r,
                     backgroundColor: AppColors.mainColor.withOpacity(0.1),
-                    backgroundImage: nurseImageUrl.isNotEmpty
-                        ? NetworkImage(nurseImageUrl)
-                        : null,
-                    child: nurseImageUrl.isEmpty
-                        ? Icon(Icons.person,
-                            size: 28.sp, color: AppColors.mainColor)
-                        : null,
+                    child: ClipOval(
+                      child: nurseImageUrl.isNotEmpty
+                          ? Image.network(
+                              nurseImageUrl,
+                              width: 56.r,
+                              height: 56.r,
+                              fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.mainColor,
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return _PlaceholderAvatar();
+                              },
+                            )
+                          : _PlaceholderAvatar(),
+                    ),
                   ),
                   SizedBox(width: 12.w),
 
@@ -246,12 +271,14 @@ class NurseRequestCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                // ── Accept / Reject Buttons section replace koro ──
               ] else ...[
                 Row(
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: onReject,
+                        onPressed:
+                            isLoading ? null : onReject,
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.red,
                           side: BorderSide(color: Colors.red),
@@ -259,25 +286,43 @@ class NurseRequestCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child:
-                            Text('Reject', style: TextStyle(fontSize: 13.sp)),
+                        child: isLoading
+                            ? SizedBox(
+                                height: 18.h,
+                                width: 18.w,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.red,
+                                ),
+                              )
+                            : Text('Reject', style: TextStyle(fontSize: 13.sp)),
                       ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: onAccept,
+                        onPressed:
+                            isLoading ? null : onAccept, // ✅ disable on loading
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.mainColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: Text(
-                          'Accept',
-                          style:
-                              TextStyle(fontSize: 13.sp, color: Colors.white),
-                        ),
+                        child: isLoading
+                            ? SizedBox(
+                                height: 18.h,
+                                width: 18.w,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Text(
+                                'Accept',
+                                style: TextStyle(
+                                    fontSize: 13.sp, color: Colors.white),
+                              ),
                       ),
                     ),
                   ],
@@ -323,6 +368,24 @@ class _StatusBadge extends StatelessWidget {
           fontSize: 11.sp,
           fontWeight: FontWeight.w500,
         ),
+      ),
+    );
+  }
+}
+
+class _PlaceholderAvatar extends StatelessWidget {
+  const _PlaceholderAvatar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: AppColors.mainColor.withOpacity(0.1),
+      child: Icon(
+        Icons.person,
+        size: 28.sp,
+        color: AppColors.mainColor,
       ),
     );
   }

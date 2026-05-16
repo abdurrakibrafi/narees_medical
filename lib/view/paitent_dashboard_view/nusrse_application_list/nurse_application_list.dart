@@ -8,14 +8,34 @@ import 'package:restaurent_discount_app/uitilies/constant.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 
 import '../../../common widget/custom text/custom_text_widget.dart';
+import '../../../uitilies/app_colors.dart';
 import 'controller/nurse_reqeuest_controller.dart';
+import 'controller/nurse_request_status_update_controller.dart';
 import 'widget/nurse_request_card.dart';
 
-class NurseRequestView extends StatelessWidget {
-  NurseRequestView({super.key});
+class NurseRequestView extends StatefulWidget {
+  const NurseRequestView({super.key});
 
-  final NurseAppointmentRequestController _nurseAppointmentRequestController =
-      Get.put(NurseAppointmentRequestController());
+  @override
+  State<NurseRequestView> createState() => _NurseRequestViewState();
+}
+
+class _NurseRequestViewState extends State<NurseRequestView> {
+  late final NurseAppointmentRequestController
+      _nurseAppointmentRequestController;
+  late final NurseRequestStatusUpdateController _statusUpdateController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nurseAppointmentRequestController =
+        Get.put(NurseAppointmentRequestController());
+    _statusUpdateController = Get.put(NurseRequestStatusUpdateController());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _nurseAppointmentRequestController.getNurseRequests();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,56 +71,81 @@ class NurseRequestView extends StatelessWidget {
                         SizedBox(height: 10),
                         CustomText(
                           text: "No appointment requests found",
-                        )
+                        ),
                       ],
                     ),
                   );
                 }
 
-                return ListView.builder(
-                  itemCount: list.length,
-                  itemBuilder: (context, index) {
-                    final item = list[index];
-                    final appointment = item.appointment;
-
-                    // ✅ nurse object from item
-                    final nurse = item.nurse;
-
-                    return NurseRequestCard(
-                      // ── Patient Info ──
-                      patientName:
-                          '${appointment?.firstName ?? ''} ${appointment?.lastName ?? ''}'
-                              .trim(),
-                      treatmentType: appointment?.treatmentType ?? '',
-                      city: appointment?.cityRef?.name ??
-                          appointment?.zipCode ??
-                          '',
-                      date: appointment?.date != null
-                          ? '${appointment!.date!.day}/${appointment.date!.month}/${appointment.date!.year}'
-                          : '',
-                      time: appointment?.date != null
-                          ? TimeOfDay.fromDateTime(appointment!.date!)
-                              .format(context)
-                          : '',
-                      status: item.status ?? 'Pending',
-
-                      // ── Nurse Info ──
-                      nurseName:
-                          '${nurse?.firstName ?? ''} ${nurse?.lastName ?? 'n/a'}'
-                              .trim(),
-                      nurseEmail: nurse?.email ?? 'n/a',
-                      nurseSpecialist: nurse?.specialty ?? 'n/a',
-                      nurseImageUrl: nurse?.profilePicture ?? 'n/a',
-
-                      // ── Actions ──
-                      onAccept: () {
-                        // TODO: accept api call
-                      },
-                      onReject: () {
-                        // TODO: reject api call
-                      },
-                    );
+                return RefreshIndicator(
+                  color: AppColors.mainColor,
+                  // ✅ pull to refresh
+                  onRefresh: () async {
+                    await _nurseAppointmentRequestController.getNurseRequests();
                   },
+                  child: ListView.builder(
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      final item = list[index];
+                      final appointment = item.appointment;
+                      final nurse = item.nurse;
+
+                      return Obx(() {
+                        final isLoading =
+                            _statusUpdateController.isLoading.value;
+
+                        return NurseRequestCard(
+                          chartPdfUrl:
+                              appointment?.chartPdfUrl?.toString() ?? '',
+
+                          // ── Patient Info ──
+                          patientName:
+                              '${appointment?.firstName ?? ''} ${appointment?.lastName ?? ''}'
+                                  .trim(),
+                          treatmentType: appointment?.treatmentType ?? '',
+                          city: appointment?.cityRef?.name ??
+                              appointment?.zipCode ??
+                              '',
+                          date: appointment?.date != null
+                              ? '${appointment!.date!.day}/${appointment.date!.month}/${appointment.date!.year}'
+                              : '',
+                          time: appointment?.date != null
+                              ? TimeOfDay.fromDateTime(appointment!.date!)
+                                  .format(context)
+                              : '',
+                          status: item.status ?? 'Pending',
+
+                          // ── Nurse Info ──
+                          nurseName:
+                              '${nurse?.firstName ?? ''} ${nurse?.lastName ?? ''}'
+                                  .trim(),
+                          nurseEmail: nurse?.email ?? 'n/a',
+                          nurseSpecialist: nurse?.specialty ?? 'n/a',
+                          nurseImageUrl: nurse?.profilePicture ?? '',
+
+                          isLoading: isLoading,
+
+                          // ── Actions ──
+                          onAccept: isLoading
+                              ? () {}
+                              : () {
+                                  _statusUpdateController.statusUpdate(
+                                    appointmentId: item.id ?? '',
+                                    status: "ACCEPTED",
+                                  );
+                                },
+                          onReject: isLoading
+                              ? () {}
+                              : () {
+                                  _statusUpdateController.statusUpdate(
+                                    appointmentId: item.id ?? '',
+                                    status: "REJECTED",
+                                  );
+                                },
+                        );
+                      });
+                    },
+                  ),
                 );
               }),
             ),

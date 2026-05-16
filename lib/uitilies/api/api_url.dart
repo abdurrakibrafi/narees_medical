@@ -36,12 +36,11 @@ class ApiUrl {
   static String addEnrollCourse({required String courseId}) =>
       "$baseUrl/training-module/enroll/$courseId";
 
-
-
-
   static String appointmentInterest({required String appointmentId}) =>
       "$baseUrl/appointment-application/create/$appointmentId";
 
+  static String requestUpdate({required String appointmentId}) =>
+      "$baseUrl/appointment-application/$appointmentId";
 
   static const String notification =
       "$baseUrl/notification/notifications?limit=999999";
@@ -54,10 +53,8 @@ class ApiUrl {
 
   static String deleteCart({required String cartId}) => "$baseUrl/cart/$cartId";
 
-
-  static String patientChartingGet() => "$baseUrl/appointment-application?limit=9999";
-
-
+  static String patientChartingGet() =>
+      "$baseUrl/appointment-application?limit=9999";
 
   static String getChatId({required String hireId}) =>
       "$baseUrl/chat/customer/$hireId";

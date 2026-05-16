@@ -18,6 +18,11 @@ class PatientChartingCard extends StatelessWidget {
   final String time;
   final bool accepted;
 
+  // ✅ Patient info fields
+  final String patientPhone;
+  final String patientEmail;
+  final String patientImageUrl;
+
   const PatientChartingCard({
     Key? key,
     required this.city,
@@ -27,6 +32,9 @@ class PatientChartingCard extends StatelessWidget {
     required this.patientName,
     required this.time,
     this.accepted = false,
+    this.patientPhone = '',
+    this.patientEmail = '',
+    this.patientImageUrl = '',
   }) : super(key: key);
 
   @override
@@ -51,26 +59,106 @@ class PatientChartingCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // ── Patient Info Section ──
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomText(
-                    text: patientName,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13.sp,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(() => HippaFormView());
-                    },
-                    child: Icon(
-                      Icons.remove_red_eye_outlined,
-                      color: Colors.amber,
+                  // Profile Picture
+                  CircleAvatar(
+                    radius: 26.r,
+                    backgroundColor: AppColors.mainColor.withOpacity(0.1),
+                    child: ClipOval(
+                      child: patientImageUrl.isNotEmpty
+                          ? Image.network(
+                              patientImageUrl,
+                              width: 52.r,
+                              height: 52.r,
+                              fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.mainColor,
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) =>
+                                  _PlaceholderAvatar(),
+                            )
+                          : _PlaceholderAvatar(),
                     ),
-                  )
+                  ),
+                  SizedBox(width: 12.w),
+
+                  // Name + Email + Phone
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Name + eye icon
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              text: patientName,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13.sp,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+
+                        // Email
+                        if (patientEmail.isNotEmpty)
+                          Row(
+                            children: [
+                              Icon(Icons.email_outlined,
+                                  size: 13.sp, color: Colors.grey),
+                              SizedBox(width: 4),
+                              Expanded(
+                                child: CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: patientEmail,
+                                  fontSize: 11.sp,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        SizedBox(height: 4),
+
+                        // Phone
+                        if (patientPhone.isNotEmpty)
+                          Row(
+                            children: [
+                              Icon(Icons.phone_outlined,
+                                  size: 13.sp, color: Colors.grey),
+                              SizedBox(width: 4),
+                              CustomText(
+                                text: patientPhone,
+                                fontSize: 11.sp,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: 5),
+
+              SizedBox(height: 10),
+              Divider(color: Colors.grey.shade200),
+              SizedBox(height: 6),
+
+              // ── Appointment Info ──
               CustomText(
                 text: 'Treatment Type: $treatmentType',
                 fontSize: 12.sp,
@@ -85,11 +173,7 @@ class PatientChartingCard extends StatelessWidget {
               SizedBox(height: 10),
               Row(
                 children: [
-                  Icon(
-                    Icons.access_time,
-                    size: 18.sp,
-                    color: Colors.grey,
-                  ),
+                  Icon(Icons.access_time, size: 18.sp, color: Colors.grey),
                   SizedBox(width: 5),
                   CustomText(
                     text: time,
@@ -105,9 +189,10 @@ class PatientChartingCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 10),
+
               StatusButton(status: status, color: _statusColor(status)),
 
-              // accepted হলেই শুধু দেখাবে
+              // ── Add Patient Chart (accepted only) ──
               if (accepted) ...[
                 SizedBox(height: 20),
                 CustomButtonWidget(
@@ -139,6 +224,25 @@ class PatientChartingCard extends StatelessWidget {
       default:
         return Colors.grey;
     }
+  }
+}
+
+// ── Placeholder Avatar ──
+class _PlaceholderAvatar extends StatelessWidget {
+  const _PlaceholderAvatar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: AppColors.mainColor.withOpacity(0.1),
+      child: Icon(
+        Icons.person,
+        size: 26.sp,
+        color: AppColors.mainColor,
+      ),
+    );
   }
 }
 

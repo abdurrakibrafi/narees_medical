@@ -5,17 +5,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/patient_charting_card_view.dart';
 import '../../../common widget/custom text/custom_text_widget.dart';
 import 'controller/patient_charting_controller.dart';
 
-class PatientChartingView extends StatelessWidget {
-  PatientChartingView({super.key});
+class PatientChartingView extends StatefulWidget {
+  const PatientChartingView({super.key});
 
-  final PatientChartingController _controller =
-      Get.put(PatientChartingController());
+  @override
+  State<PatientChartingView> createState() => _PatientChartingViewState();
+}
+
+class _PatientChartingViewState extends State<PatientChartingView> {
+  late final PatientChartingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    // ✅ initState e controller initialize + fresh API call
+    _controller = Get.put(PatientChartingController());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.getPatientCharting();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,42 +52,61 @@ class PatientChartingView extends StatelessWidget {
 
                 if (list.isEmpty) {
                   return Center(
-                      child: Column(
-                    children: [
-                      Image(
-                        image: AssetImage(
-                            "assets/images/no-date-calendar_78370-7221.avif"),
-                        width: 120,
-                      ),
-                      CustomText(
-                        text: "No patient charting found.",
-                      )
-                    ],
-                  ));
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(
+                          image: AssetImage(
+                              "assets/images/no-date-calendar_78370-7221.avif"),
+                          width: 120,
+                        ),
+                        SizedBox(height: 10),
+                        CustomText(
+                          text: "No patient charting found.",
+                        ),
+                      ],
+                    ),
+                  );
                 }
 
-                return ListView.builder(
-                  itemCount: list.length,
-                  itemBuilder: (context, index) {
-                    final item = list[index];
-                    final appointment = item.appointment;
-
-                    return PatientChartingCard(
-                      patientName:
-                          '${appointment?.firstName ?? ''} ${appointment?.lastName ?? ''}',
-                      treatmentType: appointment?.treatmentType ?? '',
-                      city: appointment?.cityRef?.name.toString() ?? 'n/a',
-                      date: appointment?.date != null
-                          ? '${appointment!.date!.day}/${appointment.date!.month}/${appointment.date!.year}'
-                          : '',
-                      time: appointment?.date != null
-                          ? TimeOfDay.fromDateTime(appointment!.date!)
-                              .format(context)
-                          : '',
-                      status: item.status ?? '',
-                      accepted: item.status?.toLowerCase() == 'accepted',
-                    );
+                return RefreshIndicator(
+                  color: AppColors.mainColor,
+                  // ✅ pull to refresh
+                  onRefresh: () async {
+                    await _controller.getPatientCharting();
                   },
+                  child: ListView.builder(
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      final item = list[index];
+                      final appointment = item.appointment;
+
+                      return PatientChartingCard(
+                        patientName:
+                            '${appointment?.firstName ?? ''} ${appointment?.lastName ?? ''}'
+                                .trim(),
+                        treatmentType: appointment?.treatmentType ?? '',
+                        city: appointment?.cityRef?.name.toString() ?? 'n/a',
+                        date: appointment?.date != null
+                            ? '${appointment!.date!.day}/${appointment.date!.month}/${appointment.date!.year}'
+                            : '',
+                        time: appointment?.date != null
+                            ? TimeOfDay.fromDateTime(appointment!.date!)
+                                .format(context)
+                            : '',
+                        status: item.status ?? '',
+                        accepted: item.status?.toLowerCase() == 'accepted',
+
+                        // ✅ Patient info
+                        patientPhone:
+                            appointment?.patient?.fullname.toString() ?? '',
+                        patientEmail:
+                            appointment?.patient?.email.toString() ?? '',
+                        patientImageUrl:
+                            appointment?.patient?.profilePicture ?? '',
+                      );
+                    },
+                  ),
                 );
               }),
             ),

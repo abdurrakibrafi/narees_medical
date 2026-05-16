@@ -78,6 +78,7 @@ class Appointment {
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+    required this.patient,
     required this.cityRef,
   });
 
@@ -99,6 +100,7 @@ class Appointment {
   final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final Nurse? patient;
   final CityRef? cityRef;
 
   factory Appointment.fromJson(Map<String, dynamic> json){
@@ -121,6 +123,7 @@ class Appointment {
       status: json["status"],
       createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
       updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+      patient: json["patient"] == null ? null : Nurse.fromJson(json["patient"]),
       cityRef: json["cityRef"] == null ? null : CityRef.fromJson(json["cityRef"]),
     );
   }
@@ -183,32 +186,38 @@ class State {
 
 class Nurse {
   Nurse({
+    required this.id,
     required this.firstName,
     required this.lastName,
+    required this.fullname,
     required this.profilePicture,
-    required this.specialty,
-    required this.nurseInfo,
     required this.phoneNumber,
     required this.email,
+    required this.specialty,
+    required this.nurseInfo,
   });
 
+  final String? id;
   final String? firstName;
   final String? lastName;
+  final String? fullname;
   final String? profilePicture;
-  final String? specialty;
-  final NurseInfo? nurseInfo;
   final String? phoneNumber;
   final String? email;
+  final String? specialty;
+  final NurseInfo? nurseInfo;
 
   factory Nurse.fromJson(Map<String, dynamic> json){
     return Nurse(
+      id: json["id"],
       firstName: json["firstName"],
       lastName: json["lastName"],
+      fullname: json["fullname"],
       profilePicture: json["profilePicture"],
-      specialty: json["specialty"],
-      nurseInfo: json["nurseInfo"] == null ? null : NurseInfo.fromJson(json["nurseInfo"]),
       phoneNumber: json["phoneNumber"],
       email: json["email"],
+      specialty: json["specialty"],
+      nurseInfo: json["nurseInfo"] == null ? null : NurseInfo.fromJson(json["nurseInfo"]),
     );
   }
 
