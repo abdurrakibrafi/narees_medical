@@ -23,7 +23,6 @@ class NotFoundWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 60),
           Icon(
             Icons.search_off,
             size: 50.h,

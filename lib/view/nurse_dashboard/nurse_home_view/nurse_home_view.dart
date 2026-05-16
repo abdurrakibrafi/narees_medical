@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/app_bar_widget_of_nurse.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/marketing_material_widget.dart';
@@ -82,7 +84,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                   padding: EdgeInsets.all(16),
                   child: RowWiseWidget(
                     title: 'Appointment',
-                    subTitle: 'See All',
+                    subTitle: '',
                   ),
                 ),
               ),
@@ -99,7 +101,19 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
 
                 if (appointments.isEmpty) {
                   return SliverToBoxAdapter(
-                    child: Center(child: Text('No appointments found')),
+                    child: Center(
+                        child: Column(
+                      children: [
+                        Image(
+                          image: AssetImage(
+                              "assets/images/no-date-calendar_78370-7221.avif"),
+                          width: 120,
+                        ),
+                        CustomText(
+                          text: "Sorry, no appointments found for now",
+                        )
+                      ],
+                    )),
                   );
                 }
 
@@ -142,7 +156,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                   padding: EdgeInsets.all(16),
                   child: RowWiseWidget(
                     title: 'Marketing Material',
-                    subTitle: 'See All',
+                    subTitle: '',
                   ),
                 ),
               ),
