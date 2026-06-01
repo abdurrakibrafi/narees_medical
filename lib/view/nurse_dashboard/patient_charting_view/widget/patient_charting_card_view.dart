@@ -197,7 +197,7 @@ class PatientChartingCard extends StatelessWidget {
 
               StatusButton(status: status, color: _statusColor(status)),
 
-              if (status != 'rejected') ...[
+              if (status != 'REJECTED') ...[
                 SizedBox(height: 20),
                 CustomButtonWidget(
                   iconSize: 23.0,
