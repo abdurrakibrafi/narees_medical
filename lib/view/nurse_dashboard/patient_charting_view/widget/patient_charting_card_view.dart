@@ -19,6 +19,7 @@ class PatientChartingCard extends StatelessWidget {
   final bool accepted;
 
   final VoidCallback onTap;
+  final VoidCallback messageOnTap;
 
   // ✅ Patient info fields
   final String patientPhone;
@@ -38,6 +39,7 @@ class PatientChartingCard extends StatelessWidget {
     this.patientEmail = '',
     this.patientImageUrl = '',
     required this.onTap,
+    required this.messageOnTap,
   }) : super(key: key);
 
   @override
@@ -195,7 +197,21 @@ class PatientChartingCard extends StatelessWidget {
 
               StatusButton(status: status, color: _statusColor(status)),
 
-              // ── Add Patient Chart (accepted only) ──
+              if (status != 'rejected') ...[
+                SizedBox(height: 20),
+                CustomButtonWidget(
+                  iconSize: 23.0,
+                  btnColor: AppColors.mainColor,
+                  btnTextSize: 12.h,
+                  btnTextColor: Colors.white,
+                  btnText: "Message",
+                  onTap: messageOnTap,
+                  iconWant: true,
+                  suffixIconColor: Colors.white,
+                  iconData: Icons.message_outlined,
+                ),
+              ],
+
               if (accepted) ...[
                 SizedBox(height: 20),
                 CustomButtonWidget(

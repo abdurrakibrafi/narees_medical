@@ -27,7 +27,6 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
 
-    // ✅ already connected থাকলে সাথে সাথে
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
         _socketController.listenMessages();
@@ -56,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: Colors.white,
           centerTitle: true,
           title: CustomText(
-            text: "Chat with Admin",
+            text: "Message",
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
             color: Colors.black,

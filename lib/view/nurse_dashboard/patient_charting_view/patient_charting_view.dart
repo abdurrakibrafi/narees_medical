@@ -8,6 +8,7 @@ import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.da
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/uitilies/constant.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
+import 'package:restaurent_discount_app/view/chat_with_nurse_patient.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/patient_charting_view/widget/patient_charting_card_view.dart';
 import '../../../common widget/custom text/custom_text_widget.dart';
 import 'controller/add_patient_charting_via_webview.dart';
@@ -110,6 +111,13 @@ class _PatientChartingViewState extends State<PatientChartingView> {
                         onTap: () {
                           _addPatientChartingViaWebview.addPatientCharting(
                               appointmentId: appointment?.id ?? '');
+                        },
+                        messageOnTap: () {
+                          Get.to(() => ChatDetailsPage(
+                                name:
+                                    '${appointment?.firstName ?? ''} ${appointment?.lastName ?? ''}'
+                                        .trim(),
+                              ));
                         },
                       );
                     },
