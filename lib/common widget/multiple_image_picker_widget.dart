@@ -74,7 +74,7 @@ class _MultiFilePickerState extends State<MultiFilePicker> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.upload_file),
-                    CustomText(text: 'Select Files / Images'),
+                    CustomText(text: 'Uploads Files and images'),
                   ],
                 ),
               )),

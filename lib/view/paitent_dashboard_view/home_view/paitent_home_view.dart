@@ -137,7 +137,7 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                     SizedBox(height: 15),
                     CustomText(
                       textAlign: TextAlign.center,
-                      text: "Add Your Appointment",
+                      text: "Request Appointment",
                       fontSize: 14.h,
                       fontWeight: FontWeight.bold,
                     ),
@@ -178,9 +178,11 @@ class _HomeViewForPaitinetState extends State<HomeViewForPaitinet> {
                         value: selectedTreatment,
                         items: [
                           'IV Hydration',
-                          'Vitamin B12 Infusion',
+                          'Injection',
                           'Pain Management',
-                          'Surgeon'
+                          'Surgeon',
+                          'Testosterone Replacement Therapy',
+
                         ],
                         onChanged: (value) =>
                             setState(() => selectedTreatment = value!),
