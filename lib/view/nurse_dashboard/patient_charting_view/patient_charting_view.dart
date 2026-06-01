@@ -75,7 +75,6 @@ class _PatientChartingViewState extends State<PatientChartingView> {
 
                 return RefreshIndicator(
                   color: AppColors.mainColor,
-                  // ✅ pull to refresh
                   onRefresh: () async {
                     await _controller.getPatientCharting();
                   },
@@ -89,7 +88,7 @@ class _PatientChartingViewState extends State<PatientChartingView> {
                         patientName:
                             '${appointment?.firstName ?? ''} ${appointment?.lastName ?? ''}'
                                 .trim(),
-                        treatmentType: appointment?.treatmentType ?? '',
+                        treatmentType: appointment?.treatmentType ?? 'n/a',
                         city: appointment?.cityRef?.name.toString() ?? 'n/a',
                         date: appointment?.date != null
                             ? '${appointment!.date!.day}/${appointment.date!.month}/${appointment.date!.year}'
