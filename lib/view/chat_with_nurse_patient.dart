@@ -19,12 +19,14 @@ import 'nurse_dashboard/profile_view/controller/socket_controller.dart';
 
 class ChatDetailsPage extends StatefulWidget {
   final String name;
+  final String email;
   final String receiverId;
 
   const ChatDetailsPage({
     super.key,
     required this.name,
-    required this.receiverId, // ✅ Added receiverId
+    required this.receiverId,
+    required this.email, // ✅ Added receiverId
   });
 
   @override
@@ -58,19 +60,17 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   @override
   void initState() {
     super.initState();
-
-    // ✅ Print receiver ID
-    print("Receiver ID: ${widget.receiverId}");
+    _socketController.clearMessages();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
-        _socketController.listenMessages();
+        _socketController.listenMessagesOfNursePatient();
       }
     });
 
     ever(_socketController.isConnected, (connected) {
       if (connected) {
-        _socketController.listenMessages();
+        _socketController.listenMessagesOfNursePatient();
       }
     });
   }
@@ -81,16 +81,9 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
       final myId = _storageService.read<String>('id');
       print("myId: $myId");
 
-      print("Receiver ID: ${widget.receiverId}");
-
-      // ✅ Filter messages between me and receiver only
-      final messages = _socketController.messages.where((msg) {
-        final senderId = msg['senderId']?.toString();
-        final recipientId =
-            msg['recipientId']?.toString(); // change key if needed
-
-        return (senderId == myId && recipientId == widget.receiverId) ||
-            (senderId == widget.receiverId && recipientId == myId);
+      final messages = _socketController.messagesOfNursePatient.where((msg) {
+        final msgReceiverId = msg['senderId']?.toString(); // ✅ msg থেকে নিন
+        return msgReceiverId == msgReceiverId;
       }).toList();
 
       return Scaffold(
@@ -99,11 +92,21 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
           forceMaterialTransparency: true,
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: CustomText(
-            text: widget.name,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+          title: Column(
+            children: [
+              CustomText(
+                text: widget.name,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+              CustomText(
+                text: widget.email,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey,
+              ),
+            ],
           ),
         ),
         body: Column(

@@ -119,6 +119,8 @@ class _PatientChartingViewState extends State<PatientChartingView> {
                                         .trim(),
                                 receiverId:
                                     appointment?.patient?.id.toString() ?? "",
+                                email: appointment?.patient?.email.toString() ??
+                                    "",
                               ));
                         },
                       );

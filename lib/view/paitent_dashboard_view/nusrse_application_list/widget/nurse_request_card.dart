@@ -262,6 +262,7 @@ class NurseRequestCard extends StatelessWidget {
                       Get.to(() => ChatDetailsPage(
                             name: nurseName,
                             receiverId: receiverId,
+                            email: nurseEmail,
                           ));
                     },
                     iconWant: false),
