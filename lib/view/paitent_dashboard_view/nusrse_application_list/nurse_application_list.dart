@@ -141,6 +141,7 @@ class _NurseRequestViewState extends State<NurseRequestView> {
                                     status: "REJECTED",
                                   );
                                 },
+                          receiverId: nurse?.id.toString() ?? '',
                         );
                       });
                     },

@@ -18,8 +18,10 @@ class SocketController extends GetxController {
 
   String? accessToken;
   String? id;
+  String? receiverId;
 
   String get eventName => "messages::$id";
+  String get eventNameTwo => "messages::receiverId$receiverId";
 
   @override
   void onInit() {
@@ -52,16 +54,12 @@ class SocketController extends GetxController {
         log("✅ Socket Connected");
         isConnected.value = true;
 
-
         // ✅ এটা দিয়ে server কে trigger করুন যাতে সে history পাঠায়
         socket.emit("send-message", {
-          "content": "",  // empty content
+          "content": "", // empty content
         });
         listenMessages();
       });
-
-
-
 
       // ❌ DISCONNECTED
       socket.onDisconnect((_) {
@@ -88,7 +86,8 @@ class SocketController extends GetxController {
           final newMessages = data["data"];
 
           if (newMessages is List) {
-            messages.assignAll(newMessages.reversed.toList()); // reverse for ListView.reverse=true
+            messages.assignAll(newMessages.reversed
+                .toList()); // reverse for ListView.reverse=true
           } else {
             messages.add(newMessages);
           }
@@ -126,10 +125,60 @@ class SocketController extends GetxController {
     });
   }
 
+  void listenMessagesOfNursePatient() {
+    socket.on(eventName, (data) {
+      log("📩 Raw Data: $data");
+
+      try {
+        if (data is Map && data.containsKey("data")) {
+          final newMessages = data["data"];
+
+          if (newMessages is List) {
+            messages.assignAll(newMessages.reversed.toList());
+          } else {
+            messages.add(newMessages);
+          }
+        } else {
+          messages.add(data);
+        }
+
+        socket.emit("ack", {
+          "event": eventNameTwo,
+        });
+      } catch (e) {
+        log("❌ Parse Error: $e");
+      }
+    });
+  }
+
+  void sendMessageFromNurseToPatient(String text, dynamic receiverId,
+      {List<String> files = const []}) {
+    if (!isConnected.value) return;
+
+    socket.emitWithAck("send-message", {
+      "content": text,
+      "files": files,
+      "receiverId": receiverId,
+    }, ack: (response) {
+      log("✅ Server ACK: $response");
+
+      // ✅ ACK পাওয়ার পর তাৎক্ষণিক UI update
+      messages.insert(0, {
+        "content": text,
+        "files": files,
+        "receiverId": receiverId,
+        "createdAt": DateTime.now().toIso8601String(),
+      });
+
+      // ✅ Server থেকে latest messages আনো
+      listenMessagesOfNursePatient();
+    });
+  }
+
   // ✅ DISCONNECT
   void disconnectSocket() {
-    socket.disconnect(); // ✅ আগে disconnect
-    socket.dispose();    // তারপর dispose
+    socket.disconnect();
+    socket.dispose();
   }
 
   @override

@@ -8,7 +8,6 @@ import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_tex
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 import 'package:restaurent_discount_app/view/chat_with_nurse_patient.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/widget/bottom_sheet_for_send_form.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NurseRequestCard extends StatelessWidget {
@@ -21,6 +20,7 @@ class NurseRequestCard extends StatelessWidget {
   final VoidCallback onAccept;
   final VoidCallback onReject;
   final String nurseName;
+  final String receiverId;
   final String nurseEmail;
   final String nurseSpecialist;
   final bool isLoading;
@@ -44,6 +44,7 @@ class NurseRequestCard extends StatelessWidget {
     required this.nurseImageUrl,
     this.chartPdfUrl,
     this.isLoading = false,
+    required this.receiverId,
   }) : super(key: key);
 
   // ✅ URL launcher function
@@ -258,7 +259,10 @@ class NurseRequestCard extends StatelessWidget {
                     borderColor: AppColors.mainColor,
                     btnTextColor: AppColors.mainColor,
                     onTap: () {
-                      Get.to(() => ChatDetailsPage(name: nurseName));
+                      Get.to(() => ChatDetailsPage(
+                            name: nurseName,
+                            receiverId: receiverId,
+                          ));
                     },
                     iconWant: false),
               ],

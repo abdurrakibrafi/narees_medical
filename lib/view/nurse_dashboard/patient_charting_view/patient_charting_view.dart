@@ -117,6 +117,8 @@ class _PatientChartingViewState extends State<PatientChartingView> {
                                 name:
                                     '${appointment?.firstName ?? ''} ${appointment?.lastName ?? ''}'
                                         .trim(),
+                                receiverId:
+                                    appointment?.patient?.id.toString() ?? "",
                               ));
                         },
                       );
