@@ -79,7 +79,6 @@ class _NurseRequestViewState extends State<NurseRequestView> {
 
                 return RefreshIndicator(
                   color: AppColors.mainColor,
-                  // ✅ pull to refresh
                   onRefresh: () async {
                     await _nurseAppointmentRequestController.getNurseRequests();
                   },

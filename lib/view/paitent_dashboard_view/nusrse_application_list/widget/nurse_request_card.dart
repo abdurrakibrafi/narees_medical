@@ -2,8 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
 import 'package:restaurent_discount_app/uitilies/app_colors.dart';
+import 'package:restaurent_discount_app/view/chat_with_nurse_patient.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/appointment_view/widget/bottom_sheet_for_send_form.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NurseRequestCard extends StatelessWidget {
@@ -53,6 +58,7 @@ class NurseRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isAccepted = status.toLowerCase() == 'accepted';
+    final bool isRejected = status.toLowerCase() == 'rejected';
 
     return Card(
       color: Colors.white,
@@ -243,14 +249,22 @@ class NurseRequestCard extends StatelessWidget {
                   ),
                 ],
               ),
-
               SizedBox(height: 14),
-              Divider(color: Colors.grey.shade200),
-              SizedBox(height: 8),
 
-              // ── Bottom Section ──
-              // ✅ Accepted → show View Chart PDF button only
-              // ✅ Others   → show Accept / Reject buttons
+              if (!isRejected) ...[
+                CustomButtonWidget(
+                    btnTextSize: 12.0,
+                    btnText: "Message",
+                    borderColor: AppColors.mainColor,
+                    btnTextColor: AppColors.mainColor,
+                    onTap: () {
+                      Get.to(() => ChatDetailsPage(name: nurseName));
+                    },
+                    iconWant: false),
+              ],
+
+              SizedBox(height: 10),
+
               if (isAccepted) ...[
                 SizedBox(
                   width: double.infinity,
@@ -277,8 +291,7 @@ class NurseRequestCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed:
-                            isLoading ? null : onReject,
+                        onPressed: isLoading ? null : onReject,
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.red,
                           side: BorderSide(color: Colors.red),
