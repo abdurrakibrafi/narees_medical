@@ -4,6 +4,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../../../../uitilies/api/local_storage.dart';
 
 class SocketController extends GetxController {
+  String? receiverId;
   late IO.Socket socket;
 
   var messages = <dynamic>[].obs;
@@ -15,11 +16,11 @@ class SocketController extends GetxController {
   String? accessToken;
   String? id;
 
-  // ✅ নিজের message event
+  // নিজের general message event
   String get myEventName => "messages::$id";
 
-  // ✅ Nurse-Patient conversation এর আলাদা event
-  String nursePatientEventName(String receiverId) => "messages::${id}";
+  // Nurse-Patient conversation event
+  String get nursePatientEventName => "messages::$receiverId";
 
   @override
   void onInit() {
@@ -45,7 +46,7 @@ class SocketController extends GetxController {
       socket.onConnect((_) {
         log("✅ Socket Connected");
         isConnected.value = true;
-        listenMessages(); // ✅ শুধু general messages
+        listenMessages(); // general messages
       });
 
       socket.onDisconnect((_) {
@@ -59,7 +60,9 @@ class SocketController extends GetxController {
     }
   }
 
-  // ✅ General messages (নিজের event)
+  // ─────────────────────────────────────────────
+  // General messages (নিজের event)
+  // ─────────────────────────────────────────────
   void listenMessages() {
     socket.off(myEventName);
     socket.on(myEventName, (data) {
@@ -68,7 +71,8 @@ class SocketController extends GetxController {
         if (data is Map && data.containsKey("data")) {
           final newMessages = data["data"];
           if (newMessages is List) {
-            messages.assignAll(newMessages.reversed.toList());
+            // ✅ normal order — পুরনো আগে, নতুন পরে
+            messages.assignAll(List.from(newMessages));
           } else {
             messages.add(newMessages);
           }
@@ -82,28 +86,57 @@ class SocketController extends GetxController {
     });
   }
 
-  // ✅ receiverId নিচ্ছে এবং সঠিক event এ listen করছে
-  void fetchMessagesWithReceiver(String receiverId) {
-    listenMessagesOfNursePatient(receiverId);
-  }
+  // ─────────────────────────────────────────────
+  // Nurse-Patient conversation listen
 
-  // ✅ আলাদা event দিয়ে nurse-patient conversation listen
+  // ─────────────────────────────────────────────
   void listenMessagesOfNursePatient(String receiverId) {
-    final event = nursePatientEventName(receiverId);
-
-    socket.off(event); // ✅ শুধু এই event বন্ধ করো
+    final event = nursePatientEventName;
+    socket.off(event);
     socket.on(event, (data) {
       log("📩 listenMessagesOfNursePatient [$event]: $data");
       try {
         if (data is Map && data.containsKey("data")) {
           final newMessages = data["data"];
           if (newMessages is List) {
-            messagesOfNursePatient.assignAll(newMessages.reversed.toList());
+            // ✅ reversed সরানো হয়েছে — normal order রাখো
+            final incoming = List.from(newMessages);
+
+            if (messagesOfNursePatient.isEmpty) {
+              // প্রথমবার — সব replace করো
+              messagesOfNursePatient.assignAll(incoming);
+            } else {
+              // নতুন message আলাদা করে add করো, পুরোটা replace না করে
+              for (final msg in incoming) {
+                final createdAt = msg['createdAt']?.toString();
+                final alreadyExists = messagesOfNursePatient.any(
+                  (m) =>
+                      m['createdAt']?.toString() == createdAt &&
+                      m['senderId']?.toString() ==
+                          msg['senderId']?.toString() &&
+                      m['content']?.toString() == msg['content']?.toString(),
+                );
+                if (!alreadyExists) {
+                  messagesOfNursePatient.add(msg);
+                }
+              }
+            }
+
+            // ✅ createdAt অনুযায়ী sort — পুরনো আগে
+            messagesOfNursePatient.sort((a, b) {
+              final aTime =
+                  DateTime.tryParse(a['createdAt'] ?? '') ?? DateTime(0);
+              final bTime =
+                  DateTime.tryParse(b['createdAt'] ?? '') ?? DateTime(0);
+              return aTime.compareTo(bTime);
+            });
           } else {
-            messagesOfNursePatient.add(newMessages);
+            // Single new message — শেষে add করো
+            _addSingleMessage(newMessages);
           }
-        } else {
-          messagesOfNursePatient.add(data);
+        } else if (data is Map) {
+          // Single message directly
+          _addSingleMessage(data);
         }
         socket.emit("ack", {"event": event});
       } catch (e) {
@@ -112,14 +145,44 @@ class SocketController extends GetxController {
     });
   }
 
+  // ─────────────────────────────────────────────
+  // Single message add helper (duplicate check সহ)
+  // ─────────────────────────────────────────────
+  void _addSingleMessage(dynamic msg) {
+    final createdAt = msg['createdAt']?.toString();
+    final alreadyExists = messagesOfNursePatient.any(
+      (m) =>
+          m['createdAt']?.toString() == createdAt &&
+          m['senderId']?.toString() == msg['senderId']?.toString() &&
+          m['content']?.toString() == msg['content']?.toString(),
+    );
+    if (!alreadyExists) {
+      messagesOfNursePatient.add(msg);
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // fetchMessagesWithReceiver
+  // ─────────────────────────────────────────────
+  void fetchMessagesWithReceiver(String receiverId) {
+    listenMessagesOfNursePatient(receiverId);
+  }
+
+  // ─────────────────────────────────────────────
+  // Clear
+  // ─────────────────────────────────────────────
   void clearMessages() {
     messagesOfNursePatient.clear();
   }
 
+  // ─────────────────────────────────────────────
+  // General send (নিজের chat)
+  // ─────────────────────────────────────────────
   void sendMessage(String text) {
     if (!isConnected.value) return;
 
-    messages.insert(0, {
+    // ✅ Optimistic update — শেষে add করো
+    messages.add({
       "content": text,
       "senderId": id,
       "createdAt": DateTime.now().toIso8601String(),
@@ -132,11 +195,18 @@ class SocketController extends GetxController {
     });
   }
 
-  void sendMessageFromNurseToPatient(String text, dynamic receiverId,
-      {List<String> files = const []}) {
+  // ─────────────────────────────────────────────
+  // Nurse → Patient message send
+  // ─────────────────────────────────────────────
+  void sendMessageFromNurseToPatient(
+    String text,
+    dynamic receiverId, {
+    List<String> files = const [],
+  }) {
     if (!isConnected.value) return;
 
-    messagesOfNursePatient.insert(0, {
+    // ✅ Optimistic update — insert(0) না, শেষে add করো
+    messagesOfNursePatient.add({
       "content": text,
       "files": files,
       "receiverId": receiverId.toString(),
@@ -144,15 +214,22 @@ class SocketController extends GetxController {
       "createdAt": DateTime.now().toIso8601String(),
     });
 
-    socket.emitWithAck("send-message", {
-      "content": text,
-      "files": files,
-      "receiverId": receiverId,
-    }, ack: (response) {
-      log("✅ ACK: $response");
-    });
+    socket.emitWithAck(
+      "send-message",
+      {
+        "content": text,
+        "files": files,
+        "receiverId": receiverId,
+      },
+      ack: (response) {
+        log("✅ ACK: $response");
+      },
+    );
   }
 
+  // ─────────────────────────────────────────────
+  // Disconnect
+  // ─────────────────────────────────────────────
   void disconnectSocket() {
     socket.disconnect();
     socket.dispose();
