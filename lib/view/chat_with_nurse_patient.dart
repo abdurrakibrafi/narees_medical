@@ -26,7 +26,7 @@ class ChatDetailsPage extends StatefulWidget {
     super.key,
     required this.name,
     required this.receiverId,
-    required this.email, // ✅ Added receiverId
+    required this.email,
   });
 
   @override
@@ -36,9 +36,10 @@ class ChatDetailsPage extends StatefulWidget {
 class _ChatDetailsPageState extends State<ChatDetailsPage> {
   final ScrollController _scrollController = ScrollController();
 
-  final SocketController _socketController = Get.put(SocketController());
+  // ✅ Get.find() — নতুন instance তৈরি না করে আগেরটা use করো
+  final SocketController _socketController = Get.find<SocketController>();
 
-  final StorageService _storageService = Get.put(StorageService());
+  final StorageService _storageService = Get.find<StorageService>();
 
   final TextEditingController _messageController = TextEditingController();
 
@@ -48,11 +49,13 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
     Future.delayed(
       const Duration(milliseconds: 200),
       () {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
       },
     );
   }
@@ -60,30 +63,51 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   @override
   void initState() {
     super.initState();
+
+    // ✅ Page খুলতেই আগের messages clear করো
     _socketController.clearMessages();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
-        _socketController.listenMessagesOfNursePatient();
+        // ✅ receiverId সহ listen শুরু করো
+        _socketController.listenMessagesOfNursePatient(widget.receiverId);
       }
     });
 
+    // ✅ Socket reconnect হলে আবার listen করো
     ever(_socketController.isConnected, (connected) {
       if (connected) {
-        _socketController.listenMessagesOfNursePatient();
+        _socketController.listenMessagesOfNursePatient(widget.receiverId);
       }
     });
+
+    // ✅ নতুন message আসলে auto scroll
+    ever(_socketController.messagesOfNursePatient, (_) {
+      scrollToBottom();
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _messageController.dispose();
+    // ✅ Page বন্ধ হলে messages clear করো
+    _socketController.clearMessages();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       final myId = _storageService.read<String>('id');
-      print("myId: $myId");
 
+      // ✅ সঠিক filter — sender ও receiver উভয় দিক check করো
       final messages = _socketController.messagesOfNursePatient.where((msg) {
-        final msgReceiverId = msg['senderId']?.toString(); // ✅ msg থেকে নিন
-        return msgReceiverId == msgReceiverId;
+        final senderId = msg['senderId']?.toString();
+        final receiverId = msg['receiverId']?.toString();
+
+        return (senderId == myId && receiverId == widget.receiverId) ||
+            (senderId == widget.receiverId && receiverId == myId);
       }).toList();
 
       return Scaffold(
@@ -116,6 +140,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                   ? Center(child: Text("No messages yet"))
                   : ListView.builder(
                       reverse: true,
+                      controller: _scrollController, // ✅ controller যুক্ত
                       itemCount: messages.length,
                       padding: EdgeInsets.all(12),
                       itemBuilder: (context, index) {
@@ -151,9 +176,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(
-                      Icons.image,
-                    ),
+                    icon: const Icon(Icons.image),
                   ),
                   Expanded(
                     child: TextField(
@@ -161,16 +184,12 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                       decoration: InputDecoration(
                         hintText: "Type message...",
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            30,
-                          ),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 8,
-                  ),
+                  const SizedBox(width: 8),
                   CircleAvatar(
                     child: IconButton(
                       onPressed: () {
@@ -181,8 +200,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                             text, widget.receiverId);
 
                         _messageController.clear();
-
-                        print("Message sent: $text");
+                        scrollToBottom(); // ✅ Send করলে scroll
                       },
                       icon: const Icon(
                         Icons.send,

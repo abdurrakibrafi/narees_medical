@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 import '../../../../uitilies/api/local_storage.dart';
 
 class SocketController extends GetxController {
@@ -16,7 +15,11 @@ class SocketController extends GetxController {
   String? accessToken;
   String? id;
 
-  String get eventName => "messages::$id";
+  // ✅ নিজের message event
+  String get myEventName => "messages::$id";
+
+  // ✅ Nurse-Patient conversation এর আলাদা event
+  String nursePatientEventName(String receiverId) => "messages::${id}";
 
   @override
   void onInit() {
@@ -42,7 +45,7 @@ class SocketController extends GetxController {
       socket.onConnect((_) {
         log("✅ Socket Connected");
         isConnected.value = true;
-        listenMessages();
+        listenMessages(); // ✅ শুধু general messages
       });
 
       socket.onDisconnect((_) {
@@ -56,9 +59,10 @@ class SocketController extends GetxController {
     }
   }
 
+  // ✅ General messages (নিজের event)
   void listenMessages() {
-    socket.off(eventName); // ✅ আগের listener সরাও
-    socket.on(eventName, (data) {
+    socket.off(myEventName);
+    socket.on(myEventName, (data) {
       log("📩 listenMessages: $data");
       try {
         if (data is Map && data.containsKey("data")) {
@@ -71,17 +75,25 @@ class SocketController extends GetxController {
         } else {
           messages.add(data);
         }
-        socket.emit("ack", {"event": eventName});
+        socket.emit("ack", {"event": myEventName});
       } catch (e) {
         log("❌ Parse Error: $e");
       }
     });
   }
 
-  void listenMessagesOfNursePatient() {
-    socket.off(eventName); // ✅ KEY FIX — duplicate listener বন্ধ
-    socket.on(eventName, (data) {
-      log("📩 listenMessagesOfNursePatient: $data");
+  // ✅ receiverId নিচ্ছে এবং সঠিক event এ listen করছে
+  void fetchMessagesWithReceiver(String receiverId) {
+    listenMessagesOfNursePatient(receiverId);
+  }
+
+  // ✅ আলাদা event দিয়ে nurse-patient conversation listen
+  void listenMessagesOfNursePatient(String receiverId) {
+    final event = nursePatientEventName(receiverId);
+
+    socket.off(event); // ✅ শুধু এই event বন্ধ করো
+    socket.on(event, (data) {
+      log("📩 listenMessagesOfNursePatient [$event]: $data");
       try {
         if (data is Map && data.containsKey("data")) {
           final newMessages = data["data"];
@@ -93,7 +105,7 @@ class SocketController extends GetxController {
         } else {
           messagesOfNursePatient.add(data);
         }
-        socket.emit("ack", {"event": eventName});
+        socket.emit("ack", {"event": event});
       } catch (e) {
         log("❌ Parse Error: $e");
       }
@@ -124,7 +136,6 @@ class SocketController extends GetxController {
       {List<String> files = const []}) {
     if (!isConnected.value) return;
 
-    // ✅ আগেই locally insert — ACK এর অপেক্ষা না করে
     messagesOfNursePatient.insert(0, {
       "content": text,
       "files": files,
