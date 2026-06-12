@@ -29,14 +29,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
-        _socketController.listenMessages();
+    //   _socketController.listenMessages();
       }
     });
 
     // ✅ connect হওয়ার পর automatically call হবে
     ever(_socketController.isConnected, (connected) {
       if (connected) {
-        _socketController.listenMessages();
+       // _socketController.listenMessages();
       }
     });
   }

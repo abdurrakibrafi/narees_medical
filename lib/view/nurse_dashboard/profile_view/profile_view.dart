@@ -30,7 +30,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late final ProfileGetController _profileGetController;
 
-  late final StripeConnectController _stripeConnectController;
+  //late final StripeConnectController _stripeConnectController;
 
 
 
@@ -45,14 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
     // ✅ Already registered থাকলে find করবে
     // ✅ না থাকলে একবার put করবে
-    if (Get.isRegistered<StripeConnectController>()) {
-      _stripeConnectController = Get.find<StripeConnectController>();
-    } else {
-      _stripeConnectController = Get.put(
-        StripeConnectController(),
-        permanent: true,
-      );
-    }
+    // if (Get.isRegistered<StripeConnectController>()) {
+    //   _stripeConnectController = Get.find<StripeConnectController>();
+    // } else {
+    //   _stripeConnectController = Get.put(
+    //     StripeConnectController(),
+    //     permanent: true,
+    //   );
+    // }
   }
 
   @override
@@ -151,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () {
                     CustomToast.showToast("Connecting...", isError: false);
 
-                    _stripeConnectController.getStripeConnect();
+               //     _stripeConnectController.getStripeConnect();
                   },
                 ),
                 Divider(),

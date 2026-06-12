@@ -1,5 +1,7 @@
 class ApiUrl {
-  static const String baseUrl = "http://10.10.10.3:4000/api/v1";
+  // static const String baseUrl = "http://10.10.10.3:4000/api/v1";
+  static const String baseUrl =
+      "https://9a14-103-159-73-203.ngrok-free.app/api/v1";
   static const String socketGlobal = "https://renti-socket.techcrafters.tech";
   static String imageUrl({String? url}) {
     return "http://192.168.10.5:5005/$url";
@@ -61,8 +63,6 @@ class ApiUrl {
 
   static String getChartingForm({required String appointmentId}) =>
       "$baseUrl/patient-charting/form/$appointmentId";
-
-
 
   static String getMyAppointment({required String date}) =>
       "$baseUrl/appointment/get-as-patient?date=$date&limit=9999";

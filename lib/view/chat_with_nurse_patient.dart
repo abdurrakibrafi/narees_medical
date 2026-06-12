@@ -37,15 +37,21 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   void initState() {
     super.initState();
 
+
+
+
+
+    _socketController.messagesOfNursePatient.clear();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
         _socketController.listenMessagesOfNursePatient(widget.receiverId);
       }
     });
 
-    // ✅ connect হওয়ার পর automatically call হবে
     ever(_socketController.isConnected, (connected) {
       if (connected) {
+        _socketController.messagesOfNursePatient.clear();
         _socketController.listenMessagesOfNursePatient(widget.receiverId);
       }
     });
@@ -54,7 +60,8 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final messages = _socketController.messages;
+      final messages = _socketController.messagesOfNursePatient;
+
       final myId = _storageService.read<String>('id');
       print("myId: $myId");
 
