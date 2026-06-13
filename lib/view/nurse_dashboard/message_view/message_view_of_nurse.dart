@@ -29,14 +29,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
-    //   _socketController.listenMessages();
+        //   _socketController.listenMessages();
       }
     });
 
     // ✅ connect হওয়ার পর automatically call হবে
     ever(_socketController.isConnected, (connected) {
       if (connected) {
-       // _socketController.listenMessages();
+        // _socketController.listenMessages();
       }
     });
   }
@@ -71,7 +71,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       itemCount: messages.length,
                       padding: EdgeInsets.all(12),
                       itemBuilder: (context, index) {
-                        final msg = messages[index];
+                        // ✅ এই লাইনটি যোগ করুন
+                        final msg = messages[messages.length - 1 - index];
 
                         final isMe =
                             msg['senderId']?.toString() == myId?.toString();

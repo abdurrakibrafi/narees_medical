@@ -37,10 +37,6 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   void initState() {
     super.initState();
 
-
-
-
-
     _socketController.messagesOfNursePatient.clear();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

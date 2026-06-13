@@ -33,8 +33,8 @@ class SocketController extends GetxController {
   void connectSocket() {
     try {
       socket = IO.io(
-    //    "http://10.10.10.3:4001",
-        "https://5e48-103-159-73-203.ngrok-free",
+        //"http://10.10.10.3:4001",
+        "https://9a14-103-159-73-203.ngrok-free.app",
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
