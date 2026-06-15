@@ -37,20 +37,24 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   void initState() {
     super.initState();
 
+    final myId = _storageService.read<String>('id');
+    print("myId for message on chat with nurse: $myId");
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
-        _socketController
-            .listenMessagesOfNursePatient(widget.receiverId);
+        _socketController.listenMessagesOfNursePatient(myId!);
         _socketController.initialEmit(widget.receiverId);
 
-        print("✅ Initial Emit");
+        print("✅ Initial Emit called for receiverId: ${widget.receiverId}");
       }
 
       ever(_socketController.isConnected, (connected) {
         if (connected) {
-          _socketController
-              .listenMessagesOfNursePatient(widget.receiverId); // ✅
-          _socketController.initialEmit(widget.receiverId); // ✅
+          _socketController.listenMessagesOfNursePatient(myId!);
+          _socketController.initialEmit(widget.receiverId);
+
+          print(
+              "✅ Reconnected — Emit called for receiverId: ${widget.receiverId}");
         }
       });
     });
@@ -104,6 +108,8 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                     ),
             ),
             ChatInputField(
+              allowMultipleImages: true,
+              allowImageUpload: true,
               controller: _messageController,
               onSend: () {
                 final text = _messageController.text.trim();
