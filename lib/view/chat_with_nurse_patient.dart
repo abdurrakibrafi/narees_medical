@@ -10,7 +10,6 @@ import 'package:restaurent_discount_app/common%20widget/custom_date_format.dart'
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/message_view/widget/chat_bubble_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/message_view/widget/chat_input_filed.dart';
-
 import 'nurse_dashboard/message_view/controller/upload_image_controller.dart';
 import 'nurse_dashboard/profile_view/controller/socket_controller.dart';
 
@@ -128,7 +127,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                           itemCount: messages.length,
                           padding: EdgeInsets.all(12),
                           itemBuilder: (context, index) {
-                            final msg = messages[index];
+                            final msg = messages[messages.length - 1 - index];
                             final isMe =
                                 msg['senderId']?.toString() == myId?.toString();
 
