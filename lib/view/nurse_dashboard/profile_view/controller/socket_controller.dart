@@ -9,7 +9,7 @@ class SocketController extends GetxController {
   final messages = <dynamic>[].obs;
   final messagesOfNursePatient = <dynamic>[].obs;
   final isConnected = false.obs;
-  final isLoading = true.obs; // ✅ যোগ করা হয়েছে
+  final isLoading = true.obs;
 
   final StorageService _storageService = Get.put(StorageService());
 
@@ -55,13 +55,12 @@ class SocketController extends GetxController {
       socket.onDisconnect((_) {
         log("❌ Socket Disconnected");
         isConnected.value = false;
-        isLoading.value = true; 
-        
+        isLoading.value = true;
       });
 
       socket.onError((err) {
         log("❌ Socket Error: $err");
-        isLoading.value = false; 
+        isLoading.value = false;
       });
 
       Future.delayed(Duration(seconds: 5), () {
@@ -72,7 +71,7 @@ class SocketController extends GetxController {
       });
     } catch (e) {
       log("❌ Socket Exception: $e");
-      isLoading.value = false; 
+      isLoading.value = false;
     }
   }
 
@@ -82,6 +81,7 @@ class SocketController extends GetxController {
     log("🎯 Listening Event: $event");
 
     messagesOfNursePatient.clear();
+    isLoading.value = true; // ✅ listen শুরুতে loading on
 
     if (currentNursePatientEvent != null) {
       socket.off(currentNursePatientEvent!);
@@ -104,6 +104,15 @@ class SocketController extends GetxController {
         }
       } catch (e) {
         log("❌ Error: $e");
+      } finally {
+        isLoading.value = false;
+      }
+    });
+
+    Future.delayed(Duration(seconds: 4), () {
+      if (isLoading.value) {
+        isLoading.value = false;
+        log("⏱ NursePatient loading timeout — forced off");
       }
     });
   }
@@ -111,7 +120,7 @@ class SocketController extends GetxController {
   void listenMessages() {
     socket.off(myEventName);
 
-    isLoading.value = false;
+    isLoading.value = true; // ✅ শুরুতে loading on
 
     socket.on(myEventName, (data) {
       log("📩 General Message: $data");
@@ -129,6 +138,16 @@ class SocketController extends GetxController {
         }
       } catch (e) {
         log("❌ General Error: $e");
+      } finally {
+        isLoading.value = false; // ✅ data আসলে loading off
+      }
+    });
+
+    // ✅ data না আসলেও 4 সেকেন্ড পরে বন্ধ
+    Future.delayed(Duration(seconds: 4), () {
+      if (isLoading.value) {
+        isLoading.value = false;
+        log("⏱ General loading timeout — forced off");
       }
     });
   }

@@ -45,6 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Obx(() {
       final messages = _socketController.messages;
+      final isLoading = _socketController.isLoading.value; // ✅
       final myId = _storageService.read<String>('id');
 
       return Scaffold(
@@ -53,45 +54,87 @@ class _ChatScreenState extends State<ChatScreen> {
           forceMaterialTransparency: true,
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: CustomText(
-            text: "Message",
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+          title: Column(
+            children: [
+              CustomText(
+                text: "Message",
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+              if (isLoading)
+                Text(
+                  "Connecting...",
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+            ],
           ),
         ),
         body: Column(
           children: [
             Expanded(
-              child: messages.isEmpty
+              child: isLoading
+                  ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      color: Colors.grey.shade400,
+                      strokeWidth: 2,
+                    ),
+                    SizedBox(height: 12.h),
+                    Text(
+                      "Loading messages...",
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+                  : messages.isEmpty
                   ? NotFoundWidget(message: "No message found!")
                   : ListView.builder(
-                      reverse: true,
-                      itemCount: messages.length,
-                      padding: EdgeInsets.all(12),
-                      itemBuilder: (context, index) {
-                        final msg = messages[messages.length - 1 - index];
-                        final isMe =
-                            msg['senderId']?.toString() == myId?.toString();
+                reverse: true,
+                itemCount: messages.length,
+                padding: EdgeInsets.all(12),
+                itemBuilder: (context, index) {
+                  final msg = messages[messages.length - 1 - index];
+                  final isMe =
+                      msg['senderId']?.toString() == myId?.toString();
 
-                        return ChatBubble(
-                          message: msg['content'] ?? '',
-                          time: CustomDateFormatter.formatDateTime(
-                              msg['createdAt'] ?? DateTime.now()),
-                          isMe: isMe,
-                        );
-                      },
-                    ),
+                  return ChatBubble(
+                    message: msg['content'] ?? '',
+                    time: CustomDateFormatter.formatDateTime(
+                        msg['createdAt'] ?? DateTime.now()),
+                    isMe: isMe,
+                  );
+                },
+              ),
             ),
-            ChatInputField(
-              controller: _messageController,
-              onSend: () {
-                final text = _messageController.text.trim();
-                if (text.isEmpty) return;
 
-                _socketController.sendMessage(text);
-                _messageController.clear();
-              },
+            // ✅ Loading এর সময় input disabled
+            IgnorePointer(
+              ignoring: isLoading,
+              child: AnimatedOpacity(
+                opacity: isLoading ? 0.4 : 1.0,
+                duration: Duration(milliseconds: 300),
+                child: ChatInputField(
+                  controller: _messageController,
+                  onSend: () {
+                    final text = _messageController.text.trim();
+                    if (text.isEmpty) return;
+
+                    _socketController.sendMessage(text);
+                    _messageController.clear();
+                  },
+                ),
+              ),
             ),
             SizedBox(height: 20.h),
           ],

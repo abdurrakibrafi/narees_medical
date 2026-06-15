@@ -10,8 +10,9 @@ import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 class ChatInputField extends StatefulWidget {
   final TextEditingController controller;
   final VoidCallback onSend;
-  final bool allowImageUpload; // ✅ image upload enable/disable
-  final bool allowMultipleImages; // ✅ single vs multiple
+  final bool allowImageUpload;
+  final bool allowMultipleImages;
+  final Function(List<File>)? onImagesSelected; // ✅ নতুন callback
 
   const ChatInputField({
     Key? key,
@@ -19,6 +20,7 @@ class ChatInputField extends StatefulWidget {
     required this.onSend,
     this.allowImageUpload = false,
     this.allowMultipleImages = false,
+    this.onImagesSelected, // ✅
   }) : super(key: key);
 
   @override
@@ -36,14 +38,15 @@ class _ChatInputFieldState extends State<ChatInputField> {
         setState(() {
           selectedImages = picked.map((e) => File(e.path)).toList();
         });
+        widget.onImagesSelected?.call(selectedImages); // ✅ parent কে জানাও
       }
     } else {
-      final XFile? picked =
-          await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? picked = await _picker.pickImage(source: ImageSource.gallery);
       if (picked != null) {
         setState(() {
           selectedImages = [File(picked.path)];
         });
+        widget.onImagesSelected?.call(selectedImages); // ✅ parent কে জানাও
       }
     }
   }
@@ -52,13 +55,13 @@ class _ChatInputFieldState extends State<ChatInputField> {
     setState(() {
       selectedImages.removeAt(index);
     });
+    widget.onImagesSelected?.call(selectedImages); // ✅ remove করলেও parent update
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // ✅ Selected images preview
         if (selectedImages.isNotEmpty)
           Container(
             height: 90.h,
@@ -89,8 +92,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                         child: CircleAvatar(
                           radius: 10.r,
                           backgroundColor: Colors.red,
-                          child:
-                              Icon(Icons.close, size: 12, color: Colors.white),
+                          child: Icon(Icons.close, size: 12, color: Colors.white),
                         ),
                       ),
                     ),
@@ -100,7 +102,6 @@ class _ChatInputFieldState extends State<ChatInputField> {
             ),
           ),
 
-        // ✅ Input Row
         Padding(
           padding: EdgeInsets.all(10.h),
           child: Row(
