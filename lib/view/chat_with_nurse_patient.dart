@@ -37,19 +37,22 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   void initState() {
     super.initState();
 
-    _socketController.messagesOfNursePatient.clear();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
-        _socketController.listenMessagesOfNursePatient(widget.receiverId);
-      }
-    });
+        _socketController
+            .listenMessagesOfNursePatient(widget.receiverId);
+        _socketController.initialEmit(widget.receiverId);
 
-    ever(_socketController.isConnected, (connected) {
-      if (connected) {
-        _socketController.messagesOfNursePatient.clear();
-        _socketController.listenMessagesOfNursePatient(widget.receiverId);
+        print("✅ Initial Emit");
       }
+
+      ever(_socketController.isConnected, (connected) {
+        if (connected) {
+          _socketController
+              .listenMessagesOfNursePatient(widget.receiverId); // ✅
+          _socketController.initialEmit(widget.receiverId); // ✅
+        }
+      });
     });
   }
 

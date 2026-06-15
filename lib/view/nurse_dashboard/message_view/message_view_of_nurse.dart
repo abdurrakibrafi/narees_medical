@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_date_format.dart';
+import 'package:restaurent_discount_app/common%20widget/not_found_widget.dart';
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
 
 import '../profile_view/controller/socket_controller.dart';
@@ -18,9 +19,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final SocketController _socketController = Get.put(SocketController());
-
   final StorageService _storageService = Get.put(StorageService());
-
   final TextEditingController _messageController = TextEditingController();
 
   @override
@@ -29,15 +28,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_socketController.isConnected.value) {
-        //   _socketController.listenMessages();
+        _socketController.listenMessages();
+        _socketController.initialEmit('');
       }
-    });
 
-    // ✅ connect হওয়ার পর automatically call হবে
-    ever(_socketController.isConnected, (connected) {
-      if (connected) {
-        // _socketController.listenMessages();
-      }
+      ever(_socketController.isConnected, (connected) {
+        if (connected) {
+          _socketController.listenMessages();
+          _socketController.initialEmit('');
+        }
+      });
     });
   }
 
@@ -46,7 +46,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return Obx(() {
       final messages = _socketController.messages;
       final myId = _storageService.read<String>('id');
-      print("myId: $myId");
 
       return Scaffold(
         backgroundColor: Colors.white,
@@ -65,15 +64,13 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: messages.isEmpty
-                  ? Center(child: Text("No messages yet"))
+                  ? NotFoundWidget(message: "No message found!")
                   : ListView.builder(
                       reverse: true,
                       itemCount: messages.length,
                       padding: EdgeInsets.all(12),
                       itemBuilder: (context, index) {
-                        // ✅ এই লাইনটি যোগ করুন
                         final msg = messages[messages.length - 1 - index];
-
                         final isMe =
                             msg['senderId']?.toString() == myId?.toString();
 
@@ -93,7 +90,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 if (text.isEmpty) return;
 
                 _socketController.sendMessage(text);
-
                 _messageController.clear();
               },
             ),

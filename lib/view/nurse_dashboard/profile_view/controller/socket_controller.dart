@@ -9,6 +9,7 @@ class SocketController extends GetxController {
   final messages = <dynamic>[].obs;
   final messagesOfNursePatient = <dynamic>[].obs;
   final isConnected = false.obs;
+  final isLoading = true.obs; // ✅ যোগ করা হয়েছে
 
   final StorageService _storageService = Get.put(StorageService());
 
@@ -33,8 +34,7 @@ class SocketController extends GetxController {
   void connectSocket() {
     try {
       socket = IO.io(
-        //"http://10.10.10.3:4001",
-        "https://9a14-103-159-73-203.ngrok-free.app",
+        "https://2c8a-103-159-73-203.ngrok-free.app",
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
@@ -49,21 +49,30 @@ class SocketController extends GetxController {
       socket.onConnect((_) {
         log("✅ Socket Connected");
         isConnected.value = true;
-        // dunamichly
         listenMessages();
-        //    listenMessagesOfNursePatient("69dc6ee5d2b547fd2cbe0052");
       });
 
       socket.onDisconnect((_) {
         log("❌ Socket Disconnected");
         isConnected.value = false;
+        isLoading.value = true; 
+        
       });
 
       socket.onError((err) {
         log("❌ Socket Error: $err");
+        isLoading.value = false; 
+      });
+
+      Future.delayed(Duration(seconds: 5), () {
+        if (isLoading.value) {
+          isLoading.value = false;
+          log("⏱ Loading timeout — forced off");
+        }
       });
     } catch (e) {
       log("❌ Socket Exception: $e");
+      isLoading.value = false; 
     }
   }
 
@@ -102,17 +111,20 @@ class SocketController extends GetxController {
   void listenMessages() {
     socket.off(myEventName);
 
+    isLoading.value = false;
+
     socket.on(myEventName, (data) {
       log("📩 General Message: $data");
-
       try {
         if (data is Map && data.containsKey("data")) {
           final incoming = data["data"];
-
           if (incoming is List) {
             messages.assignAll(List.from(incoming));
           } else {
-            messages.add(incoming);
+            if (incoming['content'] != null &&
+                incoming['content'].toString().trim().isNotEmpty) {
+              messages.add(incoming);
+            }
           }
         }
       } catch (e) {
@@ -133,20 +145,16 @@ class SocketController extends GetxController {
     }
   }
 
-  void _sortMessages() {
-    messagesOfNursePatient.sort((a, b) {
-      final aTime =
-          DateTime.tryParse(a['createdAt']?.toString() ?? '') ?? DateTime(0);
+  void initialEmit(String receiverId) {
+    if (!isConnected.value) return;
 
-      final bTime =
-          DateTime.tryParse(b['createdAt']?.toString() ?? '') ?? DateTime(0);
-
-      return aTime.compareTo(bTime);
-    });
-  }
-
-  void fetchMessagesWithReceiver(String receiverId) {
-    listenMessagesOfNursePatient(receiverId);
+    socket.emitWithAck(
+      "messages",
+      {"receiverId": receiverId},
+      ack: (response) {
+        log("✅ Initial Emit ACK: $response");
+      },
+    );
   }
 
   void clearMessages() {
@@ -160,17 +168,18 @@ class SocketController extends GetxController {
   void sendMessage(String text) {
     if (!isConnected.value) return;
 
-    messages.add({
-      "content": text,
-      "senderId": id,
-      "createdAt": DateTime.now().toIso8601String(),
-    });
+    // ✅ Empty হলে UI তে add করবে না, শুধু emit করবে
+    if (text.trim().isNotEmpty) {
+      messages.add({
+        "content": text,
+        "senderId": id,
+        "createdAt": DateTime.now().toIso8601String(),
+      });
+    }
 
     socket.emitWithAck(
       "send-message",
-      {
-        "content": text,
-      },
+      {"content": text},
       ack: (response) {
         log("✅ ACK: $response");
       },
@@ -227,9 +236,7 @@ class SocketController extends GetxController {
     }
 
     socket.off(myEventName);
-
     disconnectSocket();
-
     super.onClose();
   }
 }
