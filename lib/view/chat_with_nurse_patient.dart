@@ -141,7 +141,6 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                         ),
             ),
 
-            // ✅ Input disabled থাকবে loading এর সময়
             IgnorePointer(
               ignoring: isLoading,
               child: AnimatedOpacity(
