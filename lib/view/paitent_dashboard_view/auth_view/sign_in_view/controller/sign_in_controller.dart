@@ -7,6 +7,7 @@ import 'package:restaurent_discount_app/uitilies/api/api_url.dart';
 import 'package:restaurent_discount_app/uitilies/api/local_storage.dart';
 import 'package:restaurent_discount_app/uitilies/custom_toast.dart';
 import 'package:restaurent_discount_app/view/bottom_navigation_view/bottom_navigation_view.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/controller/socket_controller.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/auth_view/sign_in_view/profile_complete_view.dart';
 import '../../../../bottom_navigation_view/bottom_navigation_bar_for_paitient.dart';
 import '../../../../tranning_module/tranning_module_view.dart';
@@ -14,6 +15,7 @@ import '../../../../tranning_module/tranning_module_view.dart';
 class SignInController extends GetxController {
   var isLoading = false.obs;
   final StorageService _storageService = StorageService();
+  final SocketController _socketController = Get.put(SocketController());
 
   Future<void> login({
     required String email,
