@@ -1,15 +1,18 @@
 import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
 import '../../../../uitilies/api/local_storage.dart';
 
 class SocketController extends GetxController {
-  late IO.Socket socket;
+  IO.Socket? socket;
 
   final messages = <dynamic>[].obs;
   final messagesOfNursePatient = <dynamic>[].obs;
+
   final isConnected = false.obs;
-  final isLoading = true.obs;
+  final isLoading = false.obs;
 
   final StorageService _storageService = Get.put(StorageService());
 
@@ -25,156 +28,356 @@ class SocketController extends GetxController {
   void onInit() {
     super.onInit();
 
+    _loadStoredCredentials();
+
+    // যদি user আগে থেকেই logged in থাকে,
+    // তাহলে app restart/open এর সময় socket connect হবে।
+    if (_hasValidCredentials()) {
+      connectSocket();
+    } else {
+      log("⛔ Socket not connected: User not logged in yet");
+      isLoading.value = false;
+    }
+  }
+
+  // =====================================================
+  // LOAD TOKEN + ID
+  // =====================================================
+
+  void _loadStoredCredentials() {
     accessToken = _storageService.read<String>('accessToken');
     id = _storageService.read<String>('id');
 
-    connectSocket();
+    log("🔐 Socket credentials loaded");
+    log(
+      "🔑 Token available: ${accessToken != null && accessToken!.isNotEmpty}",
+    );
+    log("👤 User ID: $id");
   }
+
+  bool _hasValidCredentials() {
+    return accessToken != null &&
+        accessToken!.trim().isNotEmpty &&
+        id != null &&
+        id!.trim().isNotEmpty;
+  }
+
+  // =====================================================
+  // CONNECT SOCKET
+  // =====================================================
 
   void connectSocket() {
     try {
+      _loadStoredCredentials();
+
+      if (!_hasValidCredentials()) {
+        log("⛔ Socket connection cancelled: Token or ID missing");
+        isLoading.value = false;
+        return;
+      }
+
+      // পুরাতন socket থাকলে remove করে দিবে
+      _disposeOldSocket();
+
+      isLoading.value = true;
+      isConnected.value = false;
+
+      log("🚀 Connecting Socket...");
+      log("👤 Connecting User ID: $id");
+
       socket = IO.io(
         "http://72.60.167.110:4000",
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
             .setExtraHeaders({
-              "token": accessToken ?? "",
-            })
+          "token": accessToken!,
+        })
             .build(),
       );
 
-      socket.connect();
-
-      socket.onConnect((_) {
+      socket!.onConnect((_) {
         log("✅ Socket Connected");
+        log("🆔 Socket ID: ${socket?.id}");
+
         isConnected.value = true;
+        isLoading.value = false;
+
         listenMessages();
+
+        // যদি আগে কোনো receiver select করা থাকে
+        if (currentReceiverId != null &&
+            currentReceiverId!.trim().isNotEmpty) {
+          listenMessagesOfNursePatient(currentReceiverId!);
+          initialEmit(currentReceiverId!);
+        }
       });
 
-      socket.onDisconnect((_) {
-        log("❌ Socket Disconnected");
+      socket!.onConnectError((error) {
+        log("❌ Socket Connect Error: $error");
+
         isConnected.value = false;
-        isLoading.value = true;
-      });
-
-      socket.onError((err) {
-        log("❌ Socket Error: $err");
         isLoading.value = false;
       });
 
-      Future.delayed(Duration(seconds: 5), () {
-        if (isLoading.value) {
+      socket!.onDisconnect((reason) {
+        log("❌ Socket Disconnected");
+        log("Reason: $reason");
+
+        isConnected.value = false;
+        isLoading.value = false;
+      });
+
+      socket!.onError((error) {
+        log("❌ Socket Error: $error");
+
+        isLoading.value = false;
+      });
+
+      socket!.connect();
+
+      Future.delayed(const Duration(seconds: 5), () {
+        if (!isConnected.value && isLoading.value) {
           isLoading.value = false;
-          log("⏱ Loading timeout — forced off");
+          log("⏱ Socket loading timeout — forced off");
         }
       });
-    } catch (e) {
+    } catch (e, stackTrace) {
       log("❌ Socket Exception: $e");
+      log("StackTrace: $stackTrace");
+
+      isConnected.value = false;
       isLoading.value = false;
     }
   }
 
-  void listenMessagesOfNursePatient(String receiverId) {
-    final event = "messages::$receiverId";
+  // =====================================================
+  // RECONNECT AFTER LOGIN
+  // =====================================================
 
-    log("🎯 Listening Event: $event");
+  Future<void> reconnectAfterLogin() async {
+    log("======================================");
+    log("🔄 RECONNECT SOCKET AFTER LOGIN");
+    log("======================================");
 
-    messagesOfNursePatient.clear();
-    isLoading.value = true; // ✅ listen শুরুতে loading on
+    _loadStoredCredentials();
 
-    if (currentNursePatientEvent != null) {
-      socket.off(currentNursePatientEvent!);
+    if (!_hasValidCredentials()) {
+      log("❌ Cannot reconnect socket");
+      log("Token or User ID missing");
+
+      isConnected.value = false;
+      isLoading.value = false;
+      return;
     }
 
-    currentNursePatientEvent = event;
+    _disposeOldSocket();
 
-    socket.on(event, (data) {
-      log("📩 NursePatient [$event] => $data");
+    messages.clear();
+    messagesOfNursePatient.clear();
 
-      try {
-        if (data is Map && data.containsKey("data")) {
-          final incoming = data["data"];
+    isConnected.value = false;
+    isLoading.value = true;
 
-          if (incoming is List) {
-            messagesOfNursePatient.assignAll(List.from(incoming));
-          } else {
-            _addSingleMessage(incoming);
-          }
-        }
-      } catch (e) {
-        log("❌ Error: $e");
-      } finally {
-        isLoading.value = false;
-      }
-    });
-
-    Future.delayed(Duration(seconds: 4), () {
-      if (isLoading.value) {
-        isLoading.value = false;
-        log("⏱ NursePatient loading timeout — forced off");
-      }
-    });
+    connectSocket();
   }
 
+  // =====================================================
+  // GENERAL MESSAGE LISTENER
+  // =====================================================
+
   void listenMessages() {
-    socket.off(myEventName);
+    if (socket == null) {
+      log("❌ listenMessages: Socket is null");
+      return;
+    }
 
-    isLoading.value = true; // ✅ শুরুতে loading on
+    if (id == null || id!.trim().isEmpty) {
+      log("❌ listenMessages: User ID missing");
+      return;
+    }
 
-    socket.on(myEventName, (data) {
-      log("📩 General Message: $data");
+    final eventName = "messages::$id";
+
+    log("🎧 General Message Event: $eventName");
+
+    socket!.off(eventName);
+
+    isLoading.value = true;
+
+    socket!.on(eventName, (data) {
+      log("======================================");
+      log("📩 GENERAL MESSAGE RECEIVED");
+      log("Event: $eventName");
+      log("Data: $data");
+      log("======================================");
+
       try {
         if (data is Map && data.containsKey("data")) {
           final incoming = data["data"];
+
           if (incoming is List) {
             messages.assignAll(List.from(incoming));
-          } else {
-            if (incoming['content'] != null &&
-                incoming['content'].toString().trim().isNotEmpty) {
+
+            log(
+              "✅ General message list received: ${messages.length}",
+            );
+          } else if (incoming is Map) {
+            final content = incoming['content'];
+
+            if (content != null &&
+                content.toString().trim().isNotEmpty) {
               messages.add(incoming);
+
+              log("✅ Single general message added");
             }
           }
         }
       } catch (e) {
-        log("❌ General Error: $e");
+        log("❌ General Message Error: $e");
       } finally {
-        isLoading.value = false; // ✅ data আসলে loading off
+        isLoading.value = false;
       }
     });
 
-    // ✅ data না আসলেও 4 সেকেন্ড পরে বন্ধ
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 4), () {
       if (isLoading.value) {
         isLoading.value = false;
-        log("⏱ General loading timeout — forced off");
+        log("⏱ General messages loading timeout");
       }
     });
   }
 
+  // =====================================================
+  // NURSE <-> PATIENT MESSAGE LISTENER
+  // =====================================================
+
+  void listenMessagesOfNursePatient(String receiverId) {
+    if (socket == null) {
+      log("❌ NursePatient listen failed: Socket null");
+      return;
+    }
+
+    currentReceiverId = receiverId;
+
+    final event = "messages::$receiverId";
+
+    log("======================================");
+    log("🎯 Listening NursePatient Event");
+    log("Event: $event");
+    log("======================================");
+
+    messagesOfNursePatient.clear();
+    isLoading.value = true;
+
+    if (currentNursePatientEvent != null) {
+      socket!.off(currentNursePatientEvent!);
+    }
+
+    currentNursePatientEvent = event;
+
+    socket!.on(event, (data) {
+      log("======================================");
+      log("📩 NURSE PATIENT MESSAGE");
+      log("Event: $event");
+      log("Data: $data");
+      log("======================================");
+
+      try {
+        if (data is Map && data.containsKey("data")) {
+          final incoming = data["data"];
+
+          if (incoming is List) {
+            messagesOfNursePatient.assignAll(
+              List.from(incoming),
+            );
+
+            log(
+              "✅ NursePatient message list: "
+                  "${messagesOfNursePatient.length}",
+            );
+          } else if (incoming is Map) {
+            _addSingleMessage(incoming);
+          }
+        }
+      } catch (e) {
+        log("❌ NursePatient Error: $e");
+      } finally {
+        isLoading.value = false;
+      }
+    });
+
+    Future.delayed(const Duration(seconds: 4), () {
+      if (isLoading.value) {
+        isLoading.value = false;
+
+        log(
+          "⏱ NursePatient loading timeout — forced off",
+        );
+      }
+    });
+  }
+
+  // =====================================================
+  // ADD SINGLE MESSAGE WITHOUT DUPLICATE
+  // =====================================================
+
   void _addSingleMessage(dynamic msg) {
+    if (msg == null || msg is! Map) {
+      return;
+    }
+
     final exists = messagesOfNursePatient.any((m) {
-      return m['createdAt']?.toString() == msg['createdAt']?.toString() &&
-          m['senderId']?.toString() == msg['senderId']?.toString() &&
-          m['content']?.toString() == msg['content']?.toString();
+      if (m is! Map) return false;
+
+      return m['createdAt']?.toString() ==
+          msg['createdAt']?.toString() &&
+          m['senderId']?.toString() ==
+              msg['senderId']?.toString() &&
+          m['content']?.toString() ==
+              msg['content']?.toString();
     });
 
     if (!exists) {
       messagesOfNursePatient.add(msg);
+
+      log("✅ New message added locally");
+    } else {
+      log("⚠️ Duplicate message ignored");
     }
   }
 
-  void initialEmit(String receiverId) {
-    if (!isConnected.value) return;
+  // =====================================================
+  // INITIAL EMIT
+  // =====================================================
 
-    socket.emitWithAck(
+  void initialEmit(String receiverId) {
+    if (socket == null || !isConnected.value) {
+      log("❌ Initial Emit failed: Socket not connected");
+      return;
+    }
+
+    currentReceiverId = receiverId;
+
+    log("======================================");
+    log("📤 INITIAL MESSAGE EMIT");
+    log("receiverId: $receiverId");
+    log("======================================");
+
+    socket!.emitWithAck(
       "messages",
-      {"receiverId": receiverId},
+      {
+        "receiverId": receiverId,
+      },
       ack: (response) {
         log("✅ Initial Emit ACK: $response");
       },
     );
   }
+
+  // =====================================================
+  // CLEAR MESSAGES
+  // =====================================================
 
   void clearMessages() {
     messagesOfNursePatient.clear();
@@ -185,9 +388,11 @@ class SocketController extends GetxController {
   // =====================================================
 
   void sendMessage(String text) {
-    if (!isConnected.value) return;
+    if (socket == null || !isConnected.value) {
+      log("❌ Send Message failed: Socket not connected");
+      return;
+    }
 
-    // ✅ Empty হলে UI তে add করবে না, শুধু emit করবে
     if (text.trim().isNotEmpty) {
       messages.add({
         "content": text,
@@ -196,25 +401,34 @@ class SocketController extends GetxController {
       });
     }
 
-    socket.emitWithAck(
+    log("📤 Sending General Message: $text");
+
+    socket!.emitWithAck(
       "send-message",
-      {"content": text},
+      {
+        "content": text,
+      },
       ack: (response) {
-        log("✅ ACK: $response");
+        log("✅ General Send ACK: $response");
       },
     );
   }
 
   // =====================================================
-  // SEND NURSE → PATIENT MESSAGE
+  // SEND NURSE -> PATIENT MESSAGE
   // =====================================================
 
   void sendMessageFromNurseToPatient(
-    String text,
-    dynamic receiverId, {
-    List<String> files = const [],
-  }) {
-    if (!isConnected.value) return;
+      String text,
+      dynamic receiverId, {
+        List<String> files = const [],
+      }) {
+    if (socket == null || !isConnected.value) {
+      log(
+        "❌ Nurse → Patient send failed: Socket not connected",
+      );
+      return;
+    }
 
     final newMessage = {
       "content": text,
@@ -224,9 +438,18 @@ class SocketController extends GetxController {
       "createdAt": DateTime.now().toIso8601String(),
     };
 
-    _addSingleMessage(newMessage);
+    if (text.trim().isNotEmpty || files.isNotEmpty) {
+      _addSingleMessage(newMessage);
+    }
 
-    socket.emitWithAck(
+    log("======================================");
+    log("📤 SEND NURSE → PATIENT");
+    log("receiverId: $receiverId");
+    log("content: $text");
+    log("files: $files");
+    log("======================================");
+
+    socket!.emitWithAck(
       "send-message",
       {
         "content": text,
@@ -234,27 +457,65 @@ class SocketController extends GetxController {
         "receiverId": receiverId,
       },
       ack: (response) {
-        log("✅ Send ACK: $response");
+        log("✅ Nurse → Patient Send ACK: $response");
       },
     );
   }
 
   // =====================================================
-  // DISCONNECT
+  // DISPOSE OLD SOCKET
+  // =====================================================
+
+  void _disposeOldSocket() {
+    try {
+      if (socket == null) return;
+
+      if (currentNursePatientEvent != null) {
+        socket!.off(currentNursePatientEvent!);
+      }
+
+      if (id != null && id!.isNotEmpty) {
+        socket!.off("messages::$id");
+      }
+
+      socket!.off('connect');
+      socket!.off('connect_error');
+      socket!.off('disconnect');
+      socket!.off('error');
+
+      if (socket!.connected) {
+        socket!.disconnect();
+      }
+
+      socket!.dispose();
+
+      socket = null;
+
+      log("♻️ Previous socket disposed");
+    } catch (e) {
+      log("⚠️ Socket dispose error: $e");
+    }
+  }
+
+  // =====================================================
+  // MANUAL DISCONNECT
   // =====================================================
 
   void disconnectSocket() {
-    socket.disconnect();
-    socket.dispose();
+    _disposeOldSocket();
+
+    isConnected.value = false;
+    isLoading.value = false;
+
+    log("🔌 Socket manually disconnected");
   }
+
+  // =====================================================
+  // ON CLOSE
+  // =====================================================
 
   @override
   void onClose() {
-    if (currentNursePatientEvent != null) {
-      socket.off(currentNursePatientEvent!);
-    }
-
-    socket.off(myEventName);
     disconnectSocket();
     super.onClose();
   }
