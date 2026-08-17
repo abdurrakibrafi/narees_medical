@@ -38,13 +38,32 @@ class _ProfilePageState extends State<ProfilePage> {
 
     _profileGetController = Get.put(ProfileGetController());
     _profileGetController.getProfile();
+  }
 
-    if (Get.isRegistered<StripeConnectController>()) {
-      _stripeConnectController = Get.find<StripeConnectController>();
-    } else {
-      _stripeConnectController = Get.put(
-        StripeConnectController(),
-        permanent: true,
+  Future<void> _connectStripe() async {
+    try {
+      CustomToast.showToast(
+        "Connecting...",
+        isError: false,
+      );
+
+      final StripeConnectController stripeController;
+
+      if (Get.isRegistered<StripeConnectController>()) {
+        stripeController = Get.find<StripeConnectController>();
+      } else {
+        // ✅ শুধু button click করার পর controller তৈরি হবে
+        stripeController = Get.put(
+          StripeConnectController(),
+        );
+      }
+
+      // ✅ শুধু click করলে Stripe Connect API call হবে
+      await stripeController.getStripeConnect();
+    } catch (e) {
+      CustomToast.showToast(
+        "Failed to connect Stripe: $e",
+        isError: true,
       );
     }
   }
@@ -142,10 +161,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ProfileOption(
                   icon: Icons.payment,
                   title: 'Stripe Connect',
-                  onTap: () {
-                    CustomToast.showToast("Connecting...", isError: false);
-
-                        _stripeConnectController.getStripeConnect();
+                  onTap: () async {
+                    await _connectStripe();
                   },
                 ),
                 Divider(),

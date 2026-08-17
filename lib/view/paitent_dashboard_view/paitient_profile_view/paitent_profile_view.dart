@@ -8,7 +8,6 @@ import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.da
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settings_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
-import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/track_medical_information_view.dart';
 
 import '../../../common widget/chached_network_image.dart';
 import '../../../uitilies/custom_loader.dart';
@@ -20,6 +19,8 @@ import '../auth_view/sign_in_view/sign_in_view.dart';
 import 'controller/card_saved_controller.dart';
 
 class PaitientProfileView extends StatefulWidget {
+  const PaitientProfileView({super.key});
+
   @override
   State<PaitientProfileView> createState() => _ProfilePageState();
 }
@@ -27,23 +28,79 @@ class PaitientProfileView extends StatefulWidget {
 class _ProfilePageState extends State<PaitientProfileView> {
   late final ProfileGetController _profileGetController;
 
-  late CardSavedController _cardSavedController =
-      Get.put(CardSavedController());
-
   @override
   void initState() {
     super.initState();
-    _profileGetController = Get.put(ProfileGetController());
+
+    // ============================================
+    // PROFILE CONTROLLER
+    // ============================================
+
+    if (Get.isRegistered<ProfileGetController>()) {
+      _profileGetController = Get.find<ProfileGetController>();
+    } else {
+      _profileGetController = Get.put(
+        ProfileGetController(),
+      );
+    }
+
     _profileGetController.getProfile();
 
-    // ✅ Already registered থাকলে find করবে
-    // ✅ না থাকলে একবার put করবে
-    if (Get.isRegistered<CardSavedController>()) {
-      _cardSavedController = Get.find<CardSavedController>();
-    } else {
-      _cardSavedController = Get.put(
-        CardSavedController(),
-        permanent: true,
+    // ❌ এখানে CardSavedController initialize করা হবে না
+    // Card Saved এ click করলে তখন initialize হবে
+  }
+
+  // =====================================================
+  // CARD SAVED
+  // =====================================================
+
+  Future<void> _saveCard() async {
+    try {
+      final profileData =
+          _profileGetController.profile.value.data;
+
+      // ============================================
+      // CARD ALREADY SAVED
+      // ============================================
+
+      if (profileData?.isSaveCard == true) {
+        CustomToast.showToast(
+          "Your Card is already saved",
+          isError: true,
+        );
+
+        return;
+      }
+
+      CustomToast.showToast(
+        "Connecting...",
+        isError: false,
+      );
+
+      final CardSavedController cardSavedController;
+
+      // ============================================
+      // শুধু click করার সময় controller find/create
+      // ============================================
+
+      if (Get.isRegistered<CardSavedController>()) {
+        cardSavedController =
+            Get.find<CardSavedController>();
+      } else {
+        cardSavedController = Get.put(
+          CardSavedController(),
+        );
+      }
+
+      // ============================================
+      // CARD SAVE API
+      // ============================================
+
+      await cardSavedController.getCardSaved();
+    } catch (e) {
+      CustomToast.showToast(
+        "Failed to connect card: $e",
+        isError: true,
       );
     }
   }
@@ -52,123 +109,202 @@ class _ProfilePageState extends State<PaitientProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(leading: Container(), title: "Profile"),
+
+      appBar: CustomAppBar(
+        leading: Container(),
+        title: "Profile",
+      ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
+
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+            CrossAxisAlignment.start,
             children: [
+              // ============================================
+              // PROFILE
+              // ============================================
+
               Obx(() {
-                return _profileGetController.isLoading.value
+                return _profileGetController
+                    .isLoading.value
                     ? CustomLoader()
                     : Column(
-                        children: [
-                          ClipOval(
-                            child: CustomCachedImage(
-                              height: 140.0,
-                              width: 140.0,
-                              imageUrl: _profileGetController
-                                      .profile.value.data?.profilePicture
-                                      .toString() ??
-                                  "",
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Center(
-                            child: CustomText(
-                              text: _profileGetController
-                                      .profile.value.data?.fullname
-                                      .toString() ??
-                                  "n/a",
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      );
+                  children: [
+                    ClipOval(
+                      child: CustomCachedImage(
+                        height: 140.0,
+                        width: 140.0,
+                        imageUrl:
+                        _profileGetController
+                            .profile
+                            .value
+                            .data
+                            ?.profilePicture
+                            ?.toString() ??
+                            "",
+                      ),
+                    ),
+
+                    SizedBox(height: 16),
+
+                    Center(
+                      child: CustomText(
+                        text:
+                        _profileGetController
+                            .profile
+                            .value
+                            .data
+                            ?.fullname
+                            ?.toString() ??
+                            "n/a",
+                        fontSize: 24,
+                        fontWeight:
+                        FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                );
               }),
+
               SizedBox(height: 20),
+
+              // ============================================
+              // EDIT PROFILE
+              // ============================================
+
               ProfileOption(
-                icon: Icons.person_3_outlined,
+                icon:
+                Icons.person_3_outlined,
                 title: 'Edit Profile',
                 onTap: () {
-                  final data = _profileGetController.profile.value.data;
+                  final data =
+                      _profileGetController
+                          .profile.value.data;
 
-                  Get.to(() => EditProfile(
-                        spacilizaion: false,
-                        docs: false,
-                        firstName: data?.firstName ?? '',
-                        lastame: data?.lastName ?? '',
-                        emailAddress: data?.email ?? '',
-                        image: data?.profilePicture ?? '',
-                        location: '',
-                        phoneNumber: data?.phoneNumber.toString() ?? '',
-                        route: true,
-                      ));
+                  Get.to(
+                        () => EditProfile(
+                      spacilizaion: false,
+                      docs: false,
+                      firstName:
+                      data?.firstName ?? '',
+                      lastame:
+                      data?.lastName ?? '',
+                      emailAddress:
+                      data?.email ?? '',
+                      image:
+                      data?.profilePicture ??
+                          '',
+                      location: '',
+                      phoneNumber:
+                      data?.phoneNumber
+                          ?.toString() ??
+                          '',
+                      route: true,
+                    ),
+                  );
                 },
               ),
+
               Divider(),
+
+              // ============================================
+              // CARD SAVED OPTION
+              // ============================================
+
               ProfileOption(
-                icon: Icons.sd_card_outlined,
+                icon:
+                Icons.sd_card_outlined,
                 title: 'Card Saved Option',
-                onTap: () {
-                  if (_profileGetController.profile.value.data?.isSaveCard ==
-                      false) {
-                    CustomToast.showToast("Connecting...", isError: false);
-
-                    _cardSavedController.getCardSaved();
-                  } else {
-                    CustomToast.showToast("Your Card is already saved",
-                        isError: true);
-                  }
+                onTap: () async {
+                  // ✅ শুধু click করলেই card save flow হবে
+                  await _saveCard();
                 },
               ),
+
               Divider(),
+
+              // ============================================
+              // SUPPLY ORDER HISTORY
+              // ============================================
+
               ProfileOption(
                 icon: Icons.history,
-                title: 'Supply Order History',
+                title:
+                'Supply Order History',
                 onTap: () {
-                  Get.to(() => SupplyOrderHistoryPage());
+                  Get.to(
+                        () =>
+                        SupplyOrderHistoryPage(),
+                  );
                 },
               ),
+
               Divider(),
-              // ProfileOption(
-              //   icon: Icons.medical_information_outlined,
-              //   title: 'Track Medical Information',
-              //   onTap: () {
-              //     Get.to(() => TrackMedicalInformationView());
-              //   },
-              // ),
+
+              // ============================================
+              // CHANGE PASSWORD
+              // ============================================
+
               ProfileOption(
                 icon: Icons.lock,
                 title: 'Change Password',
                 onTap: () {
-                  Get.to(() => ChangePasswordView());
+                  Get.to(
+                        () =>
+                        ChangePasswordView(),
+                  );
                 },
               ),
+
               Divider(),
+
+              // ============================================
+              // SETTINGS
+              // ============================================
+
               ProfileOption(
                 icon: Icons.settings,
                 title: 'Settings',
                 onTap: () {
-                  Get.to(() => SettingsView());
+                  Get.to(
+                        () => SettingsView(),
+                  );
                 },
               ),
+
               Divider(),
+
+              // ============================================
+              // LOGOUT
+              // ============================================
+
               ProfileOption(
                 color: Colors.red,
                 icon: Icons.logout,
                 title: 'Log Out',
                 onTap: () {
-                  CustomAlertDialog.showCustomDialog(
+                  CustomAlertDialog
+                      .showCustomDialog(
                     title: "Logout",
-                    content: "If you want to logout your account click on yes",
+                    content:
+                    "If you want to logout your account click on yes",
                     cancelName: "No",
                     actionName: "Yes",
                     confirmText: "Yes",
                     onConfirm: () {
-                      Get.offAll(() => SignInView());
+                      // Card controller থাকলে delete
+                      if (Get.isRegistered<
+                          CardSavedController>()) {
+                        Get.delete<
+                            CardSavedController>();
+                      }
+
+                      Get.offAll(
+                            () => SignInView(),
+                      );
                     },
                   );
                 },
