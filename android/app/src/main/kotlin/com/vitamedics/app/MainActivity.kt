@@ -1,4 +1,4 @@
-package com.example.narees_medical
+package com.vitamedics.app
 
 import io.flutter.embedding.android.FlutterActivity
 

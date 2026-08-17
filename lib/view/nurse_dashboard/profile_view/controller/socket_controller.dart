@@ -34,7 +34,7 @@ class SocketController extends GetxController {
   void connectSocket() {
     try {
       socket = IO.io(
-        "http://10.10.28.4:4000",
+        "http://72.60.167.110:4000",
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .disableAutoConnect()
