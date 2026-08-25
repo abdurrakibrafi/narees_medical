@@ -13,7 +13,9 @@ import '../../../../uitilies/app_colors.dart';
 import 'create_new_password_view.dart';
 
 class OTPFormView extends StatelessWidget {
-  OTPFormView({super.key});
+  final String email;
+
+  OTPFormView({super.key, required this.email});
 
   final TextEditingController otpFormFiled = TextEditingController();
   final OTPController _otpController = Get.put(OTPController());
@@ -51,13 +53,24 @@ class OTPFormView extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     CustomText(
-                      text: 'Verify your OTP Code',
+                      text: 'Verify your  account',
                       textAlign: TextAlign.center,
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
-                    SizedBox(height: 70),
+
+                    SizedBox(height: 20),
+
+                    CustomText(
+                      text:
+                          '   We sent a 6-digit verification code to $email \n Enter the code below to continue.',
+                      textAlign: TextAlign.center,
+                      fontSize: 15,
+                      color: Colors.black.withOpacity(0.8),
+                    ),
+
+                    SizedBox(height: 40),
 
                     OtpForm(controller: otpFormFiled),
                     SizedBox(height: 20),
@@ -65,10 +78,12 @@ class OTPFormView extends StatelessWidget {
                     // Remember Me
 
                     CustomText(
-                      text: "Didn’t receive OTP",
+                      fontFamily: 'Sanchez',
+                      text: "Didn’t receive Code?",
                       fontSize: 16,
                     ),
                     CustomText(
+                      fontFamily: 'Sanchez',
                       text: "Resend Code",
                       underline: true,
                       fontSize: 16,
@@ -91,7 +106,7 @@ class OTPFormView extends StatelessWidget {
                                     ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.topRight),
-                                btnText: "Verify",
+                                btnText: "Submit",
                                 onTap: () {
                                   if (otpFormFiled.text.isEmpty) {
                                     CustomToast.showToast("Please enter otp",

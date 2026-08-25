@@ -51,7 +51,7 @@ class ForgetPasswordController extends GetxController {
           String otpToken = responseBody['data']['token'];
           await _storageService.write('token', otpToken);
 
-          Get.to(() => OTPFormView());
+          Get.to(() => OTPFormView(email: email,));
         } else {
           String errorMessage = responseBody['message'] ??
               'Login failed. Please try again.';

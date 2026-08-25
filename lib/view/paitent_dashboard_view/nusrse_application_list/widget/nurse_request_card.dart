@@ -156,37 +156,42 @@ class NurseRequestCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Profile Picture
-                  CircleAvatar(
-                    radius: 28.r,
-                    backgroundColor: AppColors.mainColor.withOpacity(0.1),
-                    child: ClipOval(
-                      child: nurseImageUrl.isNotEmpty
-                          ? Image.network(
-                              nurseImageUrl,
-                              width: 56.r,
-                              height: 56.r,
-                              fit: BoxFit.cover,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: AppColors.mainColor,
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return _PlaceholderAvatar();
-                              },
-                            )
-                          : _PlaceholderAvatar(),
+                  GestureDetector(
+                    onTap: () {
+                      if (nurseImageUrl.isNotEmpty) {
+                        _showFullImage(context, nurseImageUrl);
+                      }
+                    },
+                    child: CircleAvatar(
+                      radius: 28.r,
+                      backgroundColor: AppColors.mainColor.withOpacity(0.1),
+                      child: ClipOval(
+                        child: nurseImageUrl.isNotEmpty
+                            ? Image.network(
+                          nurseImageUrl,
+                          width: 56.r,
+                          height: 56.r,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+
+                            return Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors.mainColor,
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return _PlaceholderAvatar();
+                          },
+                        )
+                            : _PlaceholderAvatar(),
+                      ),
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -407,4 +412,101 @@ class _PlaceholderAvatar extends StatelessWidget {
       ),
     );
   }
+}
+
+
+void _showFullImage(BuildContext context, String imageUrl) {
+  showDialog(
+    context: context,
+    barrierColor: Colors.black.withOpacity(0.85),
+    builder: (context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: 20.w,
+          vertical: 40.h,
+        ),
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              width: double.infinity,
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.8,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: InteractiveViewer(
+                minScale: 1,
+                maxScale: 4,
+                child: Image.network(
+                  imageUrl,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                  loadingBuilder: (
+                      context,
+                      child,
+                      loadingProgress,
+                      ) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+
+                    return SizedBox(
+                      height: 300.h,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return SizedBox(
+                      height: 300.h,
+                      child: const Center(
+                        child: Icon(
+                          Icons.broken_image_outlined,
+                          color: Colors.white,
+                          size: 50,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+
+            // Close Button
+            Positioned(
+              top: 10.h,
+              right: 10.w,
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  padding: EdgeInsets.all(7.r),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 22.sp,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
