@@ -56,13 +56,24 @@ class ForgetPasswordView extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     CustomText(
+                      fontFamily: 'Sanchez',
                       text: 'Forgot Password?',
                       textAlign: TextAlign.center,
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
-                    SizedBox(height: 70),
+
+                    SizedBox(height: 20),
+                    CustomText(
+                      fontFamily: 'Sanchez',
+                      text:
+                          'We’ll send a verification code to the email address you provided.',
+                      textAlign: TextAlign.center,
+                      fontSize: 17,
+                      color: Colors.black.withOpacity(0.6),
+                    ),
+                    SizedBox(height: 50),
 
                     // Email
                     CustomTextField(
