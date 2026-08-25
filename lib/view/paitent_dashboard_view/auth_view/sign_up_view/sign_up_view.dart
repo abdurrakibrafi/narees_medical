@@ -68,7 +68,7 @@ class _SignUpViewState extends State<SignUpView> {
                     ),
                     SizedBox(height: 20),
                     CustomText(
-                      text: 'Welcome! Sign Up to\nCreate your account',
+                      text: 'Welcome to VitaMedics',
                       textAlign: TextAlign.center,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
