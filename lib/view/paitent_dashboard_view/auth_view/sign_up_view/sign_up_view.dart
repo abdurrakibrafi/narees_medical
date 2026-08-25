@@ -93,6 +93,7 @@ class _SignUpViewState extends State<SignUpView> {
                                 },
                               ),
                               CustomText(
+                                fontFamily: 'Sanchez',
                                 text: 'Provider',
                                 fontSize: 16,
                               ),
@@ -112,6 +113,7 @@ class _SignUpViewState extends State<SignUpView> {
                                 },
                               ),
                               CustomText(
+                                fontFamily: 'Sanchez',
                                 text: 'Patient',
                                 fontSize: 16,
                               ),
@@ -231,6 +233,7 @@ class _SignUpViewState extends State<SignUpView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText(
+                          fontFamily: 'Sanchez',
                           text: "Already have an account?",
                         ),
                         SizedBox(width: 5),
@@ -239,6 +242,7 @@ class _SignUpViewState extends State<SignUpView> {
                             Get.to(() => SignInView());
                           },
                           child: CustomText(
+                            fontFamily: 'Sanchez',
                             text: "Sign In",
                             fontWeight: FontWeight.bold,
                           ),

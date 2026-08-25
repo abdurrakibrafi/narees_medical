@@ -63,9 +63,10 @@ class _SignInViewState extends State<SignInView> {
                     ),
                     SizedBox(height: 20),
                     CustomText(
-                      text: 'Welcome to Sign in!\n',
+                      text: 'Welcome to VitaMedics',
                       textAlign: TextAlign.center,
                       fontSize: 25,
+                      fontFamily: 'Sanchez',
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -123,6 +124,7 @@ class _SignInViewState extends State<SignInView> {
                             ),
                             SizedBox(width: 4),
                             CustomText(
+                              fontFamily: 'Sanchez',
                               text: "Remember Me",
                               fontSize: 16,
                               color: AppColors.mainColor.withOpacity(0.8),
@@ -134,6 +136,7 @@ class _SignInViewState extends State<SignInView> {
                             Get.to(() => ForgetPasswordView());
                           },
                           child: CustomText(
+                            fontFamily: 'Sanchez',
                             text: "Forgot Password",
                             fontSize: 16,
                           ),
@@ -183,6 +186,7 @@ class _SignInViewState extends State<SignInView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText(
+                          fontFamily: 'Sanchez',
                           text: "Don’t have an account?",
                         ),
                         SizedBox(width: 5),
@@ -191,6 +195,7 @@ class _SignInViewState extends State<SignInView> {
                             Get.to(() => SignUpView());
                           },
                           child: CustomText(
+                            fontFamily: 'Sanchez',
                             text: "Sign Up",
                             fontWeight: FontWeight.bold,
                           ),

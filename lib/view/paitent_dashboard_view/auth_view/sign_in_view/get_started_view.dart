@@ -32,9 +32,10 @@ class GetStartedView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CustomText(
+                      fontFamily: 'Sanchez',
+
                       text: 'Streamline Your Workflow, Focus on Care',
-                      textAlign: TextAlign.center,
-                      fontSize: 40,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -43,7 +44,9 @@ class GetStartedView extends StatelessWidget {
                       text:
                           ' Manage patients, track appointments, and handle supplies effortlessly',
                       textAlign: TextAlign.center,
-                      fontSize: 20,
+                      fontSize: 15,
+                      fontFamily: 'Sanchez',
+
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
