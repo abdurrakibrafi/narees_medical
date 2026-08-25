@@ -39,7 +39,10 @@ class _SignUpViewState extends State<SignUpView> {
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppColors.mainColor, Colors.white],
+              colors: [
+                AppColors.mainColor,
+                AppColors.mainColor.withOpacity(0.1)
+              ],
               begin: Alignment.topCenter,
               end: Alignment.center,
             ),
@@ -70,8 +73,9 @@ class _SignUpViewState extends State<SignUpView> {
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
+                      fontFamily: 'Sanchez',
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 20),
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

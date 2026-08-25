@@ -68,8 +68,9 @@ class CustomButtonWidget extends StatelessWidget {
                 if (iconWant) SizedBox(width: 10),
                 Text(
                   btnText,
-                  style: GoogleFonts.poppins(
-                    fontSize: btnTextSize ?? 15.h,
+                  style: TextStyle(
+                    fontFamily: 'Sanchez',
+                    fontSize: btnTextSize ?? 14.h,
                     color: btnTextColor ?? Colors.white,
                     fontWeight: FontWeight.bold,
                   ),

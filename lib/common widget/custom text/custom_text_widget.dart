@@ -17,6 +17,7 @@ class CustomText extends StatelessWidget {
     this.overflow = TextOverflow.fade,
     this.letterSpace,
     this.underline = false,
+    this.fontFamily,
   });
 
   final double left;
@@ -27,6 +28,7 @@ class CustomText extends StatelessWidget {
   final FontWeight fontWeight;
   final Color color;
   final String text;
+  final String? fontFamily;
   final TextAlign textAlign;
   final int? maxLines;
   final TextOverflow overflow;
@@ -36,19 +38,24 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: left, right: right, top: top, bottom: bottom),
+      padding:
+          EdgeInsets.only(left: left, right: right, top: top, bottom: bottom),
       child: Text(
         text,
         textAlign: textAlign,
         maxLines: maxLines,
         overflow: overflow,
-        style: GoogleFonts.abhayaLibre(
+        style: TextStyle(
+          fontFamily: fontFamily,
           letterSpacing: letterSpace,
+
           fontSize: fontSize,
           fontWeight: fontWeight,
           color: color,
           decorationColor: Colors.grey,
-          decoration: underline ? TextDecoration.underline : TextDecoration.none, // Conditionally apply underline
+          decoration: underline
+              ? TextDecoration.underline
+              : TextDecoration.none, // Conditionally apply underline
         ),
       ),
     );

@@ -34,7 +34,7 @@ class GetStartedView extends StatelessWidget {
                     CustomText(
                       text: 'Streamline Your Workflow, Focus on Care',
                       textAlign: TextAlign.center,
-                      fontSize: 35,
+                      fontSize: 40,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -44,6 +44,7 @@ class GetStartedView extends StatelessWidget {
                           ' Manage patients, track appointments, and handle supplies effortlessly',
                       textAlign: TextAlign.center,
                       fontSize: 20,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                     SizedBox(height: 20),
@@ -53,11 +54,14 @@ class GetStartedView extends StatelessWidget {
                       height: 55,
                       width: double.infinity,
                       child: CustomButtonWidget(
+
                         gradient: LinearGradient(
+
                             colors: [Color(0xFF0071BC), Color(0xFF003456)],
                             begin: Alignment.topLeft,
                             end: Alignment.topRight),
                         btnText: "Get Started",
+
                         onTap: () {
                           Get.to(() => SignInView());
                         },
