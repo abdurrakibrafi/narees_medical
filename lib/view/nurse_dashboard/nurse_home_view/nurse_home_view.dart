@@ -83,7 +83,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                 child: Padding(
                   padding: EdgeInsets.all(16),
                   child: RowWiseWidget(
-                    title: 'Appointment',
+                    title: 'Available Appointments',
                     subTitle: '',
                   ),
                 ),
