@@ -118,6 +118,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                 }
 
                 return SliverList(
+
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final appointment = appointments[index];
@@ -125,6 +126,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         child: TodayAppointmentWidget(
+                          onNotInterested: () {},
                           onInterested: () => showInterestConfirmationDialog(
                             context: context,
                             onConfirmed: () async {
