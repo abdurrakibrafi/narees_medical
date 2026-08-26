@@ -9,21 +9,21 @@ Future<void> showInterestConfirmationDialog({
     context: context,
     barrierDismissible: false,
     builder: (context) => CupertinoAlertDialog(
-      title: const Text('Confirm Interest'),
+      title: const Text('Interested in This Appointment?'),
       content: const Text(
-        'If the patient accepts your interest, an appointment will be created.',
+        'We’ll let the patient know you’re available. If they select you as their provider, the appointment will be added to your schedule.',
       ),
       actions: [
         CupertinoDialogAction(
           isDestructiveAction: true,
           onPressed: () => Navigator.pop(context, false),
-          child: const Text('Cancel'),
+          child: const Text('Go, Back'),
         ),
         CupertinoDialogAction(
           isDefaultAction: true,
           onPressed: onConfirmed,
           child: Text(
-            'OK',
+            'Yes, I’m Interested',
             style: TextStyle(color: AppColors.mainColor),
           ),
         ),

@@ -367,7 +367,6 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
     );
   }
 
-  // ✅ Profile avatar — image thakle show korbe, na thakle initials avatar
   Widget _buildProfileAvatar() {
     final hasImage = widget.patientImageUrl.isNotEmpty;
     final initials = _getInitials(widget.patientName);
