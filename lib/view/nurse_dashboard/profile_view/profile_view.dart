@@ -21,6 +21,7 @@ import '../message_view/message_view_of_nurse.dart';
 import 'change_password_view.dart';
 import 'controller/stripe_connect_controller.dart';
 import 'edit_profile.dart';
+import 'notification_settings_view.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -187,6 +188,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: 'Message',
                   onTap: () {
                     Get.to(() => ChatScreen());
+                  },
+                ),
+                Divider(),
+                ProfileOption(
+                  icon: Icons.notifications_none_outlined,
+                  title: 'Notification Settings',
+                  onTap: () {
+                    Get.to(() => NotificationSettingsView());
                   },
                 ),
                 Divider(),

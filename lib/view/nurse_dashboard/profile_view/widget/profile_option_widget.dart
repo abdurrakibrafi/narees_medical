@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
+import 'package:restaurent_discount_app/uitilies/app_colors.dart';
 
 class ProfileOption extends StatelessWidget {
   final IconData icon;
@@ -27,12 +28,13 @@ class ProfileOption extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: color ?? Colors.black.withOpacity(0.6),
+              color: color ?? AppColors.mainColor.withOpacity(0.8),
               size: 23,
             ),
             SizedBox(width: 16),
             Expanded(
               child: CustomText(
+                fontFamily: 'Sanchez',
                 textAlign: TextAlign.start,
                 text: title,
                 fontSize: 14,
