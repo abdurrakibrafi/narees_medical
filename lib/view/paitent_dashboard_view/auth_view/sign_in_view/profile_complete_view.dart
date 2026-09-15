@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,7 +50,7 @@ class _ProfileCompleteViewState extends State<ProfileCompleteView> {
                 Icon(Icons.info_outline, color: AppColors.mainColor, size: 40),
                 SizedBox(height: 16),
                 CustomText(
-                  text: "Complete Your Profile to Get Started!",
+                  text: "Please provide the information below to finish setting up your VitaMedics provider account.",
                   textAlign: TextAlign.center,
                   color: Colors.blueGrey,
                   fontSize: 15,
@@ -65,7 +65,7 @@ class _ProfileCompleteViewState extends State<ProfileCompleteView> {
                         begin: Alignment.topLeft,
                         end: Alignment.topRight),
 
-                      btnText: "Complete Profile",
+                      btnText: "Let's Start",
                       onTap: () {
                         Get.to(() => ProfileFillUpView());
                       },
