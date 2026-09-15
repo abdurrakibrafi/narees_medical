@@ -159,6 +159,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
                 Divider(),
+
+                ProfileOption(
+                  icon: Icons.file_copy_outlined,
+                  title: 'Upload Documents',
+                  onTap: () {
+                    Get.to(() => TrainingAndCertificationPage());
+                  },
+                ),
+                Divider(),
                 ProfileOption(
                   icon: Icons.payment,
                   title: 'Stripe Connect',
