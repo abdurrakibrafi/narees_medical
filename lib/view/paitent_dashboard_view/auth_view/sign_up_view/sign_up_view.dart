@@ -75,7 +75,14 @@ class _SignUpViewState extends State<SignUpView> {
                       color: Colors.black,
                       fontFamily: 'Sanchez',
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
+                    CustomText(
+                      text: 'Let’s create your account and get you started.',
+                      textAlign: TextAlign.center,
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontFamily: 'Sanchez',
+                    ),
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
