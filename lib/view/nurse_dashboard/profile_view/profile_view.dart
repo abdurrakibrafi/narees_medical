@@ -20,6 +20,7 @@ import '../../paitent_dashboard_view/auth_view/sign_in_view/sign_in_view.dart';
 import '../message_view/message_view_of_nurse.dart';
 import 'change_password_view.dart';
 import 'controller/stripe_connect_controller.dart';
+import 'documets_upload_view/documents_upload_view.dart';
 import 'edit_profile.dart';
 import 'notification_settings_view.dart';
 
@@ -164,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: Icons.file_copy_outlined,
                   title: 'Upload Documents',
                   onTap: () {
-                    Get.to(() => TrainingAndCertificationPage());
+                    Get.to(() => DocumentsUploadView());
                   },
                 ),
                 Divider(),
