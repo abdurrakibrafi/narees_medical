@@ -371,10 +371,11 @@ class _EditProfileState extends State<EditProfile> {
                     hint: 'Select Specialization',
                     value: selectedSpecialty,
                     items: [
-                      'IV Therapy Specialist',
-                      'General Practitioner',
-                      'Nurse',
-                      'Surgeon',
+                      "Phlebotomist with IV Certification",
+                      "Paramedic",
+                      "Nurse",
+                      "Nurse Practitioner",
+                      "Physician"
                     ],
                     onChanged: (value) {
                       setState(() {
