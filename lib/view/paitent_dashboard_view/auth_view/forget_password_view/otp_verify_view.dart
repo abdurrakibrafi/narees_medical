@@ -64,7 +64,7 @@ class OTPFormView extends StatelessWidget {
 
                     CustomText(
                       text:
-                          '   We sent a 6-digit verification code to $email \n Enter the code below to continue.',
+                          'We sent a 6-digit verification code to $email \n Enter the code below to continue.',
                       textAlign: TextAlign.center,
                       fontSize: 15,
                       color: Colors.black.withOpacity(0.8),

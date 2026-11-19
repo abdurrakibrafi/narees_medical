@@ -183,7 +183,7 @@ class _SignUpViewState extends State<SignUpView> {
                       controller: _confirmPasswordController,
                       fillColor: Color(0xFFE4E4E4),
                       borderColor: Colors.transparent,
-                      hintText: "Enter confirm password",
+                      hintText: "Enter confirmed password",
                       showObscure: true,
                     ),
                     SizedBox(height: 20),

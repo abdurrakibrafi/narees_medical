@@ -1,6 +1,6 @@
 // second_step_profile.dart
 
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_super_parameters
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -97,16 +97,6 @@ class _SecondStepProfileState extends State<SecondStepProfile> {
           child: Obx(() => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: widget.profile != null
-                          ? FileImage(File(widget.profile!.path))
-                          : NetworkImage(
-                                  'https://www.w3schools.com/w3images/avatar2.png')
-                              as ImageProvider,
-                    ),
-                  ),
                   SizedBox(height: 20),
                   CustomText(
                     text: 'Agreements',
