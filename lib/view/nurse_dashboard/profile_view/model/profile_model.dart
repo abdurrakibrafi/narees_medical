@@ -40,6 +40,7 @@ class Data {
     required this.isSaveCard,
     required this.nurseInfo,
     required this.certificates,
+    this.licenseExpiryDate,
   });
 
   final String? id;
@@ -62,6 +63,10 @@ class Data {
   final NurseInfo? nurseInfo;
   final List<dynamic> certificates;
 
+  /// Nurse license expiry date, if the backend sends one. See
+  /// [_findLicenseExpiry] for the field names that are checked.
+  final DateTime? licenseExpiryDate;
+
   factory Data.fromJson(Map<String, dynamic> json){
     return Data(
       id: json["id"],
@@ -83,9 +88,61 @@ class Data {
       isSaveCard: json["isSaveCard"],
       nurseInfo: json["nurseInfo"] == null ? null : NurseInfo.fromJson(json["nurseInfo"]),
       certificates: json["certificates"] == null ? [] : List<dynamic>.from(json["certificates"]!.map((x) => x)),
+      licenseExpiryDate: _findLicenseExpiry(json),
     );
   }
 
+}
+
+const List<String> _licenseExpiryKeys = [
+  "licenseExpiryDate",
+  "licenseExpireDate",
+  "licenseExpirationDate",
+  "licenseExpiry",
+  "licenseExpiredAt",
+  "licenseExpiresAt",
+  "license_expiry_date",
+  "expiryDate",
+  "expireDate",
+  "expirationDate",
+];
+
+DateTime? _dateFromKeys(Map<String, dynamic> map) {
+  for (final key in _licenseExpiryKeys) {
+    final value = map[key];
+    if (value is String) {
+      final parsed = DateTime.tryParse(value);
+      if (parsed != null) return parsed;
+    }
+  }
+  return null;
+}
+
+/// Looks for a license expiry date on the user, on `nurseInfo`, and on any
+/// nurse document whose type/name mentions "licen".
+DateTime? _findLicenseExpiry(Map<String, dynamic> json) {
+  final direct = _dateFromKeys(json);
+  if (direct != null) return direct;
+
+  final nurseInfo = json["nurseInfo"];
+  if (nurseInfo is Map<String, dynamic>) {
+    final fromInfo = _dateFromKeys(nurseInfo);
+    if (fromInfo != null) return fromInfo;
+
+    final docs = nurseInfo["nurseDocuments"];
+    if (docs is List) {
+      for (final doc in docs) {
+        if (doc is! Map<String, dynamic>) continue;
+        final label = "${doc["type"] ?? ""} ${doc["documentType"] ?? ""} "
+                "${doc["name"] ?? ""} ${doc["title"] ?? ""}"
+            .toLowerCase();
+        if (!label.contains("licen")) continue;
+        final fromDoc = _dateFromKeys(doc);
+        if (fromDoc != null) return fromDoc;
+      }
+    }
+  }
+  return null;
 }
 
 class NurseInfo {

@@ -50,9 +50,9 @@ class _ProfilePageState extends State<PaitientProfileView> {
     // Card Saved এ click করলে তখন initialize হবে
   }
 
-  // =====================================================
+  // ============================================
   // CARD SAVED
-  // =====================================================
+  // ============================================
 
   Future<void> _saveCard() async {
     try {
@@ -288,12 +288,11 @@ class _ProfilePageState extends State<PaitientProfileView> {
                 onTap: () {
                   CustomAlertDialog
                       .showCustomDialog(
-                    title: "Logout",
-                    content:
-                    "If you want to logout your account click on yes",
-                    cancelName: "No",
-                    actionName: "Yes",
-                    confirmText: "Yes",
+                    title: "Log Out?",
+                    content: "Are you sure you want to log out of your VitaMedics account?",
+                    cancelName: "Stay Signed",
+                    actionName: "Log Out",
+                    confirmText: "Log Out",
                     onConfirm: () {
                       // Card controller থাকলে delete
                       if (Get.isRegistered<

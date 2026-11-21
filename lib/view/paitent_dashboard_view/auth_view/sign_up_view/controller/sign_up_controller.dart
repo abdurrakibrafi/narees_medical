@@ -53,7 +53,7 @@ class RegisterController extends GetxController {
           await _storageService.write('token', token);
 
           CustomToast.showToast("Registration successful! Please enter OTP");
-          Get.to(() => OTPFormViewRegistrationView());
+          Get.to(() => OTPFormViewRegistrationView(email: email));
         } else {
           String errorMessage = responseJson['message'] ??
               'Registration failed. Please try again.';

@@ -9,6 +9,8 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/wid
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/marketing_material_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/nurse_interested_dialog_box.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/today_appointment_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/today_banner_widget.dart';
+import '../appointment_view/appointment_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -19,6 +21,12 @@ import '../../../common widget/not_found_widget.dart';
 import 'controller/nurse_interest_controller.dart';
 
 class HomeViewForNurse extends StatefulWidget {
+  const HomeViewForNurse({super.key, this.onOpenAppointments});
+
+  /// Called when the "Today" banner is tapped. The dashboard passes a callback
+  /// that switches to the Appointment tab; when null, the page is pushed.
+  final VoidCallback? onOpenAppointments;
+
   @override
   State<HomeViewForNurse> createState() => _HomeViewForNurseState();
 }
@@ -79,6 +87,23 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
           padding: EdgeInsets.all(6),
           child: CustomScrollView(
             slivers: [
+              /// 🔹 Today banner → Appointment page
+              SliverToBoxAdapter(
+                child: Obx(() => TodayBanner(
+                      isLoading: appointmentController.isLoading.value,
+                      appointmentCount:
+                          appointmentController.nurseData.value.data?.length ??
+                              0,
+                      onTap: () {
+                        if (widget.onOpenAppointments != null) {
+                          widget.onOpenAppointments!();
+                        } else {
+                          Get.to(() => AppoinmentView());
+                        }
+                      },
+                    )),
+              ),
+
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.all(16),
@@ -197,9 +222,7 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                       return MarketingMaterialCard(
                         createdAt: item.createdAt,
                         desc: item.content ?? '',
-                        tag: item.tags.isNotEmpty
-                            ? item.tags.map((e) => '#$e').join(' ')
-                            : '',
+                        tags: item.tags,
                         image: item.marketingMaterialDocument.isNotEmpty
                             ? item.marketingMaterialDocument[0].url ?? ''
                             : '',

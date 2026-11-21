@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:restaurent_discount_app/common%20widget/password_requirements.dart';
+import 'package:restaurent_discount_app/uitilies/password_policy.dart';
 import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom%20text/custom_text_widget.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_button_widget.dart';
@@ -178,6 +180,7 @@ class _SignUpViewState extends State<SignUpView> {
                       hintText: "Enter your password",
                       showObscure: true,
                     ),
+                    PasswordRequirements(controller: _passwordController),
                     SizedBox(height: 20),
                     CustomTextField(
                       controller: _confirmPasswordController,
@@ -211,6 +214,13 @@ class _SignUpViewState extends State<SignUpView> {
                                       _confirmPasswordController.text.isEmpty) {
                                     CustomToast.showToast(
                                         "All fields are required!",
+                                        isError: true);
+                                  } else if (PasswordPolicy.validate(
+                                          _passwordController.text) !=
+                                      null) {
+                                    CustomToast.showToast(
+                                        PasswordPolicy.validate(
+                                            _passwordController.text)!,
                                         isError: true);
                                   } else if (_passwordController.text !=
                                       _confirmPasswordController.text) {

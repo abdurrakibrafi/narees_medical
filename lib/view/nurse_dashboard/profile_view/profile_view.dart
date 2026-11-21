@@ -13,6 +13,7 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/settin
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply_order_history.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_module/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/license_expiry_badge.dart';
 import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/controller/card_saved_controller.dart';
 import '../../../common controller/custom alert dialog/custom_alert_dialog.dart';
 import '../../../uitilies/api/local_storage.dart';
@@ -106,6 +107,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     "n/a",
                                 fontSize: 21,
                                 fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            // License expiry (days left / days since expired)
+                            Center(
+                              child: LicenseExpiryBadge(
+                                expiryDate: _profileGetController
+                                    .profile.value.data?.licenseExpiryDate,
                               ),
                             ),
                           ],
@@ -230,12 +239,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: 'Log Out',
                   onTap: () {
                     CustomAlertDialog.showCustomDialog(
-                      title: "Logout",
+                      title: "Log Out?",
                       content:
-                          "If you want to logout your account click on yes",
-                      cancelName: "No",
-                      actionName: "Yes",
-                      confirmText: "Yes",
+                          "Are you sure you want to log out of your VitaMedics account?",
+                      cancelName: "Stay Signed",
+                      actionName: "Log Out",
+                      confirmText: "Log Out",
                       onConfirm: () async {
                         final StorageService storageService =
                             Get.put(StorageService());
