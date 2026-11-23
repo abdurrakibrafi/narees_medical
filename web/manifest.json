@@ -1,6 +1,6 @@
 {
-    "name": "narees_medical",
-    "short_name": "narees_medical",
+    "name": "VitaMedics",
+    "short_name": "VitaMedics",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

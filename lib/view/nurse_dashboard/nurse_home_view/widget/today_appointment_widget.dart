@@ -38,8 +38,7 @@ class TodayAppointmentWidget extends StatefulWidget {
   });
 
   @override
-  State<TodayAppointmentWidget> createState() =>
-      _TodayAppointmentWidgetState();
+  State<TodayAppointmentWidget> createState() => _TodayAppointmentWidgetState();
 }
 
 class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
@@ -175,18 +174,14 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
             // ====================================================
 
             Padding(
-              padding: EdgeInsets.all(16.r),
+              padding: EdgeInsets.fromLTRB(14.r, 12.r, 14.r, 12.r),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildPatientHeader(),
-
-                  SizedBox(height: 15.h),
-
+                  SizedBox(height: 10.h),
                   _buildAppointmentInfo(),
-
-                  SizedBox(height: 16.h),
-
+                  SizedBox(height: 10.h),
                   _buildButtons(),
                 ],
               ),
@@ -206,9 +201,7 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildProfileAvatar(),
-
         SizedBox(width: 12.w),
-
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,53 +215,61 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 17.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w700,
                   height: 1.2,
                 ),
               ),
 
-              SizedBox(height: 6.h),
+              SizedBox(height: 5.h),
 
-              // Treatment Badge
-              if (widget.treatmentType.isNotEmpty)
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 9.w,
-                    vertical: 4.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(50.r),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.15),
+              // Treatment badge + phone on one line
+              Row(
+                children: [
+                  if (widget.treatmentType.isNotEmpty)
+                    Flexible(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 9.w,
+                          vertical: 4.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(50.r),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.15),
+                          ),
+                        ),
+                        child: Text(
+                          widget.treatmentType,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.95),
+                            fontSize: 10.5.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    widget.treatmentType,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.95),
-                      fontSize: 10.5.sp,
-                      fontWeight: FontWeight.w500,
+                  if (widget.treatmentType.isNotEmpty &&
+                      widget.patientPhone.isNotEmpty)
+                    SizedBox(width: 8.w),
+                  if (widget.patientPhone.isNotEmpty)
+                    Flexible(
+                      child: _buildSmallInfo(
+                        icon: Icons.phone_outlined,
+                        text: widget.patientPhone,
+                      ),
                     ),
-                  ),
-                ),
+                ],
+              ),
 
               if (widget.patientEmail.isNotEmpty) ...[
-                SizedBox(height: 7.h),
+                SizedBox(height: 4.h),
                 _buildSmallInfo(
                   icon: Icons.email_outlined,
                   text: widget.patientEmail,
-                ),
-              ],
-
-              if (widget.patientPhone.isNotEmpty) ...[
-                SizedBox(height: 4.h),
-                _buildSmallInfo(
-                  icon: Icons.phone_outlined,
-                  text: widget.patientPhone,
                 ),
               ],
             ],
@@ -287,16 +288,15 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
     required String text,
   }) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
           icon,
           size: 13.sp,
           color: Colors.white.withOpacity(0.75),
         ),
-
         SizedBox(width: 5.w),
-
-        Expanded(
+        Flexible(
           child: Text(
             text,
             maxLines: 1,
@@ -320,37 +320,40 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        horizontal: 13.w,
-        vertical: 12.h,
+        horizontal: 10.w,
+        vertical: 8.h,
       ),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.11),
-        borderRadius: BorderRadius.circular(15.r),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: Colors.white.withOpacity(0.10),
         ),
       ),
-      child: Column(
+      child: Row(
         children: [
-          _buildInfoRow(
-            icon: Icons.calendar_month_rounded,
-            text: CustomDateFormatter.formatDateTime(
-              widget.date.toString(),
-            ),
-          ),
-
-          if (widget.city.isNotEmpty) ...[
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 9.h),
-              child: Divider(
-                height: 1,
-                thickness: 0.7,
-                color: Colors.white.withOpacity(0.14),
+          Expanded(
+            flex: 6,
+            child: _buildInfoRow(
+              icon: Icons.calendar_month_rounded,
+              text: CustomDateFormatter.formatDateTime(
+                widget.date.toString(),
               ),
             ),
-            _buildInfoRow(
-              icon: Icons.location_on_outlined,
-              text: widget.city,
+          ),
+          if (widget.city.isNotEmpty) ...[
+            Container(
+              width: 0.7,
+              height: 22.h,
+              margin: EdgeInsets.symmetric(horizontal: 8.w),
+              color: Colors.white.withOpacity(0.18),
+            ),
+            Expanded(
+              flex: 4,
+              child: _buildInfoRow(
+                icon: Icons.location_on_outlined,
+                text: widget.city,
+              ),
             ),
           ],
         ],
@@ -364,34 +367,22 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
   }) {
     return Row(
       children: [
-        Container(
-          width: 31.w,
-          height: 31.w,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.12),
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Icon(
-              icon,
-              size: 16.sp,
-              color: Colors.white,
-            ),
-          ),
+        Icon(
+          icon,
+          size: 15.sp,
+          color: Colors.white,
         ),
-
-        SizedBox(width: 10.w),
-
+        SizedBox(width: 6.w),
         Expanded(
           child: Text(
             text,
-            maxLines: 2,
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 11.5.sp,
+              fontSize: 11.sp,
               fontWeight: FontWeight.w600,
-              height: 1.3,
+              height: 1.2,
             ),
           ),
         ),
@@ -414,9 +405,7 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
             primary: true,
           ),
         ),
-
         SizedBox(width: 10.w),
-
         Expanded(
           child: _buildActionButton(
             label: "Not Interested",
@@ -441,17 +430,13 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
         onTap: onTap,
         borderRadius: BorderRadius.circular(12.r),
         child: Container(
-          height: 43.h,
+          height: 36.h,
           padding: EdgeInsets.symmetric(horizontal: 8.w),
           decoration: BoxDecoration(
-            color: primary
-                ? Colors.white
-                : Colors.white.withOpacity(0.10),
+            color: primary ? Colors.white : Colors.white.withOpacity(0.10),
             borderRadius: BorderRadius.circular(12.r),
             border: Border.all(
-              color: primary
-                  ? Colors.white
-                  : Colors.white.withOpacity(0.25),
+              color: primary ? Colors.white : Colors.white.withOpacity(0.25),
             ),
           ),
           child: Row(
@@ -459,23 +444,17 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
             children: [
               Icon(
                 icon,
-                size: 17.sp,
-                color: primary
-                    ? Color(0xFF0676B9)
-                    : Colors.white,
+                size: 16.sp,
+                color: primary ? Color(0xFF0676B9) : Colors.white,
               ),
-
               SizedBox(width: 5.w),
-
               Flexible(
                 child: Text(
                   label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: primary
-                        ? Color(0xFF0676B9)
-                        : Colors.white,
+                    color: primary ? Color(0xFF0676B9) : Colors.white,
                     fontSize: 11.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -493,15 +472,13 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
   // ============================================================
 
   Widget _buildProfileAvatar() {
-    final bool hasImage =
-        widget.patientImageUrl.trim().isNotEmpty;
+    final bool hasImage = widget.patientImageUrl.trim().isNotEmpty;
 
-    final String initials =
-    _getInitials(widget.patientName);
+    final String initials = _getInitials(widget.patientName);
 
     return Container(
-      width: 58.r,
-      height: 58.r,
+      width: 46.r,
+      height: 46.r,
       padding: EdgeInsets.all(2.r),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -514,41 +491,41 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
       child: ClipOval(
         child: hasImage
             ? Image.network(
-          widget.patientImageUrl,
-          width: 54.r,
-          height: 54.r,
-          fit: BoxFit.cover,
-          loadingBuilder: (
-              context,
-              child,
-              loadingProgress,
-              ) {
-            if (loadingProgress == null) {
-              return child;
-            }
+                widget.patientImageUrl,
+                width: 42.r,
+                height: 42.r,
+                fit: BoxFit.cover,
+                loadingBuilder: (
+                  context,
+                  child,
+                  loadingProgress,
+                ) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
 
-            return Container(
-              color: Colors.white.withOpacity(0.1),
-              child: Center(
-                child: SizedBox(
-                  width: 18.r,
-                  height: 18.r,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 1.8,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            );
-          },
-          errorBuilder: (
-              context,
-              error,
-              stackTrace,
-              ) {
-            return _buildInitialsAvatar(initials);
-          },
-        )
+                  return Container(
+                    color: Colors.white.withOpacity(0.1),
+                    child: Center(
+                      child: SizedBox(
+                        width: 18.r,
+                        height: 18.r,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1.8,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (
+                  context,
+                  error,
+                  stackTrace,
+                ) {
+                  return _buildInitialsAvatar(initials);
+                },
+              )
             : _buildInitialsAvatar(initials),
       ),
     );
@@ -601,8 +578,7 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
       return parts.first[0].toUpperCase();
     }
 
-    return "${parts.first[0]}${parts.last[0]}"
-        .toUpperCase();
+    return "${parts.first[0]}${parts.last[0]}".toUpperCase();
   }
 
   // ============================================================
@@ -625,40 +601,33 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
             Row(
               children: [
                 Container(
-                  width: 58.r,
-                  height: 58.r,
+                  width: 46.r,
+                  height: 46.r,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
                 ),
-
                 SizedBox(width: 12.w),
-
                 Expanded(
                   child: Column(
-                    crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         height: 15.h,
                         width: 130.w,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius:
-                          BorderRadius.circular(5.r),
+                          borderRadius: BorderRadius.circular(5.r),
                         ),
                       ),
-
                       SizedBox(height: 8.h),
-
                       Container(
                         height: 10.h,
                         width: 90.w,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius:
-                          BorderRadius.circular(5.r),
+                          borderRadius: BorderRadius.circular(5.r),
                         ),
                       ),
                     ],
@@ -666,42 +635,34 @@ class _TodayAppointmentWidgetState extends State<TodayAppointmentWidget>
                 ),
               ],
             ),
-
             SizedBox(height: 16.h),
-
             Container(
               width: double.infinity,
-              height: 85.h,
+              height: 40.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15.r),
               ),
             ),
-
             SizedBox(height: 15.h),
-
             Row(
               children: [
                 Expanded(
                   child: Container(
-                    height: 43.h,
+                    height: 36.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius:
-                      BorderRadius.circular(12.r),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
                 ),
-
                 SizedBox(width: 10.w),
-
                 Expanded(
                   child: Container(
-                    height: 43.h,
+                    height: 36.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius:
-                      BorderRadius.circular(12.r),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
                 ),

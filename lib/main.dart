@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       builder: (context, child) {
         return GetMaterialApp(
+          title: 'VitaMedics',
           translations: Messages(languages: languages),
           fallbackLocale: Locale('en', 'US'),
           debugShowCheckedModeBanner: false,

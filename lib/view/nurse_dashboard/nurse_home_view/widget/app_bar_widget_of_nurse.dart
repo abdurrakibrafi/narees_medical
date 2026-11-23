@@ -10,6 +10,7 @@ import 'package:restaurent_discount_app/common%20widget/chached_network_image.da
 import 'package:restaurent_discount_app/view/nurse_dashboard/cart_view/cart_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/notification_view/notification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/controller/get_profile_controller.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/controller/notification_controller.dart';
 
 class CustomAppBarForHome extends StatefulWidget
     implements PreferredSizeWidget {
@@ -28,9 +29,15 @@ class CustomAppBarForHome extends StatefulWidget
 class _CustomAppBarForHomeState extends State<CustomAppBarForHome> {
   late final ProfileGetController _profileGetController;
 
+  /// Shared with NotificationPage (same Get instance), so the badge updates
+  /// when notifications are refetched or cleared there.
+  late final GetNotificationController _notificationController;
+
   @override
   void initState() {
     super.initState();
+
+    _notificationController = Get.put(GetNotificationController());
 
     _profileGetController = Get.put(ProfileGetController());
     _profileGetController.getProfile();
@@ -184,8 +191,9 @@ class _CustomAppBarForHomeState extends State<CustomAppBarForHome> {
   Widget _buildActionButton({
     required IconData icon,
     required VoidCallback onTap,
+    int badgeCount = 0,
   }) {
-    return Material(
+    final button = Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
@@ -208,6 +216,49 @@ class _CustomAppBarForHomeState extends State<CustomAppBarForHome> {
               color: AppColors.mainColor,
             ),
           ),
+        ),
+      ),
+    );
+
+    if (badgeCount <= 0) return button;
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        button,
+        Positioned(
+          top: -3,
+          right: -4,
+          child: _buildBadge(badgeCount),
+        ),
+      ],
+    );
+  }
+
+  // ============================================================
+  // BADGE (count, capped at 99+)
+  // ============================================================
+
+  Widget _buildBadge(int count) {
+    final String label = count > 99 ? '99+' : '$count';
+
+    return Container(
+      constraints: BoxConstraints(minWidth: 18, minHeight: 18),
+      padding: EdgeInsets.symmetric(horizontal: 4),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Color(0xFFE53935),
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(color: Colors.white, width: 1.5),
+      ),
+      child: Text(
+        label,
+        textScaler: TextScaler.noScaling,
+        style: TextStyle(
+          fontSize: 10,
+          height: 1.1,
+          fontWeight: FontWeight.w800,
+          color: Colors.white,
         ),
       ),
     );
@@ -329,12 +380,17 @@ class _CustomAppBarForHomeState extends State<CustomAppBarForHome> {
 
       actions: [
         // Notification
-        _buildActionButton(
-          icon: Icons.notifications_none_rounded,
-          onTap: () {
-            Get.to(() => NotificationPage());
-          },
-        ),
+        Obx(() => _buildActionButton(
+              icon: Icons.notifications_none_rounded,
+              badgeCount: (_notificationController.nurseData.value.data?.data ??
+                      [])
+                  .where((n) => n.isRead != true)
+                  .length,
+              onTap: () async {
+                await Get.to(() => NotificationPage());
+                _notificationController.getNotify();
+              },
+            )),
 
         SizedBox(width: 9.w),
 
