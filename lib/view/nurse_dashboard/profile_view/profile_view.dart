@@ -14,7 +14,6 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/supply
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/tranning_module/tranning_and_certification_view.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/profile_option_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/license_expiry_badge.dart';
-import 'package:restaurent_discount_app/view/paitent_dashboard_view/paitient_profile_view/controller/card_saved_controller.dart';
 import '../../../common controller/custom alert dialog/custom_alert_dialog.dart';
 import '../../../uitilies/api/local_storage.dart';
 import '../../paitent_dashboard_view/auth_view/sign_in_view/sign_in_view.dart';
@@ -26,6 +25,11 @@ import 'edit_profile.dart';
 import 'notification_settings_view.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key, this.showBack = false});
+
+  /// True when pushed from the More tab, so the app bar shows a back button.
+  final bool showBack;
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -75,7 +79,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(leading: Container(), title: "Profile"),
+      appBar: CustomAppBar(
+          leading: widget.showBack ? null : Container(), title: "Profile"),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(

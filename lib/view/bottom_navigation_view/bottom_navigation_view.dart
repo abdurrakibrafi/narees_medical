@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'app_bottom_nav_bar.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/nurse_home_view.dart';
-import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/profile_view.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/more_view/more_view.dart';
 
 import '../nurse_dashboard/appointment_view/appointment_view.dart';
 import '../nurse_dashboard/patient_charting_view/patient_charting_view.dart';
@@ -22,7 +22,7 @@ class _DashboardForNurseState extends State<DashboardForNurse> {
     InventoryList(),
     AppoinmentView(),
     PatientChartingView(),
-    ProfilePage(),
+    MoreView(),
   ];
 
   void _onItemTapped(int index) {
@@ -44,7 +44,7 @@ class _DashboardForNurseState extends State<DashboardForNurse> {
           AppNavItem(label: 'Inventory', asset: 'assets/images/layer.png'),
           AppNavItem(label: 'Appointment', asset: 'assets/images/stickynote.png'),
           AppNavItem(label: 'Patient', asset: 'assets/images/profile-add.png'),
-          AppNavItem(label: 'Profile', icon: Icons.person_outline_rounded),
+          AppNavItem(label: 'More', icon: Icons.more_horiz_rounded),
         ],
       ),
     );

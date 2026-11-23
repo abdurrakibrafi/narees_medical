@@ -3,9 +3,14 @@ import 'package:get/get.dart';
 import 'package:restaurent_discount_app/common%20widget/custom_app_bar_widget.dart';
 import 'package:restaurent_discount_app/uitilies/custom_loader.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/profile_view/widget/order_card_widget.dart';
+import '../store_view/controller/reorder_controller.dart';
 import 'controller/get_supply_order_controller.dart';
 
 class SupplyOrderHistoryPage extends StatefulWidget {
+  const SupplyOrderHistoryPage({super.key, this.title = "Supply Order History"});
+
+  final String title;
+
   @override
   State<SupplyOrderHistoryPage> createState() => _SupplyOrderHistoryPageState();
 }
@@ -13,6 +18,7 @@ class SupplyOrderHistoryPage extends StatefulWidget {
 class _SupplyOrderHistoryPageState extends State<SupplyOrderHistoryPage> {
   final GetSupplyOrderController _controller =
       Get.put(GetSupplyOrderController());
+  final ReorderController _reorderController = Get.put(ReorderController());
 
   @override
   void initState() {
@@ -24,7 +30,7 @@ class _SupplyOrderHistoryPageState extends State<SupplyOrderHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomAppBar(title: "Supply Order History"),
+      appBar: CustomAppBar(title: widget.title),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(() {
@@ -47,7 +53,12 @@ class _SupplyOrderHistoryPageState extends State<SupplyOrderHistoryPage> {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               final order = orders[index];
-              return OrderCard(order: order);
+              return Obx(() => OrderCard(
+                    order: order,
+                    isReordering:
+                        _reorderController.reorderingId.value == (order.id ?? ''),
+                    onReorder: () => _reorderController.reorder(order),
+                  ));
             },
           );
         }),

@@ -10,6 +10,9 @@ import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/wid
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/nurse_interested_dialog_box.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/today_appointment_widget.dart';
 import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/today_banner_widget.dart';
+import 'package:restaurent_discount_app/view/nurse_dashboard/nurse_home_view/widget/store_shortcut_card.dart';
+import '../profile_view/supply_order_history.dart';
+import '../store_view/store_view.dart';
 import '../appointment_view/appointment_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
@@ -102,6 +105,15 @@ class _HomeViewForNurseState extends State<HomeViewForNurse> {
                         }
                       },
                     )),
+              ),
+
+              /// 🔹 Store shortcut
+              SliverToBoxAdapter(
+                child: StoreShortcutCard(
+                  onOpenStore: () => Get.to(() => StoreView()),
+                  onReorder: () =>
+                      Get.to(() => SupplyOrderHistoryPage(title: 'Reorder')),
+                ),
               ),
 
               SliverToBoxAdapter(

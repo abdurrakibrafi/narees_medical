@@ -10,9 +10,17 @@ import '../model/supply_order_model_history.dart';
 class OrderCard extends StatelessWidget {
   final Order order;
 
+  /// When set, a "Reorder" button is shown under the items table.
+  final VoidCallback? onReorder;
+
+  /// Shows a spinner on the Reorder button while the items are re-added.
+  final bool isReordering;
+
   const OrderCard({
     Key? key,
     required this.order,
+    this.onReorder,
+    this.isReordering = false,
   }) : super(key: key);
 
   static const _textDark = Color(0xFF1F2937);
@@ -234,6 +242,40 @@ class OrderCard extends StatelessWidget {
                 ],
               ),
             ),
+
+            if (onReorder != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 14),
+                child: SizedBox(
+                  height: 42,
+                  child: ElevatedButton.icon(
+                    onPressed: isReordering ? null : onReorder,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.mainColor,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor:
+                          AppColors.mainColor.withOpacity(0.6),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    icon: isReordering
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.white),
+                          )
+                        : const Icon(Icons.replay_rounded, size: 18),
+                    label: Text(
+                      isReordering ? 'Adding to cart…' : 'Reorder',
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
